@@ -1,7 +1,24 @@
 <resources>
     <string name="app_name">MediaApp</string>
+    <string name="empty">Lorem ipsum dolor sit amet</string>
     <string name="main_page_text1">Barbie (2023)</string>
     <string name="main_page_text2">Genre: Action, Comedy, Fantasy</string>
     <string name="main_page_trending">Trending Today</string>
     <string name="main_page_first_movie">Scarface</string>
+    <string name="main_page_second_movie">Fight Club</string>
+    <string name="main_page_third_movie">The Lord of the Rings: The Two Towers</string>
+    <string name="main_page_fourth_movie">Batman Begins</string>
+    <string name="main_page_fifth_movie">Joker</string>
+    <string name="main_page_top_picks">Top Picks For You</string>
+    <string name="main_page_first_row_first_movie">Avatar</string>
+    <string name="main_page_first_row_second_movie">Avatar: The Way of Water</string>
+    <string name="main_page_first_row_third_movie">Kung Fu Panda</string>
+    <string name="main_page_first_row_fourth_movie">Princess Mononoke</string>
+    <string name="main_page_first_row_fifth_movie">Oppenheimer</string>
+    <string name="main_page_friends_recommend">Friends Recommend</string>
+    <string name="main_page_third_row_first_movie">Sound of Freedom</string>
+    <string name="main_page_third_row_second_movie">365 DAYS</string>
+    <string name="main_page_third_row_third_movie">Chained</string>
+    <string name="main_page_third_row_fourth_movie">Savage Messiah</string>
+    <string name="main_page_third_row_fifth_movie">Suitable Flesh</string>
 </resources>
