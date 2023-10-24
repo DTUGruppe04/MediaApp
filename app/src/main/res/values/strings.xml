@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MediaApp</string>
+    <string name="main_page_text1">Barbie (2023)</string>
+    <string name="main_page_text2">Genre: Action, Comedy, Fantasy</string>
+    <string name="main_page_trending">Trending Today</string>
+    <string name="main_page_first_movie">Scarface</string>
 </resources>
