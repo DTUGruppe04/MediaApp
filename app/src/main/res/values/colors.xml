@@ -7,6 +7,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="box_seperation_color">#FF2E2E2E</color>
+    <color name="box_separation_color">#FF2E2E2E</color>
     <color name="box_row_color">#FF3F3F3F</color>
 </resources>

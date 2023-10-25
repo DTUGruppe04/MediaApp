@@ -64,7 +64,7 @@ fun MainPageLayout() {
                     Box(modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp)
-                        .background(colorResource(R.color.box_seperation_color))) {
+                        .background(colorResource(R.color.box_separation_color))) {
                         Row {
                             Column {
                                 Text(
@@ -156,10 +156,7 @@ fun MainPageLayout() {
             }
         }
         item {
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp)
-                .background(colorResource(R.color.box_seperation_color)))
+            SeparationBox()
         }
         item {
             //This is for the second horizontal list
@@ -197,11 +194,7 @@ fun MainPageLayout() {
             }
         }
         item {
-            //Basically a fancy spacer
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp)
-                .background(colorResource(R.color.box_seperation_color)))
+            SeparationBox()
         }
         item {
             //This is for the third horizontal list
@@ -272,6 +265,15 @@ fun StandardBoxInRow(image: Int, string: Int) {
             )
         }
     }
+}
+
+//Just a fancy spacer with colour
+@Composable
+fun SeparationBox() {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(8.dp)
+        .background(colorResource(R.color.box_separation_color)))
 }
 
 @Preview(showBackground = true)
