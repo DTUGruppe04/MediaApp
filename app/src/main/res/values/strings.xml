@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">MediaApp</string>
+    <string name="followers">Followers</string>
+    <string name="follows">Follows</string>
+    <string name="country">Denmark</string>
+    <string name="description">Hi, I’m a movie lover who likes films of all kinds. I enjoy discovering new stories and perspectives through cinema. Some of my favorites are The Godfather, Parasite, The Matrix, and Casablanca. I hope you enjoy my page.</string>
+    <string name="followers_number">430</string>
+    <string name="follows_number">10</string>
+    <string name="username">PH4NTOM</string>
+    <string name="name_of_user">Simon</string>
+    <string name="profile_page_favorite_movies">Favorite Movies</string>
+    <string name="casablanca">Casablanca</string>
+    <string name="indianajones">Indiana Jones</string>
+    <string name="parasite">Parasite</string>
+    <string name="thegodfather">The Godfather</string>
+    <string name="thematrix">The Matrix</string>
+    <string name="avatarthewayofwater">Avatar: The way of water</string>
+    <string name="freeguy">Free Guy</string>
+    <string name="oppenheimer">Oppenheimer</string>
+    <string name="readyplayerone">Ready Player One</string>
+    <string name="thedayaftertomorrow">The Day After Tomorrow</string>
+    <string name="profile_page_recently">Recently Watched</string>
+    <string name="moviecollector">Movie Collector</string>
+    <string name="watched">Watched</string>
+    <string name="watched_number">75</string>
+    <string name="reviews">Reviews</string>
+    <string name="reviews_number">40</string>
+    <string name="rated">Rated</string>
+    <string name="rated_number">60</string>
+    <string name="recommends">Recommends</string>
+    <string name="recommends_number">5</string>
+    <string name="saved">Saved</string>
+    <string name="saved_number">7</string>
 </resources>
