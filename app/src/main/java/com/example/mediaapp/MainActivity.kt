@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -63,7 +64,7 @@ fun MainPageLayout() {
                     Box(modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp)
-                        .background(color = Color(0xFF2E2E2E))) {
+                        .background(colorResource(R.color.box_seperation_color))) {
                         Row {
                             Column {
                                 Text(
@@ -124,7 +125,7 @@ fun MainPageLayout() {
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .height(220.dp)
-                .background(color = Color(0xFF3F3F3F))) {
+                .background(colorResource(R.color.box_row_color))) {
                 Column {
                     Text(
                         stringResource(R.string.main_page_trending),
@@ -158,14 +159,14 @@ fun MainPageLayout() {
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .background(color = Color(0xFF2E2E2E)))
+                .background(colorResource(R.color.box_seperation_color)))
         }
         item {
             //This is for the second horizontal list
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .height(220.dp)
-                .background(color = Color(0xFF3F3F3F))) {
+                .background(colorResource(R.color.box_row_color))) {
                 Column {
                     Text(
                         stringResource(R.string.main_page_top_picks),
@@ -200,14 +201,14 @@ fun MainPageLayout() {
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .background(color = Color(0xFF2E2E2E)))
+                .background(colorResource(R.color.box_seperation_color)))
         }
         item {
             //This is for the third horizontal list
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .height(220.dp)
-                .background(color = Color(0xFF3F3F3F))) {
+                .background(colorResource(R.color.box_row_color))) {
                 Column {
                     Text(
                         stringResource(R.string.main_page_friends_recommend),
