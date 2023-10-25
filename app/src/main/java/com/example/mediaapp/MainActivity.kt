@@ -1,20 +1,27 @@
 package com.example.mediaapp
 
+import android.graphics.Paint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,6 +40,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -40,6 +49,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import androidx.compose.ui.unit.dp
@@ -62,7 +72,9 @@ fun LoginPageLayout() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(R.color.login_background_color))
+            .background(
+                colorResource(R.color.login_background_color)
+            )
     ) {
         Box(modifier = Modifier
             .fillMaxWidth()
@@ -80,13 +92,15 @@ fun LoginPageLayout() {
             lineHeight = 28.sp,
             color = Color.White,
             modifier = Modifier
-                .padding(start = 29.dp, top = 45.dp))
+                .padding(start = 29.dp, top = 45.dp)
+        )
         Text(stringResource(R.string.login_please),
             fontSize = 12.sp,
             lineHeight = 28.sp,
             color = Color.White,
             modifier = Modifier
-                .padding(start = 30.dp))
+                .padding(start = 30.dp)
+        )
         TextfieldForEmail()
         TextfieldForPassword()
         Text(stringResource(R.string.login_forgot_password),
@@ -98,8 +112,50 @@ fun LoginPageLayout() {
             color = Color.White,
             textDecoration = TextDecoration.Underline
         )
+        Button(onClick = { /*TODO*/ },
+            modifier = Modifier
+                .width(152.dp)
+                .height(76.dp)
+                .padding(top = 36.dp, end = 29.dp)
+                .align(Alignment.End),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(R.color.login_button)
+            )
+            ) {
+            Text(stringResource(R.string.login_big),
+                color = colorResource(R.color.login_button_text)
+            )
+        }
+        Column(modifier = Modifier
+            .padding(bottom = 27.dp)
+            .fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(buildAnnotatedString {
+                withStyle(style = SpanStyle(
+                    fontSize = 16.sp,
+                    color = Color.White
+                    )
+                ) {
+                    append(stringResource(R.string.login_missing_account))
+                }
+                withStyle(style = SpanStyle(
+                    fontSize = 16.sp,
+                    color = colorResource(R.color.login_button_text_sign),
+                    textDecoration = TextDecoration.Underline
+                )
+                ) {
+                    append(stringResource(R.string.login_missing_account_sign))
+                }                }
+            )
+        }
     }
 }
+/*
+fontSize = 16.sp,
+lineHeight = 16.sp,
+color = Color.White,
+ */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

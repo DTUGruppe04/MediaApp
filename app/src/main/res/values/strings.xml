@@ -23,6 +23,11 @@
     <string name="main_page_third_row_fifth_movie">Suitable Flesh</string>
     <string name="login_top_name">Media App</string>
     <string name="login">Login</string>
+    <string name="login_big">LOGIN</string>
     <string name="login_please">Please sign in to continue</string>
     <string name="login_forgot_password">Forgot Password</string>
+    <string name="login_missing_account">Don\'t have an account yet?\u0020</string>
+    <string name="login_missing_account_sign">Sign up</string>
+    <string name="login_already_account">Already have an account?</string>
+    <string name="login_already_account_sign">Sign in</string>
 </resources>
