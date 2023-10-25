@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MediaAppTheme {
-                MainPageLayout()
+                LoginPageLayout()
             }
         }
     }
@@ -50,236 +50,42 @@ class MainActivity : ComponentActivity() {
 //0xFF2E2E2E
 
 @Composable
-fun MainPageLayout() {
-    LazyColumn(modifier = Modifier.fillMaxSize()){
-        item {
-            //This is the uppermost part of the main page
-            Box() {
-                Column(modifier = Modifier
-                    .fillMaxWidth()) {
-                    Image(painter = painterResource(R.drawable.barbie),
-                        contentDescription = "barbie",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop)
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(60.dp)
-                        .background(colorResource(R.color.box_separation_color))) {
-                        Row {
-                            Column {
-                                Text(
-                                    stringResource(R.string.main_page_text1),
-                                    color = Color.White,
-                                    fontSize = 16.sp,
-                                    modifier = Modifier.padding(start = 120.dp, top = 5.dp)
-                                )
-                                Text(
-                                    stringResource(R.string.main_page_text2),
-                                    color = Color.White,
-                                    fontSize = 10.sp,
-                                    modifier = Modifier.padding(start = 120.dp)
-                                )
-                            }
-                            Spacer(Modifier.size(75.dp))
-                            Image(painter = painterResource(R.drawable.bookmark),
-                                contentDescription = "bookmark",
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .size(33.dp))
-                        }
-                    }
-                }
-                Image(painter = painterResource(R.drawable.barbie_icon),
-                    contentDescription = "barbie_icon",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(start = 32.dp, top = 152.dp)
-                        .height(121.dp)
-                        .width(72.dp)
-                        .clip(RoundedCornerShape(10.dp)))
-                Image(
-                    painter = painterResource(R.drawable.settings_icon),
-                    contentDescription = "settings",
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .size(24.dp)
-                )
-                Image(
-                    painter = painterResource(R.drawable.arrow_left),
-                    contentDescription = "arrow_left",
-                    modifier = Modifier
-                        .padding(start = 10.dp, top = 210.dp)
-                        .size(16.dp)
-                )
-                Image(
-                    painter = painterResource(R.drawable.arrow_right),
-                    contentDescription = "arrow_right",
-                    modifier = Modifier
-                        .padding(start = 365.dp, top = 210.dp)
-                        .size(16.dp)
-                )
-            }
-        }
-        item {
-            //This is for the first horizontal list
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(220.dp)
-                .background(colorResource(R.color.box_row_color))) {
-                Column {
-                    Text(
-                        stringResource(R.string.main_page_trending),
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(start = 10.dp, top = 5.dp)
-                    )
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        item {
-                            StandardBoxInRow(R.drawable.first_movie, R.string.main_page_first_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.second_movie, R.string.main_page_second_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.third_movie, R.string.main_page_third_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.fourth_movie, R.string.main_page_fourth_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.fifth_movie, R.string.main_page_fourth_movie)
-                        }
-                    }
-                }
-            }
-        }
-        item {
-            SeparationBox()
-        }
-        item {
-            //This is for the second horizontal list
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(220.dp)
-                .background(colorResource(R.color.box_row_color))) {
-                Column {
-                    Text(
-                        stringResource(R.string.main_page_top_picks),
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(start = 10.dp, top = 5.dp)
-                    )
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        item {
-                            StandardBoxInRow(R.drawable.second_row_first_movie, R.string.main_page_first_row_first_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.second_row_second_movie, R.string.main_page_first_row_second_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.second_row_third_movie, R.string.main_page_first_row_third_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.second_row_fourth_movie, R.string.main_page_first_row_fourth_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.second_row_fifth_movie, R.string.main_page_first_row_fifth_movie)
-                        }
-                    }
-                }
-            }
-        }
-        item {
-            SeparationBox()
-        }
-        item {
-            //This is for the third horizontal list
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(220.dp)
-                .background(colorResource(R.color.box_row_color))) {
-                Column {
-                    Text(
-                        stringResource(R.string.main_page_friends_recommend),
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(start = 10.dp, top = 5.dp)
-                    )
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        item {
-                            StandardBoxInRow(R.drawable.third_row_first_movie, R.string.main_page_third_row_first_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.third_row_second_movie, R.string.main_page_third_row_second_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.third_row_third_movie, R.string.main_page_third_row_third_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.third_row_fourth_movie, R.string.main_page_third_row_fourth_movie)
-                        }
-                        item {
-                            StandardBoxInRow(R.drawable.third_row_fifth_movie, R.string.main_page_third_row_fifth_movie)
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun StandardBoxInRow(image: Int, string: Int) {
-    Box(modifier = Modifier
-        .width(90.dp)
-        .height(180.dp)) {
-        Column(modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(
-                painter = painterResource(image),
-                contentDescription = "first_movie",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(start = 10.dp, top = 5.dp)
-                    .width(90.dp)
-                    .height(139.dp)
-                    .clip(RoundedCornerShape(10.dp))
-            )
-            Text(
-                stringResource(string),
+fun LoginPageLayout() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(R.color.login_background_color))
+    ) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+            contentAlignment = Alignment.Center) {
+            Text(stringResource(R.string.login_top_name),
+                fontSize = 22.sp,
+                lineHeight = 28.sp,
                 color = Color.White,
-                fontSize = 12.sp,
-                modifier = Modifier.padding(start = 10.dp, top = 5.dp),
-                softWrap = true,
-                maxLines = 2,
-                lineHeight = 1.em,
-                overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center
             )
         }
+        Text(stringResource(R.string.login),
+            fontSize = 30.sp,
+            lineHeight = 28.sp,
+            color = Color.White,
+            modifier = Modifier
+                .padding(start = 29.dp, top = 45.dp))
+        Text(stringResource(R.string.please),
+            fontSize = 12.sp,
+            lineHeight = 28.sp,
+            color = Color.White,
+            modifier = Modifier
+                .padding(start = 30.dp))
     }
-}
-
-//Just a fancy spacer with colour
-@Composable
-fun SeparationBox() {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(8.dp)
-        .background(colorResource(R.color.box_separation_color)))
 }
 
 @Preview(showBackground = true)
 @Composable
 fun MainPagePreview() {
     MediaAppTheme {
-        MainPageLayout()
+        LoginPageLayout()
     }
 }

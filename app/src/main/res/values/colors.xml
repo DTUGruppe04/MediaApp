@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="box_separation_color">#FF2E2E2E</color>
     <color name="box_row_color">#FF3F3F3F</color>
+    <color name="login_background_color">#FF141218</color>
+    <color name="login_text_color">#FFE6E0E9</color>
 </resources>

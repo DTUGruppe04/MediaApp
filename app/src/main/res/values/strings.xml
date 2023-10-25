@@ -21,4 +21,7 @@
     <string name="main_page_third_row_third_movie">Chained</string>
     <string name="main_page_third_row_fourth_movie">Savage Messiah</string>
     <string name="main_page_third_row_fifth_movie">Suitable Flesh</string>
+    <string name="login_top_name">Media App</string>
+    <string name="login">Login</string>
+    <string name="please">Please sign in to continue</string>
 </resources>
