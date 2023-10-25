@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ButtomNavigationBar()
+                    BottomNavigationBar()
                 }
             }
         }
@@ -57,6 +57,7 @@ class MainActivity : ComponentActivity() {
 
 data class BottomNavItem(
     val name: String,
+    val route: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
 )
@@ -64,7 +65,7 @@ data class BottomNavItem(
 //Using SuppressLint in order to make it stop saying it need data when it does not
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ButtomNavigationBar() {
+fun BottomNavigationBar(modifier : Modifier = Modifier) {
     val containerColor = Color(android.graphics.Color.parseColor("#211F26"))
     val contentColor = Color(android.graphics.Color.parseColor("#FFFFFF"))
     val indicatorColor = Color(android.graphics.Color.parseColor("#4a4458"))
@@ -72,21 +73,25 @@ fun ButtomNavigationBar() {
     val bottomNavItems = listOf(
         BottomNavItem(
             name = "Home",
+            route = "home",
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home
         ),
         BottomNavItem(
             name = "Following",
+            route = "following",
             selectedIcon = Icons.Filled.Subscriptions,
             unselectedIcon = Icons.Outlined.Subscriptions
         ),
         BottomNavItem(
             name = "Watchlist",
+            route = "watchlist",
             selectedIcon = Icons.Filled.FormatListBulleted,
             unselectedIcon = Icons.Outlined.FormatListBulleted
         ),
         BottomNavItem(
             name = "Search",
+            route = "search",
             selectedIcon = Icons.Filled.Search,
             unselectedIcon = Icons.Outlined.Search
         ),
@@ -192,6 +197,6 @@ fun ButtomNavigationBar(modifier : Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     MediaAppTheme {
-        ButtomNavigationBar()
+        BottomNavigationBar()
     }
 }
