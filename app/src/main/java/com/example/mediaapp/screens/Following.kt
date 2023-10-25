@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.mediaapp.BottomNavigationBar
 
 @Composable
 fun Following(message : String, modifier : Modifier = Modifier ) {
@@ -34,6 +33,5 @@ fun FollowingScreen(navController: NavController) {
 @Composable
 fun FollowingPreview() {
     val navController = rememberNavController()
-    BottomNavigationBar(navController = navController)
     Following("Following Page")
 }

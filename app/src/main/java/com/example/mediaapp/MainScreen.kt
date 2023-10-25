@@ -1,6 +1,7 @@
 package com.example.mediaapp
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.Home
@@ -25,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -36,18 +38,22 @@ data class BottomNavItem(
     val unselectedIcon: ImageVector,
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    BottomNavigationBar(navController = navController)
-    NavBottomGraph(navController = navController)
+    Scaffold(
+        bottomBar = { test(navController = navController) },
+    ) { innerPadding ->
+        NavBottomGraph(navController = navController)
+        Modifier.padding(innerPadding)
+    }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-//Using SuppressLint in order to make it stop saying it need data when it does not
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BottomNavigationBar(modifier : Modifier = Modifier, navController: NavController) {
+fun test(modifier : Modifier = Modifier, navController: NavController) {
     val containerColor = colorResource(R.color.black_navbar)
     val contentColor = colorResource(R.color.white_navitem)
     val indicatorColor = colorResource(R.color.indicator_color_navbar)
@@ -83,41 +89,44 @@ fun BottomNavigationBar(modifier : Modifier = Modifier, navController: NavContro
         mutableStateOf(0)
     }
 
-    Scaffold(
-        bottomBar = {
-            NavigationBar(
-                containerColor = containerColor,
-                tonalElevation = 0.dp
-            ) {
-                bottomNavItems.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = contentColor,
-                            unselectedIconColor = contentColor,
-                            indicatorColor = indicatorColor
-                        ),
-                        selected = selectedItemIndex == index,
-                        onClick = {
-                            selectedItemIndex = index
-                            navController.navigate(item.route)
-                        },
-                        label = {
-                            Text(text = item.name, color = contentColor)
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = if (index == selectedItemIndex) {
-                                    item.selectedIcon
-                                } else item.unselectedIcon,
-                                contentDescription = item.name
-                            )
-                        }
+    NavigationBar(
+        containerColor = containerColor,
+        tonalElevation = 0.dp,
+    ) {
+        bottomNavItems.forEachIndexed { index, item ->
+            NavigationBarItem(
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = contentColor,
+                    unselectedIconColor = contentColor,
+                    indicatorColor = indicatorColor
+                ),
+                selected = selectedItemIndex == index,
+                onClick = {
+                    selectedItemIndex = index
+                    navController.navigate(item.route)
+                },
+                label = {
+                    Text(text = item.name, color = contentColor)
+                },
+                icon = {
+                    Icon(
+                        imageVector = if (index == selectedItemIndex) {
+                            item.selectedIcon
+                        } else item.unselectedIcon,
+                        contentDescription = item.name
                     )
                 }
-            }
+            )
         }
-    ) {
-
     }
 }
 
+/*
+@Preview
+@Composable
+fun PreviewMainScreen() {
+    val navController = rememberNavController()
+    BottomNavigationBar(navController = navController)
+    NavBottomGraph(navController = navController)
+}
+*/
