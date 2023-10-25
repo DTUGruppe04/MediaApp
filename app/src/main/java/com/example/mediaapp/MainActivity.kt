@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -184,128 +185,41 @@ fun ProfileStatistics(
                 .padding(top = 9.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround){
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text (
-                        stringResource(watched),
-                        fontSize = 18.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 9.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                    Text (
-                        stringResource(R.string.watched),
-                        fontSize = 10.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 9.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                }
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text (
-                        stringResource(reviews),
-                        fontSize = 18.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 9.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                    Text (
-                        stringResource(R.string.reviews),
-                        fontSize = 10.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 9.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                }
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text (
-                        stringResource(rated),
-                        fontSize = 18.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 9.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                    Text (
-                        stringResource(R.string.rated),
-                        fontSize = 10.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 9.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                }
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text (
-                        stringResource(recommends),
-                        fontSize = 18.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 9.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                    Text (
-                        stringResource(R.string.recommends),
-                        fontSize = 10.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 9.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                }
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text (
-                        stringResource(saved),
-                        fontSize = 18.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 9.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                    Text (
-                        stringResource(R.string.saved),
-                        fontSize = 10.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 9.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                }
+                StatisticsText(watched, R.string.watched)
+                StatisticsText(reviews, R.string.reviews)
+                StatisticsText(rated, R.string.rated)
+                StatisticsText(recommends, R.string.recommends)
+                StatisticsText(saved, R.string.saved)
             }
         }
+    }
+}
+
+@Composable
+private fun StatisticsText(number: Int, text: Int) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            stringResource(number),
+            fontSize = 18.sp,
+            lineHeight = 28.sp,
+            fontWeight = FontWeight(400),
+            color = Color(0xFFFFFFFF),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(start = 9.dp, top = 0.dp)
+                .height(28.dp)
+        )
+        Text(
+            stringResource(text),
+            fontSize = 10.sp,
+            lineHeight = 28.sp,
+            fontWeight = FontWeight(400),
+            color = Color(0xFFFFFFFF),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(start = 9.dp, top = 0.dp)
+                .height(28.dp)
+        )
     }
 }
 
@@ -324,62 +238,22 @@ fun ProfileDescription(
         .fillMaxWidth()
         .height(162.dp)) {
         Row(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.size(130.dp, 160.dp)) {
+            Column(modifier = Modifier.size(145.dp, 160.dp)) {
                 Image(
                     painter = painterResource(profilePicture),
                     contentDescription = "profile_picture",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .padding(start = 9.dp, top = 7.dp, end = 0.dp, bottom = 3.dp)
-                        .width(118.dp)
+                        .padding(start = 9.dp, top = 7.dp, bottom = 3.dp)
+                        .fillMaxWidth()
                         .height(119.dp)
                         .clip(RoundedCornerShape(25.dp))
                 )
                 Row {
-                    Text (
-                        stringResource(followers),
-                        fontSize = 10.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 9.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                    Text (
-                        stringResource(R.string.followers),
-                        fontSize = 10.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = colorResource(id = R.color.follow_text_color),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 3.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                    Text (
-                        stringResource(following),
-                        fontSize = 10.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFFFFFFF),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 10.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
-                    Text (
-                        stringResource(R.string.follows),
-                        fontSize = 10.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = colorResource(id = R.color.follow_text_color),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(start = 3.dp, top = 0.dp)
-                            .height(28.dp)
-                    )
+                    FollowText(followers, paddingValue = 9.dp, color = colorResource(id = R.color.white))
+                    FollowText(R.string.followers, paddingValue = 3.dp, color = colorResource(id = R.color.follow_text_color))
+                    FollowText(following, paddingValue = 10.dp, color = colorResource(id = R.color.white))
+                    FollowText(R.string.follows, paddingValue = 3.dp, color = colorResource(id = R.color.follow_text_color))
                 }
             }
             Column {
@@ -397,12 +271,13 @@ fun ProfileDescription(
                         .width(105.dp)
                         .height(32.dp)
                 )
-                Row(modifier = Modifier.size(105.dp, 13.dp), verticalAlignment = Alignment.CenterVertically) {
+                Row(modifier = Modifier.size(115.dp, 13.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
                     Text (
                         stringResource(nameOfUser),
                         color = Color.White,
                         fontSize = 10.sp,
-                        modifier = Modifier.padding(start = 10.dp, top = 0.dp, end = 8.dp)
+                        modifier = Modifier.padding(start = 10.dp, end = 8.dp)
                     )
                     Image(modifier = Modifier
                         .size(13.dp, 8.dp)
@@ -412,7 +287,7 @@ fun ProfileDescription(
                         stringResource(countryName),
                         color = Color.White,
                         fontSize = 10.sp,
-                        modifier = Modifier.padding(start = 2.dp, top = 0.dp)
+                        modifier = Modifier.padding(start = 2.dp)
                     )
                 }
                 Text (
@@ -427,6 +302,21 @@ fun ProfileDescription(
             }
         }
     }
+}
+
+@Composable
+private fun FollowText(text: Int, paddingValue: Dp, color: Color) {
+    Text(
+        stringResource(text),
+        fontSize = 10.sp,
+        lineHeight = 28.sp,
+        fontWeight = FontWeight(400),
+        color = color,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .padding(start = paddingValue)
+            .height(28.dp)
+    )
 }
 
 @Composable
