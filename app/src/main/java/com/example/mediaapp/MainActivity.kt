@@ -87,20 +87,8 @@ fun LoginPageLayout() {
                 textAlign = TextAlign.Center
             )
         }
-        Text(stringResource(R.string.login),
-            fontSize = 30.sp,
-            lineHeight = 28.sp,
-            color = Color.White,
-            modifier = Modifier
-                .padding(start = 29.dp, top = 45.dp)
-        )
-        Text(stringResource(R.string.login_please),
-            fontSize = 12.sp,
-            lineHeight = 28.sp,
-            color = Color.White,
-            modifier = Modifier
-                .padding(start = 30.dp)
-        )
+        MainTitleText(R.string.login)
+        SubTitleText(R.string.login_please)
         TextfieldForEmail()
         TextfieldForPassword()
         Text(stringResource(R.string.login_forgot_password),
@@ -126,36 +114,75 @@ fun LoginPageLayout() {
                 color = colorResource(R.color.login_button_text)
             )
         }
-        Column(modifier = Modifier
-            .padding(bottom = 27.dp)
-            .fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(buildAnnotatedString {
-                withStyle(style = SpanStyle(
-                    fontSize = 16.sp,
-                    color = Color.White
-                    )
-                ) {
-                    append(stringResource(R.string.login_missing_account))
-                }
-                withStyle(style = SpanStyle(
-                    fontSize = 16.sp,
-                    color = colorResource(R.color.login_button_text_sign),
-                    textDecoration = TextDecoration.Underline
-                )
-                ) {
-                    append(stringResource(R.string.login_missing_account_sign))
-                }                }
-            )
-        }
+        BottomSignText(R.string.login_missing_account_sign)
     }
 }
+
 /*
-fontSize = 16.sp,
-lineHeight = 16.sp,
-color = Color.White,
+@Composable
+fun CreateAccountPageLayout() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                colorResource(R.color.login_background_color)
+            )
+    ) {
+
+    }
+}
+
  */
+
+@Composable
+fun MainTitleText(string: Int) {
+    Text(stringResource(string),
+        fontSize = 30.sp,
+        lineHeight = 28.sp,
+        color = Color.White,
+        modifier = Modifier
+            .padding(start = 29.dp, top = 45.dp)
+    )
+}
+
+@Composable
+fun SubTitleText(string: Int) {
+    Text(stringResource(string),
+        fontSize = 12.sp,
+        lineHeight = 28.sp,
+        color = Color.White,
+        modifier = Modifier
+            .padding(start = 30.dp)
+    )
+}
+
+@Composable
+fun BottomSignText(string: Int) {
+    Column(modifier = Modifier
+        .padding(bottom = 27.dp)
+        .fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(buildAnnotatedString {
+            withStyle(style = SpanStyle(
+                fontSize = 16.sp,
+                color = Color.White
+            )
+            ) {
+                append(stringResource(R.string.login_missing_account))
+            }
+            withStyle(style = SpanStyle(
+                fontSize = 16.sp,
+                color = colorResource(R.color.login_button_text_sign),
+                textDecoration = TextDecoration.Underline
+            )
+            ) {
+                append(stringResource(string))
+            }
+        }
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
