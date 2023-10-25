@@ -11,4 +11,7 @@
     <color name="box_row_color">#FF3F3F3F</color>
     <color name="login_background_color">#FF141218</color>
     <color name="login_text_color">#FFE6E0E9</color>
+    <color name="login_textfield_background">#FF36343B</color>
+    <color name="login_textfield_label">#FFD0BCFF</color>
+    <color name="login_textfield_text">#FFE6E0E9</color>
 </resources>
