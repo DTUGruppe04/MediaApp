@@ -90,9 +90,12 @@ fun MainPageLayout() {
                 }
                 Image(painter = painterResource(R.drawable.barbie_icon),
                     contentDescription = "barbie_icon",
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .padding(start = 10.dp, top = 150.dp)
-                        .size(121.dp))
+                        .padding(start = 32.dp, top = 152.dp)
+                        .height(121.dp)
+                        .width(72.dp)
+                        .clip(RoundedCornerShape(10.dp)))
                 Image(
                     painter = painterResource(R.drawable.settings_icon),
                     contentDescription = "settings",
