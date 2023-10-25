@@ -25,8 +25,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 data class BottomNavItem(
     val name: String,
@@ -37,14 +38,16 @@ data class BottomNavItem(
 
 @Composable
 fun MainScreen() {
-    BottomNavigationBar()
+    val navController = rememberNavController()
+    BottomNavigationBar(navController = navController)
+    NavBottomGraph(navController = navController)
 }
 
-//Using SuppressLint in order to make it stop saying it need data when it does not
 @OptIn(ExperimentalMaterial3Api::class)
+//Using SuppressLint in order to make it stop saying it need data when it does not
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BottomNavigationBar(modifier : Modifier = Modifier) {
+fun BottomNavigationBar(modifier : Modifier = Modifier, navController: NavController) {
     val containerColor = colorResource(R.color.black_navbar)
     val contentColor = colorResource(R.color.white_navitem)
     val indicatorColor = colorResource(R.color.indicator_color_navbar)
@@ -96,7 +99,7 @@ fun BottomNavigationBar(modifier : Modifier = Modifier) {
                         selected = selectedItemIndex == index,
                         onClick = {
                             selectedItemIndex = index
-                            //navController.navigate(item.route)
+                            navController.navigate(item.route)
                         },
                         label = {
                             Text(text = item.name, color = contentColor)
@@ -118,8 +121,3 @@ fun BottomNavigationBar(modifier : Modifier = Modifier) {
     }
 }
 
-@Preview
-@Composable
-fun PreviewMainScreen() {
-    BottomNavigationBar()
-}

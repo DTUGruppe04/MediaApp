@@ -9,7 +9,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mediaapp.BottomNavigationBar
+import androidx.navigation.NavController
 
 @Composable
 fun Watchlist(message : String, modifier : Modifier = Modifier ) {
@@ -23,9 +23,13 @@ fun Watchlist(message : String, modifier : Modifier = Modifier ) {
     )
 }
 
+@Composable
+fun WatchlistScreen(navController: NavController) {
+    Watchlist("Watchlist Page")
+}
+
 @Preview
 @Composable
 fun WatchlistPreview() {
-    BottomNavigationBar()
     Watchlist("Watchlist Page")
 }
