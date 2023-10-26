@@ -12,4 +12,7 @@
     <color name="indicator_color_navbar">#4a4458</color>
     <color name="box_separation_color">#FF2E2E2E</color>
     <color name="box_row_color">#FF3F3F3F</color>
+    <color name="top_navbar_icon_color">#CAC4D0</color>
+    <color name="top_navbar_text_color">#E6E0E9</color>
+    <color name="top_navbar_container_color">#141218</color>
 </resources>
