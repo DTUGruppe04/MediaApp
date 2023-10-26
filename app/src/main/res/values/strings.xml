@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">MediaApp</string>
+    <string name="all">All</string>
+    <string name="watched">Watched</string>
+    <string name="not_watched">Not watched</string>
+
+    //Genres
+    <string name="adventure">Adventure</string>
+    <string name="comedy">Comedy</string>
+    <string name="horror">Horror</string>
+    <string name="drama">Drama</string>
+
+    //Filters
+    <string name="genre">Genre</string>
+    <string name="year_from">Year from</string>
+    <string name="year_to">Year to</string>
+    <string name="rating_to">Rating to</string>
+    <string name="rating_from">Rating from</string>
+
+    //Movies
+    <string name="zohan">Zohan</string>
+    <string name="grown_ups_2">Grown Ups 2</string>
+    <string name="borat">Borat</string>
+    <string name="step_brothers">Step Brothers</string>
+
+    //Recommended by
+    <string name="recommended_by_kevin_and_7_others">Recommended by Kevin and 7 others</string>
+    <string name="recommended_by_david_and_4_others">Recommended by David and 4 others</string>
+    <string name="recommended_by_mikkel_and_2_others">Recommended by Mikkel and 2 others</string>
+    <string name="recommended_by_jonathan">Recommended by Jonathan</string>
 </resources>
