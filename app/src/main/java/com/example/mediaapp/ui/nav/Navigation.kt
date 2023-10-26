@@ -1,13 +1,10 @@
 package com.example.mediaapp.ui.nav
 
-import android.graphics.Color
-import android.graphics.Paint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
@@ -24,7 +21,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -40,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mediaapp.BottomNavItem
@@ -156,7 +151,7 @@ fun TopNavBarA(navController: NavController, modifier : Modifier = Modifier) {
 /**
  * TopNavBarB
  *
- * This function has a Hamburger to the left, a centered name, and a trailing-icon to the right. See Figma for a more precise
+ * This function has a LeftArrow icon to the left, a centered name, and a trailing-icon to the right. See Figma for a more precise
  * example or preview the function
  *
  * @param navController navigation controller
@@ -180,7 +175,7 @@ fun TopNavBarB(navController: NavController, modifier : Modifier = Modifier) {
         navigationIcon = {
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
-                    imageVector = Icons.Filled.Menu,
+                    imageVector = Icons.Filled.ArrowBack,
                     contentDescription = "menu"
                 )
             }
@@ -188,14 +183,6 @@ fun TopNavBarB(navController: NavController, modifier : Modifier = Modifier) {
         title = {
             Text("Media App")
         },
-        actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Filled.MoreVert,
-                    contentDescription = "more vert"
-                )
-            }
-        }
     )
 }
 
@@ -249,22 +236,53 @@ fun TopNavBarC(navController: NavController, modifier : Modifier = Modifier) {
 }
 
 /**
- * TopNavBarC
+ * TopNavBarD
  *
- * This function has a left_arrow icon to the left and a name. See Figma for a more precise
+ * This function has a left_arrow icon to the left and a name centerted with more icon to the left. See Figma for a more precise
  * example or preview the function
  *
  * @param navController navigation controller
  * @param modifier optional
  * @return Returns a Top Navigation Bar of type D.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBarD() {
+fun TopNavBarD(navController: NavController, modifier : Modifier = Modifier) {
+    val containerColor = colorResource(R.color.top_navbar_container_color)
+    val contentColor = colorResource(R.color.top_navbar_text_color)
+    val iconColor = colorResource(R.color.top_navbar_icon_color)
 
+    CenterAlignedTopAppBar(
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = containerColor,
+            titleContentColor = contentColor,
+            navigationIconContentColor = iconColor,
+            actionIconContentColor = iconColor
+        ),
+        navigationIcon = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "arrow back"
+                )
+            }
+        },
+        title = {
+            Text("Media App")
+        },
+        actions = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Filled.MoreVert,
+                    contentDescription = "more vert"
+                )
+            }
+        }
+    )
 }
 
 /**
- * TopNavBarC
+ * TopNavBarE
  *
  * This function has a axe icon to the left and a name. See Figma for a more precise
  * example or preview the function
@@ -273,14 +291,70 @@ fun TopNavBarD() {
  * @param modifier optional
  * @return Returns a Top Navigation Bar of type D.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBarE() {
+fun TopNavBarE(navController: NavController, modifier : Modifier = Modifier) {
+    val containerColor = colorResource(R.color.top_navbar_container_color)
+    val contentColor = colorResource(R.color.top_navbar_text_color)
+    val iconColor = colorResource(R.color.top_navbar_icon_color)
 
+    TopAppBar(
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = containerColor,
+            titleContentColor = contentColor,
+            navigationIconContentColor = iconColor,
+        ),
+        navigationIcon = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Filled.Close,
+                    contentDescription = "arrow back",
+                    modifier = Modifier
+                        .width(48.dp)
+                        .height(48.dp)
+                )
+            }
+        },
+        title = {
+            Text("Media App")
+        }
+    )
 }
+
+/**
+ * TopNavBarF
+ *
+ * This function has a centered name. See Figma for a more precise
+ * example or preview the function
+ *
+ * @param navController navigation controller
+ * @param modifier optional
+ * @return Returns a Top Navigation Bar of type D.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopNavBarF(navController: NavController, modifier : Modifier = Modifier) {
+    val containerColor = colorResource(R.color.top_navbar_container_color)
+
+    CenterAlignedTopAppBar(
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = containerColor,
+        ),
+        title = {
+            Text("Media App")
+        }
+    )
+}
+
 
 @Preview
 @Composable
 fun PreviewNavigation() {
     val navController = rememberNavController()
-    TopNavBarC(navController = navController)
+    //TopNavBarA(navController = navController) //Used in Watchlist, Following, Search,
+    //TopNavBarB(navController = navController)  //Used in Settings Page, You Follow, Your Followers
+    //TopNavBarC(navController = navController) //Used in profile page
+    //TopNavBarD(navController = navController) //Used in Movie Details Page
+    //TopNavBarE(navController = navController) //Used in Side Menu
+    TopNavBarF(navController = navController) //Used in Login, Register, Forgot Password Page
 }
