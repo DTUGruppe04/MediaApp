@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">MediaApp</string>
+    <string name="settingnodesc"></string>
+    <string name="youraccount">Your Account</string>
+    <string name="youraccountdesc">View information about your account, download an archive of your data, or learn about options to deactivate the account</string>
+    <string name="accountsecurity">Account Security</string>
+    <string name="accountsecuritydesc">Manage your account safety by enabling two factor authentication</string>
+    <string name="notifications">Account Security</string>
+    <string name="notificationsdesc">Choose what type of notifications you would like to receive or turn off notifications altogether</string>
+    <string name="accessibility">Accessibility, display and language</string>
+    <string name="accessibilitydesc">Manage how the Media App appears to you</string>
+    <string name="proxy">Proxy</string>
+    <string name="settings">Settings</string>
 </resources>
