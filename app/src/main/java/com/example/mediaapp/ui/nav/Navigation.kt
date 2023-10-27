@@ -44,6 +44,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -53,31 +54,27 @@ import com.example.mediaapp.R
 
 @Composable
 fun BottomNavBar(navController: NavController, modifier : Modifier = Modifier) {
-    val containerColor = colorResource(R.color.black_navbar)
-    val contentColor = colorResource(R.color.white_navitem)
-    val indicatorColor = colorResource(R.color.indicator_color_navbar)
-
     val bottomNavItems = listOf(
         BottomNavItem(
-            name = "Home",
+            name = stringResource(R.string.home),
             route = "home",
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home
         ),
         BottomNavItem(
-            name = "Following",
+            name = stringResource(R.string.following),
             route = "following",
             selectedIcon = Icons.Filled.Subscriptions,
             unselectedIcon = Icons.Outlined.Subscriptions
         ),
         BottomNavItem(
-            name = "Watchlist",
+            name = stringResource(R.string.watchlist),
             route = "watchlist",
             selectedIcon = Icons.Filled.FormatListBulleted,
             unselectedIcon = Icons.Outlined.FormatListBulleted
         ),
         BottomNavItem(
-            name = "Search",
+            name = stringResource(R.string.search),
             route = "search",
             selectedIcon = Icons.Filled.Search,
             unselectedIcon = Icons.Outlined.Search
@@ -87,6 +84,10 @@ fun BottomNavBar(navController: NavController, modifier : Modifier = Modifier) {
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
     }
+
+    val contentColor = colorResource(R.color.white_navitem)
+    val containerColor = colorResource(R.color.black_navbar)
+    val indicatorColor = colorResource(R.color.indicator_color_navbar)
 
     NavigationBar(
         containerColor = containerColor,
@@ -119,6 +120,7 @@ fun BottomNavBar(navController: NavController, modifier : Modifier = Modifier) {
         }
     }
 }
+
 
 /**
  * TopNavBarA
@@ -153,7 +155,7 @@ fun TopNavBarA(navController: NavController, modifier : Modifier = Modifier) {
             }
         },
         title = {
-            Text("Media App")
+            Text(stringResource(R.string.mediaapp))
         }
     )
 }
@@ -191,7 +193,7 @@ fun TopNavBarB(navController: NavController, modifier : Modifier = Modifier) {
             }
         },
         title = {
-            Text("Media App")
+            Text(stringResource(R.string.mediaapp))
         },
     )
 }
@@ -239,7 +241,7 @@ fun TopNavBarC(navController: NavController, modifier : Modifier = Modifier) {
                     containerColor = bottomColor
                 ),
             ) {
-                Text(text = "Edit")
+                Text(stringResource(R.string.mediaapp))
             }
         }
     )
@@ -278,7 +280,7 @@ fun TopNavBarD(navController: NavController, modifier : Modifier = Modifier) {
             }
         },
         title = {
-            Text("Media App")
+            Text(stringResource(R.string.mediaapp))
         },
         actions = {
             IconButton(onClick = { /*TODO*/ }) {
@@ -326,7 +328,7 @@ fun TopNavBarE(navController: NavController, modifier : Modifier = Modifier) {
             }
         },
         title = {
-            Text("Media App")
+            Text(stringResource(R.string.mediaapp))
         }
     )
 }
@@ -351,7 +353,7 @@ fun TopNavBarF(navController: NavController, modifier : Modifier = Modifier) {
             containerColor = containerColor,
         ),
         title = {
-            Text("Media App")
+            Text(stringResource(R.string.mediaapp))
         }
     )
 }
@@ -368,12 +370,12 @@ fun NavDrawer(navController: NavController, modifier : Modifier = Modifier) {
             ) {
                 TopNavBarE(navController = navController)
                 Text(
-                    "Menu",
+                    stringResource(R.string.menu),
                     color = colorResource(R.color.top_navbar_text_color),
                     modifier = Modifier.padding(16.dp)
                 )
                 NavigationDrawerItem(
-                    label = { Text(text = "PH4NTOM") },
+                    label = { Text(stringResource(R.string.profilename)) },
                     colors = NavigationDrawerItemDefaults.colors(
                         selectedContainerColor = colorResource(R.color.indicator_color_navbar),
                         selectedTextColor = colorResource(R.color.top_navbar_text_color)
@@ -389,7 +391,7 @@ fun NavDrawer(navController: NavController, modifier : Modifier = Modifier) {
                     onClick = { /*TODO*/ }
                 )
                 NavigationDrawerItem(
-                    label = { Text(text = "You Follow") },
+                    label = { Text(stringResource(R.string.youfollow)) },
                     colors = NavigationDrawerItemDefaults.colors(
                         unselectedContainerColor = colorResource(R.color.black_navbar),
                         unselectedTextColor = colorResource(R.color.top_navbar_text_color)
@@ -406,7 +408,7 @@ fun NavDrawer(navController: NavController, modifier : Modifier = Modifier) {
                     onClick = { /*TODO*/ }
                 )
                 NavigationDrawerItem(
-                    label = { Text(text = "Your Followers") },
+                    label = { Text(stringResource(R.string.yourfollowers)) },
                     colors = NavigationDrawerItemDefaults.colors(
                         unselectedContainerColor = colorResource(R.color.black_navbar),
                         unselectedTextColor = colorResource(R.color.top_navbar_text_color)
@@ -423,7 +425,7 @@ fun NavDrawer(navController: NavController, modifier : Modifier = Modifier) {
                     onClick = { /*TODO*/ }
                 )
                 NavigationDrawerItem(
-                    label = { Text(text = "Settings") },
+                    label = { Text(stringResource(R.string.settings)) },
                     colors = NavigationDrawerItemDefaults.colors(
                         unselectedContainerColor = colorResource(R.color.black_navbar),
                         unselectedTextColor = colorResource(R.color.top_navbar_text_color)

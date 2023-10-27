@@ -64,4 +64,21 @@
     <string name="recommended_by_valde_and_3_others">Recommended by Valde and 4 others</string>
     <string name="recommended_by_tanja_and_2_others">Recommended by Tanja and 2 others</string>
     <string name="recommended_by_marcus">Recommended by Marcus</string>
+
+    //Navigation Bottom Bar
+    <string name="home">Home</string>
+    <string name="watchlist">Watchlist</string>
+    <string name="search">Search</string>
+
+    //Navigation Top Bar
+    <string name="mediaapp">Media App</string>
+    
+    //Navigation Side Menu (Drawer)
+    <string name="menu">Menu</string>
+    <string name="profilename">PH4NTOM</string>
+    <string name="youfollow">You Follow</string>
+    <string name="yourfollowers">Your Followers</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+
 </resources>
