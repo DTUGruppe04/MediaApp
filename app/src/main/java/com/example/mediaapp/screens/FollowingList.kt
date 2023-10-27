@@ -9,13 +9,13 @@ import com.example.mediaapp.ui.MovieListLayout
 import com.example.mediaapp.ui.TabsAndFilters
 
 @Composable
-fun WatchlistPage() {
+fun FollowingListPage() {
     Column {
         // UI Tabs and Filters
         val customUITabs = TabsAndFilters(
             tabs = listOf(
-                stringResource(R.string.all),
-                stringResource(R.string.watched), stringResource(R.string.not_watched)
+                stringResource(R.string.recommended),
+                stringResource(R.string.last_rated)
             ),
             filters = listOf(
                 TabsAndFilters.FilterOption(
@@ -23,7 +23,8 @@ fun WatchlistPage() {
                     listOf(
                         stringResource(R.string.adventure),
                         stringResource(R.string.comedy),
-                        stringResource(R.string.horror)
+                        stringResource(R.string.horror),
+                        stringResource(R.string.action)
                     )
                 ),
                 TabsAndFilters.FilterOption(
@@ -45,23 +46,22 @@ fun WatchlistPage() {
         val movies = listOf(
             MovieListLayout.Movie(
                 stringResource(R.string.grown_ups_2),
-                stringResource(R.string.comedy),
-                stringResource(R.string.recommended_by_kevin_and_7_others), painterResource(id = R.drawable.poster_grownups2)),
+                stringResource(R.string.action),
+                stringResource(R.string.recommended_by_david_and_4_others), painterResource(id = R.drawable.poster_avatar)),
             MovieListLayout.Movie(
                 stringResource(R.string.zohan),
-                stringResource(R.string.adventure),
-                stringResource(R.string.recommended_by_david_and_4_others), painterResource(id = R.drawable.poster_zohan)),
+                stringResource(R.string.action),
+                stringResource(R.string.recommended_by_jonathan), painterResource(id = R.drawable.poster_madmax)),
             MovieListLayout.Movie(
                 stringResource(R.string.borat),
-                stringResource(R.string.comedy),
-                stringResource(R.string.recommended_by_mikkel_and_2_others), painterResource(id = R.drawable.poster_borat)),
+                stringResource(R.string.action),
+                stringResource(R.string.recommended_by_mikkel_and_7_others), painterResource(id = R.drawable.poster_diehard)),
             MovieListLayout.Movie(
                 stringResource(R.string.step_brothers),
-                stringResource(R.string.comedy),
-                stringResource(R.string.recommended_by_jonathan), painterResource(id = R.drawable.poster_stepbrothers))
+                stringResource(R.string.action),
+                stringResource(R.string.recommended_by_valde_and_3_others), painterResource(id = R.drawable.poster_american_sniper))
         )
         val movieLayout = MovieListLayout(movies)
         movieLayout.MovieList()
     }
 }
-
