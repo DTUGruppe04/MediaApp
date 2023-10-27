@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.runtime.*
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mediaapp.ui.theme.MediaAppTheme
 
 
 class TabsAndFilters(
@@ -72,7 +70,7 @@ class TabsAndFilters(
                 modifier = Modifier
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState())
-                    .padding(bottom = 8.dp, top = 8.dp),
+                    .padding(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 filters.forEach { filter ->
@@ -143,11 +141,11 @@ class TabsAndFilters(
         var selectedOption by remember { mutableStateOf(label) }
         var expanded by remember { mutableStateOf(false)}
         var clicked by remember { mutableStateOf(false)}
-        val backgroundColor by animateColorAsState(if (clicked) Color(0xFF4A4458) else Color.DarkGray)
+        val backgroundColor by animateColorAsState(if (clicked) Color(0xFF4A4458) else Color(0x29CAC4D0))
         val textColor by animateColorAsState(if (clicked) Color(0xFFE8DEF8) else Color(0xFFCAC4D0))
         Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(10.dp))
+                .clip(RoundedCornerShape(8.dp))
                 .background(backgroundColor),
         ) {
             DropdownMenuToggle(
@@ -155,8 +153,7 @@ class TabsAndFilters(
                 expanded = expanded,
                 onToggle = { expanded = !expanded },
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp, bottom = 4.dp, start = 16.dp, end = 6.dp),
+                    .fillMaxWidth(),
                 textColor = textColor
             )
             DropdownMenu(
@@ -183,32 +180,32 @@ class TabsAndFilters(
         textColor: Color
     ) {
         Row(
-            modifier = modifier.clickable { onToggle(!expanded) },
+            modifier = modifier
+                .padding(start = 16.dp, top = 6.dp, end = 8.dp, bottom = 6.dp)
+                .clickable { onToggle(!expanded) },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = label,
-                fontSize = 14.sp,
-                color = textColor,
-                fontWeight = FontWeight.Normal)
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp,
+                    fontWeight = FontWeight(500),
+                    color = textColor,
+                    textAlign = TextAlign.Center,
+                    letterSpacing = 0.1.sp,
+                )
+            )
             Image(
-                painter = painterResource(R.drawable.arrow_dropdown),
+                painter = painterResource(id = R.drawable.trailing_icon),
                 contentDescription = null,
                 modifier = Modifier
-                    .height(25.dp)
-                    .width(25.dp)
-                    .padding(start = 4.dp)
+                    .padding(1.dp)
+                    .width(18.dp)
+                    .height(18.dp)
                     .rotate(if (expanded) 180f else 0f)
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewCustomUI() {
-    MediaAppTheme {
-        FollowingListPage()
     }
 }
 
