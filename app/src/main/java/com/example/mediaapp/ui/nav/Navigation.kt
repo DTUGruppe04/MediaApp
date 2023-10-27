@@ -1,5 +1,7 @@
 package com.example.mediaapp.ui.nav
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -42,7 +44,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -440,6 +444,17 @@ fun NavDrawer(navController: NavController, modifier : Modifier = Modifier) {
                     selected = false,
                     onClick = { /*TODO*/ }
                 )
+                Button(
+                    onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(R.color.red)
+                    ),
+                    modifier = Modifier
+                        .width(296.dp)
+                        .height(40.dp)
+                ) {
+                    Text(text = stringResource(R.string.logout))
+                }
             }
         },
         //If Drawer should respond to drag
