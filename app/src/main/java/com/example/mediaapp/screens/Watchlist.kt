@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.ui.MovieListLayout
 import com.example.mediaapp.ui.TabsAndFilters
+import com.example.mediaapp.ui.nav.TopNavBarA
 
 @Composable
 fun WatchlistPage(navController: NavController) {
@@ -18,6 +19,7 @@ fun WatchlistPage(navController: NavController) {
         //Adding this padding for the bottom navigation bar
         modifier = Modifier.padding(bottom = 70.dp)
     ) {
+        TopNavBarA(navController = navController)
         // UI Tabs and Filters
         val customUITabs = TabsAndFilters(
             tabs = listOf(
