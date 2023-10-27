@@ -20,7 +20,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PersonAddAlt1
 import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -72,7 +75,7 @@ fun YoufollowPageLayout(){
                     .height(28.dp)
                     .width(280.dp)
             )
-            SearchBar()
+            searchBar(R.string.searchtext)
             LazyColumn() {
                 item {
                     ProfileListItem(name = R.string.benjamin, iconColor = R.color.purple, true)
@@ -132,7 +135,7 @@ fun YourfollowersPageLayout(){
                     .height(28.dp)
                     .width(280.dp)
             )
-            SearchBar()
+            searchBar(R.string.searchtext)
             LazyColumn() {
                 item {
                     ProfileListItem(name = R.string.kevin, iconColor = R.color.purple, true)
@@ -183,6 +186,7 @@ fun YourfollowersPageLayout(){
 fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
     var isFollowing by remember { mutableStateOf(followstatus) }
     var tempString = stringResource(id = name)
+
     Row(modifier = Modifier
         .fillMaxWidth()
         .height(56.dp)
@@ -191,8 +195,7 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
         horizontalArrangement = Arrangement.Start ){
         Box(modifier = Modifier
             .padding(start = 16.dp)
-            .width(40.dp)
-            .height(40.dp)
+            .size(40.dp)
             .clip(CircleShape)
             .background(colorResource(id = iconColor)),
             contentAlignment = Alignment.Center
@@ -202,7 +205,7 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
                 fontWeight = FontWeight(400),
-                color = Color(0xFFFFFFFF),
+                color = colorResource(id = R.color.white),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(top = 3.dp)
@@ -214,12 +217,11 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
             fontSize = 16.sp,
             lineHeight = 28.sp,
             fontWeight = FontWeight(400),
-            color = Color(0xFFFFFFFF),
+            color = colorResource(id = R.color.white),
             textAlign = TextAlign.Start,
             modifier = Modifier
                 .padding(start = 16.dp, top = 3.dp)
-                .height(28.dp)
-                .width(280.dp)
+                .size(width = 280.dp, height = 28.dp)
         )
         Icon(
             imageVector = if (isFollowing) Icons.Filled.PersonRemove else Icons.Filled.PersonAddAlt1,
@@ -235,34 +237,25 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar() {
-    Box(modifier = Modifier
-        .padding(0.dp)
-        .fillMaxWidth()
-        .height(56.dp)
-        .background(color = Color(0xFF2B2930), shape = RoundedCornerShape(size = 28.dp)),
-        contentAlignment = Alignment.CenterStart) {
-        Row {
-            Text (
-                text = stringResource(id = R.string.searchtext),
-                fontSize = 16.sp,
-                lineHeight = 28.sp,
-                fontWeight = FontWeight(400),
-                color = Color(0xFFCAC4D0),
-                textAlign = TextAlign.Start,
-                letterSpacing = 0.5.sp,
-                modifier = Modifier
-                    .padding(start = 20.dp, top = 3.dp)
-                    .height(28.dp)
-                    .width(328.dp)
-            )
-            Icon(modifier = Modifier
-                .padding(top = 2.dp)
-                .size(24.dp),
-                imageVector = Icons.Filled.Search,
-                contentDescription = "search",
-                tint = Color(0xFFCAC4D0))
-        }
-    }
+fun searchBar(searchText: Int) {
+    var text by remember { mutableStateOf("") }
+
+    TextField(
+        value = text,
+        onValueChange = { text = it },
+        label = { Text(text = stringResource(id = searchText), color = Color(0xFFCAC4D0)) },
+        trailingIcon = { Icon(
+            Icons.Filled.Search,
+            contentDescription = null,
+            tint = Color(0xFFCAC4D0)) },
+        modifier = Modifier.fillMaxWidth().height(56.dp),
+        shape = RoundedCornerShape(size = 28.dp),
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = colorResource(R.color.lightbackground),
+            textColor = Color(0xFFCAC4D0),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent)
+    )
 }
