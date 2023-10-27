@@ -16,6 +16,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,7 +50,8 @@ fun MainPageLayout() {
             //This is the uppermost part of the main page
             Box() {
                 Column(modifier = Modifier
-                    .fillMaxWidth()) {
+                    .fillMaxWidth()
+                ) {
                     Image(painter = painterResource(R.drawable.barbie),
                         contentDescription = "barbie",
                         modifier = Modifier.fillMaxSize(),
@@ -87,13 +92,16 @@ fun MainPageLayout() {
                         .height(121.dp)
                         .width(72.dp)
                         .clip(RoundedCornerShape(10.dp)))
-                Image(
-                    painter = painterResource(R.drawable.settings_icon),
-                    contentDescription = "settings",
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .size(24.dp)
-                )
+                IconButton(onClick = { /* do something */ }) {
+                    Icon(
+                        imageVector = Icons.Filled.Menu,
+                        contentDescription = "menu",
+                        tint = colorResource(R.color.top_navbar_icon_color),
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(24.dp)
+                    )
+                }
                 Image(
                     painter = painterResource(R.drawable.arrow_left),
                     contentDescription = "arrow_left",
