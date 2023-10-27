@@ -1,6 +1,7 @@
 package com.example.mediaapp.ui.nav
 
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -11,19 +12,28 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Subscriptions
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.FormatListBulleted
+import androidx.compose.material.icons.outlined.Group
+import androidx.compose.material.icons.outlined.Groups
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Subscriptions
+import androidx.compose.material3.Badge
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -329,7 +339,7 @@ fun TopNavBarE(navController: NavController, modifier : Modifier = Modifier) {
  *
  * @param navController navigation controller
  * @param modifier optional
- * @return Returns a Top Navigation Bar of type D.
+ * @return Returns a Top Navigation Bar of type F.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -346,6 +356,96 @@ fun TopNavBarF(navController: NavController, modifier : Modifier = Modifier) {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NavDrawer(navController: NavController, modifier : Modifier = Modifier) {
+    ModalNavigationDrawer(
+        drawerContent = {
+            ModalDrawerSheet (
+                drawerContainerColor = colorResource(R.color.black_navbar),
+                drawerContentColor = colorResource(R.color.black_navbar)
+
+            ) {
+                TopNavBarE(navController = navController)
+                Text(
+                    "Menu",
+                    color = colorResource(R.color.top_navbar_text_color),
+                    modifier = Modifier.padding(16.dp)
+                )
+                NavigationDrawerItem(
+                    label = { Text(text = "PH4NTOM") },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = colorResource(R.color.indicator_color_navbar),
+                        selectedTextColor = colorResource(R.color.top_navbar_text_color)
+                    ),
+                    icon = {
+                           Icon(
+                               imageVector = Icons.Outlined.AccountCircle,
+                               contentDescription = "account circle",
+                               tint = colorResource(R.color.white_navitem)
+                           )
+                    },
+                    selected = true,
+                    onClick = { /*TODO*/ }
+                )
+                NavigationDrawerItem(
+                    label = { Text(text = "You Follow") },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        unselectedContainerColor = colorResource(R.color.black_navbar),
+                        unselectedTextColor = colorResource(R.color.top_navbar_text_color)
+                    ),
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Group,
+                            contentDescription = "group",
+                            tint = colorResource(R.color.white_navitem)
+                        )
+                    },
+                    selected = false,
+                    badge = { Badge { Text("100+") } },
+                    onClick = { /*TODO*/ }
+                )
+                NavigationDrawerItem(
+                    label = { Text(text = "Your Followers") },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        unselectedContainerColor = colorResource(R.color.black_navbar),
+                        unselectedTextColor = colorResource(R.color.top_navbar_text_color)
+                    ),
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Groups,
+                            contentDescription = "group",
+                            tint = colorResource(R.color.white_navitem)
+                        )
+                    },
+                    selected = false,
+                    badge = { Badge { Text("100+") } },
+                    onClick = { /*TODO*/ }
+                )
+                NavigationDrawerItem(
+                    label = { Text(text = "Settings") },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        unselectedContainerColor = colorResource(R.color.black_navbar),
+                        unselectedTextColor = colorResource(R.color.top_navbar_text_color)
+                    ),
+                    icon = {
+                           Icon(
+                               imageVector = Icons.Outlined.Settings,
+                               contentDescription = "settings",
+                               tint = colorResource(R.color.white_navitem)
+                           )
+                    },
+                    selected = false,
+                    onClick = { /*TODO*/ }
+                )
+            }
+        },
+        //If Drawer should respond to drag
+        gesturesEnabled = true
+    ) {
+
+    }
+}
 
 @Preview
 @Composable
@@ -355,6 +455,7 @@ fun PreviewNavigation() {
     //TopNavBarB(navController = navController)  //Used in Settings Page, You Follow, Your Followers
     //TopNavBarC(navController = navController) //Used in profile page
     //TopNavBarD(navController = navController) //Used in Movie Details Page
-    //TopNavBarE(navController = navController) //Used in Side Menu
-    TopNavBarF(navController = navController) //Used in Login, Register, Forgot Password Page
+    //TopNavBarE(navController = navController) //Used in Side Menu (Drawer)
+    //TopNavBarF(navController = navController) //Used in Login, Register, Forgot Password Page
+    NavDrawer(navController = navController)
 }
