@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
@@ -20,8 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mediaapp.ui.theme.MediaAppTheme
@@ -39,8 +41,7 @@ class TabsAndFilters(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFF141218))
-                .padding(8.dp),
+                .background(Color(0xFF141218)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Top Tabs
@@ -83,37 +84,57 @@ class TabsAndFilters(
 
     @Composable
     fun TabButton(label: String, isSelected: Boolean, onClick: () -> Unit) {
-        val textColor = if (isSelected) Color(0xFFD0BCFF) else Color.LightGray
-        val buttonColor = if (isSelected) Color(0xFFD0BCFF) else Color.LightGray
-        val lineColor = if (isSelected) Color(0xFFD0BCFF) else Color.Transparent
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.clickable { if(!isSelected) onClick() }
         ) {
-            Box(
+            Image(
                 modifier = Modifier
-                    .size(10.dp)
-                    .clip(CircleShape)
-                    .background(buttonColor)
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 8.dp),
+                    .padding(1.dp)
+                    .width(24.dp)
+                    .height(24.dp),
+                painter = painterResource(id = R.drawable.icon),
+                contentDescription = "image description",
+                contentScale = ContentScale.None
             )
             Text(
-                text = label,
-                fontSize = 14.sp,
-                color = textColor,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(8.dp),
-            )
-            Box(
                 modifier = Modifier
-                    .height(2.dp)
-                    .width(50.dp)
-                    .clip(CircleShape)
-                    .background(lineColor)
+                    .width(96.dp)
+                    .height(20.dp),
+                text = label,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp,
+                    fontWeight = FontWeight(500),
+                    color = Color(0xFFF5F5F5),
+                    textAlign = TextAlign.Center,
+                    letterSpacing = 0.1.sp,
+                )
             )
+            Box (
+                modifier =
+                if (isSelected) Modifier
+                    .padding(start = 5.dp, end = 5.dp, top = 4.dp)
+                    .width(92.dp)
+                    .height(3.dp)
+                    .background(
+                        color = Color(0xFFF5F5F5),
+                        shape = RoundedCornerShape(
+                            topStart = 100.dp,
+                            topEnd = 100.dp,
+                            bottomStart = 0.dp,
+                            bottomEnd = 0.dp
+                        ))
+                else
+                Modifier
+                    .padding(start = 5.dp, end = 5.dp, top = 4.dp)
+                    .width(92.dp)
+                    .height(3.dp)
+                    .background(color = Color.Transparent)
+            )
+
+
         }
     }
 
