@@ -12,6 +12,7 @@
 
     //Genres
     <string name="adventure">Adventure</string>
+    <string name="action">Action</string>
     <string name="comedy">Comedy</string>
     <string name="horror">Horror</string>
     <string name="drama">Drama</string>
@@ -28,6 +29,10 @@
     <string name="grown_ups_2">Grown Ups 2</string>
     <string name="borat">Borat</string>
     <string name="step_brothers">Step Brothers</string>
+    <string name="avatar">Avatar</string>
+    <string name="mad_max">Mad Max</string>
+    <string name="die_hard">Die Hard</string>
+    <string name="american_sniper">American Sniper</string>
 
     //Recommended by
     <string name="recommended_by_kevin_and_7_others">Recommended by Kevin and 7 others</string>
