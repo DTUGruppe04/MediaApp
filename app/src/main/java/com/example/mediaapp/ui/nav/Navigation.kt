@@ -1,6 +1,8 @@
 package com.example.mediaapp.ui.nav
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.End
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -444,16 +446,24 @@ fun NavDrawer(navController: NavController, modifier : Modifier = Modifier) {
                     selected = false,
                     onClick = { /*TODO*/ }
                 )
-                Button(
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(R.color.red)
-                    ),
+                Column(
                     modifier = Modifier
-                        .width(296.dp)
-                        .height(40.dp)
+                        .fillMaxSize()
+                        .padding(bottom = 18.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom
                 ) {
-                    Text(text = stringResource(R.string.logout))
+                    Button(
+                        onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(R.color.red)
+                        ),
+                        modifier = Modifier
+                            .width(296.dp)
+                            .height(40.dp)
+                    ) {
+                        Text(text = stringResource(R.string.logout))
+                    }
                 }
             }
         },
