@@ -1,24 +1,44 @@
-package com.example.mediaapp
+package com.example.mediaapp.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.example.mediaapp.R
+import com.example.mediaapp.ui.MovieListLayout
+import com.example.mediaapp.ui.TabsAndFilters
 
 @Composable
 fun FollowingListPage() {
     Column {
         // UI Tabs and Filters
         val customUITabs = TabsAndFilters(
-            tabs = listOf(stringResource(R.string.recommended),
+            tabs = listOf(
+                stringResource(R.string.recommended),
                 stringResource(R.string.last_rated)
             ),
             filters = listOf(
-                TabsAndFilters.FilterOption(stringResource(R.string.genre) , listOf(stringResource(R.string.adventure), stringResource(R.string.comedy), stringResource(R.string.horror), stringResource(R.string.action))),
-                TabsAndFilters.FilterOption(stringResource(R.string.year_from), (1960..2023).map { it.toString() }),
-                TabsAndFilters.FilterOption(stringResource(R.string.year_to), (1960..2023).map { it.toString() }),
-                TabsAndFilters.FilterOption(stringResource(R.string.rating_from), (0..10).map { it.toString() }),
-                TabsAndFilters.FilterOption(stringResource(R.string.rating_to), (0..10).map { it.toString() })
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.genre),
+                    listOf(
+                        stringResource(R.string.adventure),
+                        stringResource(R.string.comedy),
+                        stringResource(R.string.horror),
+                        stringResource(R.string.action)
+                    )
+                ),
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.year_from),
+                    (1960..2023).map { it.toString() }),
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.year_to),
+                    (1960..2023).map { it.toString() }),
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.rating_from),
+                    (0..10).map { it.toString() }),
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.rating_to),
+                    (0..10).map { it.toString() })
             )
         )
         customUITabs.Render()

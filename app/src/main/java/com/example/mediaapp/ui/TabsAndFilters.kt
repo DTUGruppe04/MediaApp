@@ -1,4 +1,4 @@
-package com.example.mediaapp
+package com.example.mediaapp.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
@@ -9,9 +9,12 @@ import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mediaapp.R
 
 
 class TabsAndFilters(
@@ -196,15 +200,15 @@ class TabsAndFilters(
                     letterSpacing = 0.1.sp,
                 )
             )
-            Image(
-                painter = painterResource(id = R.drawable.trailing_icon),
+            Icon(
+                Icons.Filled.ArrowDropDown,
                 contentDescription = null,
+                tint = textColor,
                 modifier = Modifier
                     .padding(1.dp)
                     .width(18.dp)
                     .height(18.dp)
-                    .rotate(if (expanded) 180f else 0f)
-            )
+                    .rotate(if (expanded) 180f else 0f))
         }
     }
 }

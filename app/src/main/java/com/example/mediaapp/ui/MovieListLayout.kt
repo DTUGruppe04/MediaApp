@@ -1,4 +1,4 @@
-package com.example.mediaapp
+package com.example.mediaapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
