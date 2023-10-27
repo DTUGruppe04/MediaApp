@@ -1,8 +1,15 @@
 <resources>
+    //App name
     <string name="app_name">MediaApp</string>
+
+    //Tabs
     <string name="all">All</string>
     <string name="watched">Watched</string>
     <string name="not_watched">Not watched</string>
+    <string name="recommended">Recommended</string>
+    <string name="last_rated">Last rated</string>
+    <string name="following">Following</string>
+
 
     //Genres
     <string name="adventure">Adventure</string>
@@ -28,4 +35,8 @@
     <string name="recommended_by_david_and_4_others">Recommended by David and 4 others</string>
     <string name="recommended_by_mikkel_and_2_others">Recommended by Mikkel and 2 others</string>
     <string name="recommended_by_jonathan">Recommended by Jonathan</string>
+    <string name="recommended_by_mikkel_and_7_others">Recommended by Mikkel and 7 others</string>
+    <string name="recommended_by_valde_and_3_others">Recommended by Valde and 4 others</string>
+    <string name="recommended_by_tanja_and_2_others">Recommended by Tanja and 2 others</string>
+    <string name="recommended_by_marcus">Recommended by Marcus</string>
 </resources>

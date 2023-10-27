@@ -23,6 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.mediaapp.ui.theme.MediaAppTheme
 
 
 class TabsAndFilters(
@@ -100,6 +102,7 @@ class TabsAndFilters(
             )
             Text(
                 text = label,
+                fontSize = 14.sp,
                 color = textColor,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(8.dp),
@@ -164,6 +167,7 @@ class TabsAndFilters(
         ) {
             Text(
                 text = label,
+                fontSize = 14.sp,
                 color = textColor,
                 fontWeight = FontWeight.Normal)
             Image(
@@ -182,5 +186,8 @@ class TabsAndFilters(
 @Preview(showBackground = true)
 @Composable
 fun PreviewCustomUI() {
+    MediaAppTheme {
+        FollowingListPage()
+    }
 }
 
