@@ -1,37 +1,73 @@
 package com.example.mediaapp.screens
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.example.mediaapp.R
+import com.example.mediaapp.ui.MovieListLayout
+import com.example.mediaapp.ui.TabsAndFilters
 
 @Composable
-fun Following(message : String, modifier : Modifier = Modifier ) {
-    Text(
-        text = message,
-        fontSize = 30.sp,
-        textAlign = TextAlign.Center,
-        color = Color.Black,
-        modifier = Modifier
-            .padding(16.dp)
-    )
-}
-
-@Composable
-fun FollowingScreen(navController: NavController) {
-    Following("Following Page")
-}
-
-@Preview
-@Composable
-fun FollowingPreview() {
-    val navController = rememberNavController()
-    Following("Following Page")
+fun FollowingListPage(navController: NavController) {
+    Column (
+        modifier = Modifier.padding(bottom = 70.dp)
+    ) {
+        // UI Tabs and Filters
+        val customUITabs = TabsAndFilters(
+            tabs = listOf(
+                stringResource(R.string.recommended),
+                stringResource(R.string.last_rated)
+            ),
+            filters = listOf(
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.genre),
+                    listOf(
+                        stringResource(R.string.adventure),
+                        stringResource(R.string.comedy),
+                        stringResource(R.string.horror),
+                        stringResource(R.string.action)
+                    )
+                ),
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.year_from),
+                    (1960..2023).map { it.toString() }),
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.year_to),
+                    (1960..2023).map { it.toString() }),
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.rating_from),
+                    (0..10).map { it.toString() }),
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.rating_to),
+                    (0..10).map { it.toString() })
+            )
+        )
+        customUITabs.Render()
+        // Movie List
+        val movies = listOf(
+            MovieListLayout.Movie(
+                stringResource(R.string.grown_ups_2),
+                stringResource(R.string.action),
+                stringResource(R.string.recommended_by_david_and_4_others), painterResource(id = R.drawable.poster_avatar)),
+            MovieListLayout.Movie(
+                stringResource(R.string.zohan),
+                stringResource(R.string.action),
+                stringResource(R.string.recommended_by_jonathan), painterResource(id = R.drawable.poster_madmax)),
+            MovieListLayout.Movie(
+                stringResource(R.string.borat),
+                stringResource(R.string.action),
+                stringResource(R.string.recommended_by_mikkel_and_7_others), painterResource(id = R.drawable.poster_diehard)),
+            MovieListLayout.Movie(
+                stringResource(R.string.step_brothers),
+                stringResource(R.string.action),
+                stringResource(R.string.recommended_by_valde_and_3_others), painterResource(id = R.drawable.poster_american_sniper))
+        )
+        val movieLayout = MovieListLayout(movies)
+        movieLayout.MovieList()
+    }
 }

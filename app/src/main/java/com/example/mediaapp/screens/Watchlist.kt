@@ -1,16 +1,23 @@
 package com.example.mediaapp.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.ui.MovieListLayout
 import com.example.mediaapp.ui.TabsAndFilters
 
 @Composable
-fun WatchlistPage() {
-    Column {
+fun WatchlistPage(navController: NavController) {
+    Column (
+        //Adding this padding for the bottom navigation bar
+        modifier = Modifier.padding(bottom = 70.dp)
+    ) {
         // UI Tabs and Filters
         val customUITabs = TabsAndFilters(
             tabs = listOf(
