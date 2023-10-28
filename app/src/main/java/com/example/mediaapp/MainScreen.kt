@@ -14,7 +14,6 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Badge
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -95,7 +94,14 @@ fun MainScreen() {
                     },
                     selected = false,
                     badge = { Badge { Text("100+") } },
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        navController.navigate(Screen.YouFollow.route)
+                        scope.launch {
+                            if(drawerState.isOpen) {
+                                drawerState.close()
+                            }
+                        }
+                    }
                 )
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.yourfollowers)) },
@@ -112,7 +118,14 @@ fun MainScreen() {
                     },
                     selected = false,
                     badge = { Badge { Text("100+") } },
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        navController.navigate(Screen.YourFollowers.route)
+                        scope.launch {
+                            if(drawerState.isOpen) {
+                                drawerState.close()
+                            }
+                        }
+                    }
                 )
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.settings)) },

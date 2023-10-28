@@ -125,4 +125,31 @@
     <string name="accessibility">Accessibility, display and language</string>
     <string name="accessibilitydesc">Manage how the Media App appears to you</string>
     <string name="proxy">Proxy</string>
+
+    //You Follow and Your Followers
+    <string name="searchtext">Search for user</string>
+    <string name="benjamin">Benjamin Thomsen</string>
+    <string name="kevin">Kevin Eriksson</string>
+    <string name="valdemar">Valdemar Ottesen</string>
+    <string name="simon">Simon Madsen</string>
+    <string name="david">David Madsen</string>
+    <string name="jonathan">Jonathan Madsen</string>
+    <string name="patrick">Patrick Pants</string>
+    <string name="charlie">Charlie Angel</string>
+    <string name="mikkel">Mikkel Vikkel</string>
+    <string name="tanja">Tanja Turnip</string>
+    <string name="valde">Valde Madsen</string>
+    <string name="mads">Mads Davidson</string>
+
+
+    <string name="sara">Sara Petersen</string>
+    <string name="rasmus">Rasmus Olsen</string>
+    <string name="valde2">Valde Ottesen</string>
+    <string name="mia">Mia Schmidt</string>
+    <string name="lars">Lars Nielsen</string>
+    <string name="anna">Anna Jensen</string>
+    <string name="john">John Johnsen</string>
+    <string name="ida">Ida Jensen</string>
+    <string name="gustav">Gustav Ipsen</string>
+    <string name="ph4ntom">PH4NTOM Thomsen</string>
 </resources>

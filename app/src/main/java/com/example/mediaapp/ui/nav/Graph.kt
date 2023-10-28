@@ -14,6 +14,8 @@ import com.example.mediaapp.screens.WatchlistPage
 import com.example.mediaapp.screens.SearchScreen
 import com.example.mediaapp.screens.ProfilePageLayout
 import com.example.mediaapp.screens.SettingpageLayout
+import com.example.mediaapp.screens.YoufollowPageLayout
+import com.example.mediaapp.screens.YourfollowersPageLayout
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,10 +37,10 @@ fun NavigationGraph(navController: NavHostController, drawerState: DrawerState) 
             ProfilePageLayout(navController = navController, drawerState = drawerState)
         }
         composable(route = Screen.YouFollow.route) {
-
+            YoufollowPageLayout(navController = navController, drawerState = drawerState)
         }
         composable(route = Screen.YourFollowers.route) {
-
+            YourfollowersPageLayout(navController = navController, drawerState = drawerState)
         }
         composable(route = Screen.Settings.route) {
             SettingpageLayout(navController = navController, drawerState = drawerState)
