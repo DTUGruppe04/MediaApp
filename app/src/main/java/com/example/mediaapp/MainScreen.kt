@@ -1,22 +1,158 @@
 package com.example.mediaapp
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Group
+import androidx.compose.material.icons.outlined.Groups
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.Badge
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mediaapp.ui.nav.BottomNavBar
 import com.example.mediaapp.ui.nav.NavigationGraph
+import com.example.mediaapp.ui.nav.TopNavBarE
 
-data class BottomNavItem(
-    val name: String,
-    val route: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainScreen() {
+    val navController = rememberNavController()
+    ModalNavigationDrawer(
+        drawerContent = {
+            ModalDrawerSheet (
+                drawerContainerColor = colorResource(R.color.black_navbar),
+                drawerContentColor = colorResource(R.color.black_navbar)
 
+            ) {
+                TopNavBarE(navController = navController)
+                Text(
+                    stringResource(R.string.menu),
+                    color = colorResource(R.color.top_navbar_text_color),
+                    modifier = Modifier.padding(16.dp)
+                )
+                NavigationDrawerItem(
+                    label = { Text(stringResource(R.string.profilename)) },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = colorResource(R.color.indicator_color_navbar),
+                        selectedTextColor = colorResource(R.color.top_navbar_text_color)
+                    ),
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.AccountCircle,
+                            contentDescription = "account circle",
+                            tint = colorResource(R.color.white_navitem)
+                        )
+                    },
+                    selected = true,
+                    onClick = { /*TODO*/ }
+                )
+                NavigationDrawerItem(
+                    label = { Text(stringResource(R.string.youfollow)) },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        unselectedContainerColor = colorResource(R.color.black_navbar),
+                        unselectedTextColor = colorResource(R.color.top_navbar_text_color)
+                    ),
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Group,
+                            contentDescription = "group",
+                            tint = colorResource(R.color.white_navitem)
+                        )
+                    },
+                    selected = false,
+                    badge = { Badge { Text("100+") } },
+                    onClick = { /*TODO*/ }
+                )
+                NavigationDrawerItem(
+                    label = { Text(stringResource(R.string.yourfollowers)) },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        unselectedContainerColor = colorResource(R.color.black_navbar),
+                        unselectedTextColor = colorResource(R.color.top_navbar_text_color)
+                    ),
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Groups,
+                            contentDescription = "group",
+                            tint = colorResource(R.color.white_navitem)
+                        )
+                    },
+                    selected = false,
+                    badge = { Badge { Text("100+") } },
+                    onClick = { /*TODO*/ }
+                )
+                NavigationDrawerItem(
+                    label = { Text(stringResource(R.string.settings)) },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        unselectedContainerColor = colorResource(R.color.black_navbar),
+                        unselectedTextColor = colorResource(R.color.top_navbar_text_color)
+                    ),
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Settings,
+                            contentDescription = "settings",
+                            tint = colorResource(R.color.white_navitem)
+                        )
+                    },
+                    selected = false,
+                    onClick = { /*TODO*/ }
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 18.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Button(
+                        onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(R.color.red)
+                        ),
+                        modifier = Modifier
+                            .width(296.dp)
+                            .height(40.dp)
+                    ) {
+                        Text(text = stringResource(R.string.logout))
+                    }
+                }
+
+            }
+        },
+        gesturesEnabled = true,
+        content = {
+            Scaffold(
+                bottomBar = { BottomNavBar(navController = navController) },
+            ) { innerPadding ->
+                NavigationGraph(navController = navController)
+                Modifier.padding(innerPadding)
+            }
+        },
+    )
+}
+
+
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
@@ -28,7 +164,7 @@ fun MainScreen() {
         Modifier.padding(innerPadding)
     }
 }
-
+*/
 /*
 @Preview
 @Composable

@@ -48,6 +48,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -55,8 +56,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.mediaapp.BottomNavItem
 import com.example.mediaapp.R
+
+data class BottomNavItem(
+    val name: String,
+    val route: String,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
+)
 
 @Composable
 fun BottomNavBar(navController: NavController, modifier : Modifier = Modifier) {
@@ -364,9 +371,10 @@ fun TopNavBarF(navController: NavController, modifier : Modifier = Modifier) {
     )
 }
 
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavDrawer(navController: NavController, modifier : Modifier = Modifier) {
+fun NavDrawer(navController: NavController, modifier : Modifier = Modifier, func : Unit ) {
     ModalNavigationDrawer(
         drawerContent = {
             ModalDrawerSheet (
@@ -446,6 +454,7 @@ fun NavDrawer(navController: NavController, modifier : Modifier = Modifier) {
                     selected = false,
                     onClick = { /*TODO*/ }
                 )
+                /*
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -465,14 +474,18 @@ fun NavDrawer(navController: NavController, modifier : Modifier = Modifier) {
                         Text(text = stringResource(R.string.logout))
                     }
                 }
+
+                 */
             }
         },
         //If Drawer should respond to drag
         gesturesEnabled = true
     ) {
-
+        //func
     }
 }
+
+ */
 
 @Preview
 @Composable
@@ -484,5 +497,5 @@ fun PreviewNavigation() {
     //TopNavBarD(navController = navController) //Used in Movie Details Page
     //TopNavBarE(navController = navController) //Used in Side Menu (Drawer)
     //TopNavBarF(navController = navController) //Used in Login, Register, Forgot Password Page
-    NavDrawer(navController = navController)
+    //NavDrawer(navController = navController)
 }

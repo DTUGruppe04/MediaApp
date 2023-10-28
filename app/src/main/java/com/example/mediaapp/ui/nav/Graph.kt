@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.mediaapp.Screen
 import com.example.mediaapp.screens.HomeScreen
 import com.example.mediaapp.screens.FollowingListPage
+import com.example.mediaapp.screens.MainPageLayout
 import com.example.mediaapp.screens.WatchlistPage
 import com.example.mediaapp.screens.SearchScreen
 
