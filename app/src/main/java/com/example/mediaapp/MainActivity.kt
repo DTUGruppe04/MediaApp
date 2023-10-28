@@ -1,6 +1,5 @@
 package com.example.mediaapp
 
-import android.graphics.Paint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -60,7 +59,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MediaAppTheme {
-                LoginPageLayout()
+                //LoginPageLayout()
+                //CreateAccountPageLayout()
+                ForgotPasswordPageLayout()
             }
         }
     }
@@ -114,11 +115,11 @@ fun LoginPageLayout() {
                 color = colorResource(R.color.login_button_text)
             )
         }
-        BottomSignText(R.string.login_missing_account_sign)
+        BottomSignText(R.string.login_missing_account, R.string.login_missing_account_sign)
     }
 }
 
-/*
+
 @Composable
 fun CreateAccountPageLayout() {
     Column(
@@ -128,11 +129,82 @@ fun CreateAccountPageLayout() {
                 colorResource(R.color.login_background_color)
             )
     ) {
-
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+            contentAlignment = Alignment.Center) {
+            Text(stringResource(R.string.login_top_name),
+                fontSize = 22.sp,
+                lineHeight = 28.sp,
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
+        }
+        MainTitleText(R.string.login_create_account)
+        SubTitleText(R.string.login_create_account_please)
+        TextfieldForUsername()
+        TextfieldForEmail()
+        TextfieldForPassword()
+        TextfieldForConfirmPassword()
+        Button(onClick = { /*TODO*/ },
+            modifier = Modifier
+                .width(152.dp)
+                .height(76.dp)
+                .padding(top = 36.dp, end = 29.dp)
+                .align(Alignment.End),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(R.color.login_button)
+            )
+        ) {
+            Text(stringResource(R.string.login_create_account_sign_up),
+                color = colorResource(R.color.login_button_text)
+            )
+        }
+        BottomSignText(R.string.login_already_account, R.string.login_already_account_sign)
     }
 }
 
- */
+@Composable
+fun ForgotPasswordPageLayout() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                colorResource(R.color.login_background_color)
+            )
+    ) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+            contentAlignment = Alignment.Center) {
+            Text(stringResource(R.string.login_top_name),
+                fontSize = 22.sp,
+                lineHeight = 28.sp,
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
+        }
+        MainTitleText(R.string.login_forgot_password)
+        SubTitleText(R.string.login_forgot_password_please)
+        TextfieldForEmail()
+        Button(onClick = { /*TODO*/ },
+            modifier = Modifier
+                .width(152.dp)
+                .height(76.dp)
+                .padding(top = 36.dp, end = 29.dp)
+                .align(Alignment.End),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(R.color.login_button)
+            )
+        ) {
+            Text(stringResource(R.string.login_forgot_password_reset),
+                color = colorResource(R.color.login_button_text)
+            )
+        }
+        BottomSignText(R.string.login_already_account, R.string.login_already_account_sign)
+    }
+}
+
 
 @Composable
 fun MainTitleText(string: Int) {
@@ -157,7 +229,7 @@ fun SubTitleText(string: Int) {
 }
 
 @Composable
-fun BottomSignText(string: Int) {
+fun BottomSignText(string1: Int, string2: Int) {
     Column(modifier = Modifier
         .padding(bottom = 27.dp)
         .fillMaxSize(),
@@ -169,7 +241,7 @@ fun BottomSignText(string: Int) {
                 color = Color.White
             )
             ) {
-                append(stringResource(R.string.login_missing_account))
+                append(stringResource(string1))
             }
             withStyle(style = SpanStyle(
                 fontSize = 16.sp,
@@ -177,11 +249,45 @@ fun BottomSignText(string: Int) {
                 textDecoration = TextDecoration.Underline
             )
             ) {
-                append(stringResource(string))
+                append(stringResource(string2))
             }
         }
         )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TextfieldForUsername() {
+    var text by remember { mutableStateOf(TextFieldValue("")) }
+    TextField(
+        modifier = Modifier
+            .padding(start = 29.dp, top = 16.dp, end = 29.dp)
+            .fillMaxWidth()
+            .height(56.dp)
+            .clip(RoundedCornerShape(10.dp)),
+        value = text,
+        onValueChange = {
+            text = it
+        },
+        label = { Text(text = "Username",
+            color = colorResource(R.color.login_textfield_label),
+            fontSize = 12.sp,
+            lineHeight = 16.sp) },
+        placeholder = { Text(text = "Enter your username",
+            color = colorResource(R.color.login_textfield_text),
+            fontStyle = FontStyle.Italic,
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            letterSpacing = 0.5.sp) },
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = colorResource(R.color.login_textfield_background),
+            textColor = colorResource(R.color.login_textfield_text),
+            focusedIndicatorColor = colorResource(R.color.login_textfield_label),
+            unfocusedIndicatorColor = Color.Transparent
+        ),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -266,10 +372,60 @@ fun TextfieldForPassword() {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TextfieldForConfirmPassword() {
+    var text by remember { mutableStateOf(TextFieldValue("")) }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    TextField(
+        modifier = Modifier
+            .padding(start = 29.dp, top = 16.dp, end = 29.dp)
+            .fillMaxWidth()
+            .height(56.dp)
+            .clip(RoundedCornerShape(10.dp)),
+        value = text,
+        onValueChange = {
+            text = it
+        },
+        label = { Text(text = "Confirm Password",
+            color = colorResource(R.color.login_textfield_label),
+            fontSize = 12.sp,
+            lineHeight = 16.sp) },
+        placeholder = { Text(text = "Confirm your password",
+            color = colorResource(R.color.login_textfield_text),
+            fontStyle = FontStyle.Italic,
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            letterSpacing = 0.5.sp) },
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = colorResource(R.color.login_textfield_background),
+            textColor = colorResource(R.color.login_textfield_text),
+            focusedIndicatorColor = colorResource(R.color.login_textfield_label),
+            unfocusedIndicatorColor = Color.Transparent
+        ),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+            val image = if (passwordVisible)
+                Icons.Filled.Visibility
+            else Icons.Filled.VisibilityOff
+
+            //Description for the visibility icon
+            val description = if (passwordVisible) "Hide password" else "Show password"
+
+            IconButton(onClick = {passwordVisible = !passwordVisible}){
+                Icon(imageVector  = image, description)
+            }
+        }
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun LoginPagePreview() {
     MediaAppTheme {
-        LoginPageLayout()
+        //LoginPageLayout()
+        //CreateAccountPageLayout()
+        ForgotPasswordPageLayout()
     }
 }
