@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mediaapp.R
+import com.example.mediaapp.Screen
 import kotlinx.coroutines.launch
 
 data class BottomNavItem(
@@ -57,25 +58,25 @@ fun BottomNavBar(navController: NavController, modifier : Modifier = Modifier) {
     val bottomNavItems = listOf(
         BottomNavItem(
             name = stringResource(R.string.home),
-            route = "home",
+            route = Screen.Home.route,
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home
         ),
         BottomNavItem(
             name = stringResource(R.string.following),
-            route = "following",
+            route = Screen.Following.route,
             selectedIcon = Icons.Filled.Subscriptions,
             unselectedIcon = Icons.Outlined.Subscriptions
         ),
         BottomNavItem(
             name = stringResource(R.string.watchlist),
-            route = "watchlist",
+            route = Screen.Watchlist.route,
             selectedIcon = Icons.Filled.FormatListBulleted,
             unselectedIcon = Icons.Outlined.FormatListBulleted
         ),
         BottomNavItem(
             name = stringResource(R.string.search),
-            route = "search",
+            route = Screen.Search.route,
             selectedIcon = Icons.Filled.Search,
             unselectedIcon = Icons.Outlined.Search
         ),
@@ -379,6 +380,7 @@ fun TopNavBarF(navController: NavController, modifier : Modifier = Modifier) {
     )
 }
 
+/*
 @Preview
 @Composable
 fun PreviewNavigation() {
@@ -391,3 +393,4 @@ fun PreviewNavigation() {
     //TopNavBarF(navController = navController) //Used in Login, Register, Forgot Password Page
     //NavDrawer(navController = navController)
 }
+ */
