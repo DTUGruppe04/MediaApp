@@ -43,4 +43,6 @@
     <string name="recommended_by_valde_and_3_others">Recommended by Valde and 4 others</string>
     <string name="recommended_by_tanja_and_2_others">Recommended by Tanja and 2 others</string>
     <string name="recommended_by_marcus">Recommended by Marcus</string>
+    <string name="all_movies">All Movies</string>
+    <string name="watchlist">Watchlist</string>
 </resources>
