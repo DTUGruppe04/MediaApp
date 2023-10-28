@@ -216,11 +216,12 @@ fun TopNavBarB(navController: NavController, modifier : Modifier = Modifier) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBarC(navController: NavController, modifier : Modifier = Modifier) {
+fun TopNavBarC(navController: NavController, drawerState: DrawerState, modifier : Modifier = Modifier) {
     val containerColor = colorResource(R.color.top_navbar_container_color)
     val contentColor = colorResource(R.color.top_navbar_text_color)
     val iconColor = colorResource(R.color.top_navbar_icon_color)
     val bottomColor = colorResource(R.color.indicator_color_navbar)
+    val scope = rememberCoroutineScope()
 
     TopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -229,7 +230,11 @@ fun TopNavBarC(navController: NavController, modifier : Modifier = Modifier) {
             navigationIconContentColor = iconColor,
         ),
         navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                scope.launch {
+                    drawerState.open()
+                }
+            }) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "menu"
@@ -237,7 +242,7 @@ fun TopNavBarC(navController: NavController, modifier : Modifier = Modifier) {
             }
         },
         title = {
-            Text("Media App")
+            Text(stringResource(R.string.mediaapp))
         },
         actions = {
             Button(
@@ -246,7 +251,7 @@ fun TopNavBarC(navController: NavController, modifier : Modifier = Modifier) {
                     containerColor = bottomColor
                 ),
             ) {
-                Text(stringResource(R.string.mediaapp))
+                Text(stringResource(R.string.edit))
             }
         }
     )

@@ -16,4 +16,7 @@
     <color name="top_navbar_text_color">#E6E0E9</color>
     <color name="top_navbar_container_color">#141218</color>
     <color name="red">#A60E29</color>
+    <color name="follow_text_color">#A09C9C</color>
+    <color name="background">#3F3F3F</color>
+    <color name="lightgray">#4E4E4E</color>
 </resources>

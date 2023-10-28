@@ -5,4 +5,8 @@ sealed class Screen(val route: String) {
     object Following : Screen("following")
     object Watchlist : Screen("watchlist")
     object Search : Screen("search")
+    object Profile : Screen("profile")
+    object YouFollow : Screen("you follow")
+    object YourFollowers : Screen("your followers")
+    object Settings : Screen("settings")
 }
