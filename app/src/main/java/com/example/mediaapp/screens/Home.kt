@@ -18,10 +18,13 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,9 +41,12 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainPageLayout() {
+fun MainPageLayout(drawerState: DrawerState) {
+    val scope = rememberCoroutineScope()
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -92,7 +98,11 @@ fun MainPageLayout() {
                         .height(121.dp)
                         .width(72.dp)
                         .clip(RoundedCornerShape(10.dp)))
-                IconButton(onClick = { /* do something */ }) {
+                IconButton(onClick = {
+                    scope.launch {
+                        drawerState.open()
+                    }
+                }) {
                     Icon(
                         imageVector = Icons.Filled.Menu,
                         contentDescription = "menu",
@@ -274,13 +284,16 @@ fun SeparationBox() {
         .background(colorResource(R.color.box_separation_color)))
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
-    MainPageLayout()
+fun HomeScreen(navController: NavController, drawerState: DrawerState) {
+    MainPageLayout(drawerState)
 }
 
+/*
 @Preview(showBackground = false)
 @Composable
 fun MainPagePreview() {
     MainPageLayout()
 }
+ */
