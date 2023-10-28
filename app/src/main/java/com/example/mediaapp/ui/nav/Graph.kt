@@ -13,6 +13,7 @@ import com.example.mediaapp.screens.MainPageLayout
 import com.example.mediaapp.screens.WatchlistPage
 import com.example.mediaapp.screens.SearchScreen
 import com.example.mediaapp.screens.ProfilePageLayout
+import com.example.mediaapp.screens.SettingpageLayout
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +41,7 @@ fun NavigationGraph(navController: NavHostController, drawerState: DrawerState) 
 
         }
         composable(route = Screen.Settings.route) {
-
+            SettingpageLayout(navController = navController, drawerState = drawerState)
         }
     }
 }

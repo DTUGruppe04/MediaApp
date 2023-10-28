@@ -128,7 +128,14 @@ fun MainScreen() {
                         )
                     },
                     selected = false,
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        navController.navigate(Screen.Settings.route)
+                        scope.launch {
+                            if(drawerState.isOpen) {
+                                drawerState.close()
+                            }
+                        }
+                    }
                 )
                 Column(
                     modifier = Modifier
@@ -152,7 +159,8 @@ fun MainScreen() {
 
             }
         },
-        gesturesEnabled = true,
+        //Need something to handle this in the feature
+        gesturesEnabled = false,
         drawerState = drawerState,
         content = {
             Scaffold(

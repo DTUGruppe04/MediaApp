@@ -19,4 +19,5 @@
     <color name="follow_text_color">#A09C9C</color>
     <color name="background">#3F3F3F</color>
     <color name="lightgray">#4E4E4E</color>
+    <color name="background_settings">#141218</color>
 </resources>

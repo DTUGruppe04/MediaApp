@@ -113,4 +113,16 @@
     <string name="recommends_number">5</string>
     <string name="saved">Saved</string>
     <string name="saved_number">7</string>
+
+    //Settings Page Strings
+    <string name="settingnodesc"></string>
+    <string name="youraccount">Your Account</string>
+    <string name="youraccountdesc">View information about your account, download an archive of your data, or learn about options to deactivate the account</string>
+    <string name="accountsecurity">Account Security</string>
+    <string name="accountsecuritydesc">Manage your account safety by enabling two factor authentication</string>
+    <string name="notifications">Account Security</string>
+    <string name="notificationsdesc">Choose what type of notifications you would like to receive or turn off notifications altogether</string>
+    <string name="accessibility">Accessibility, display and language</string>
+    <string name="accessibilitydesc">Manage how the Media App appears to you</string>
+    <string name="proxy">Proxy</string>
 </resources>
