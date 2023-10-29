@@ -52,21 +52,21 @@ fun SearchPage() {
         // Movie List
         val movies = listOf(
             MovieListLayout.Movie(
-                stringResource(R.string.grown_ups_2),
-                stringResource(R.string.action),
-                stringResource(R.string.recommended_by_david_and_4_others), painterResource(id = R.drawable.poster_avatar)),
+                stringResource(R.string.mad_max),
+                stringResource(R.string.adventure),
+                stringResource(R.string.recommended_by_david_and_4_others), painterResource(id = R.drawable.poster_madmax)),
             MovieListLayout.Movie(
                 stringResource(R.string.zohan),
                 stringResource(R.string.action),
-                stringResource(R.string.recommended_by_jonathan), painterResource(id = R.drawable.poster_madmax)),
+                stringResource(R.string.recommended_by_jonathan), painterResource(id = R.drawable.poster_zohan)),
             MovieListLayout.Movie(
-                stringResource(R.string.borat),
+                stringResource(R.string.die_hard),
                 stringResource(R.string.action),
                 stringResource(R.string.recommended_by_mikkel_and_7_others), painterResource(id = R.drawable.poster_diehard)),
             MovieListLayout.Movie(
-                stringResource(R.string.step_brothers),
-                stringResource(R.string.action),
-                stringResource(R.string.recommended_by_valde_and_3_others), painterResource(id = R.drawable.poster_american_sniper))
+                stringResource(R.string.grown_ups_2),
+                stringResource(R.string.comedy),
+                stringResource(R.string.recommended_by_valde_and_3_others), painterResource(id = R.drawable.poster_grownups2))
         )
         val movieLayout = MovieListLayout(movies)
         movieLayout.MovieList()
