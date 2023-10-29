@@ -2,6 +2,7 @@ package com.example.mediaapp.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,11 +42,12 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
+import com.example.mediaapp.Screen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainPageLayout(drawerState: DrawerState) {
+fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
     val scope = rememberCoroutineScope()
     LazyColumn(
         modifier = Modifier
@@ -145,19 +147,19 @@ fun MainPageLayout(drawerState: DrawerState) {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         item {
-                            StandardBoxInRow(R.drawable.first_movie, R.string.main_page_first_movie)
+                            StandardBoxInRow(navController, R.drawable.first_movie, R.string.main_page_first_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.second_movie, R.string.main_page_second_movie)
+                            StandardBoxInRow(navController, R.drawable.second_movie, R.string.main_page_second_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.third_movie, R.string.main_page_third_movie)
+                            StandardBoxInRow(navController, R.drawable.third_movie, R.string.main_page_third_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.fourth_movie, R.string.main_page_fourth_movie)
+                            StandardBoxInRow(navController, R.drawable.fourth_movie, R.string.main_page_fourth_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.fifth_movie, R.string.main_page_fourth_movie)
+                            StandardBoxInRow(navController, R.drawable.fifth_movie, R.string.main_page_fourth_movie)
                         }
                     }
                 }
@@ -183,19 +185,19 @@ fun MainPageLayout(drawerState: DrawerState) {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         item {
-                            StandardBoxInRow(R.drawable.second_row_first_movie, R.string.main_page_first_row_first_movie)
+                            StandardBoxInRow(navController, R.drawable.second_row_first_movie, R.string.main_page_first_row_first_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.second_row_second_movie, R.string.main_page_first_row_second_movie)
+                            StandardBoxInRow(navController, R.drawable.second_row_second_movie, R.string.main_page_first_row_second_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.second_row_third_movie, R.string.main_page_first_row_third_movie)
+                            StandardBoxInRow(navController, R.drawable.second_row_third_movie, R.string.main_page_first_row_third_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.second_row_fourth_movie, R.string.main_page_first_row_fourth_movie)
+                            StandardBoxInRow(navController, R.drawable.second_row_fourth_movie, R.string.main_page_first_row_fourth_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.second_row_fifth_movie, R.string.main_page_first_row_fifth_movie)
+                            StandardBoxInRow(navController, R.drawable.second_row_fifth_movie, R.string.main_page_first_row_fifth_movie)
                         }
                     }
                 }
@@ -221,19 +223,19 @@ fun MainPageLayout(drawerState: DrawerState) {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         item {
-                            StandardBoxInRow(R.drawable.third_row_first_movie, R.string.main_page_third_row_first_movie)
+                            StandardBoxInRow(navController, R.drawable.third_row_first_movie, R.string.main_page_third_row_first_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.third_row_second_movie, R.string.main_page_third_row_second_movie)
+                            StandardBoxInRow(navController, R.drawable.third_row_second_movie, R.string.main_page_third_row_second_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.third_row_third_movie, R.string.main_page_third_row_third_movie)
+                            StandardBoxInRow(navController, R.drawable.third_row_third_movie, R.string.main_page_third_row_third_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.third_row_fourth_movie, R.string.main_page_third_row_fourth_movie)
+                            StandardBoxInRow(navController, R.drawable.third_row_fourth_movie, R.string.main_page_third_row_fourth_movie)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.third_row_fifth_movie, R.string.main_page_third_row_fifth_movie)
+                            StandardBoxInRow(navController, R.drawable.third_row_fifth_movie, R.string.main_page_third_row_fifth_movie)
                         }
                     }
                 }
@@ -243,7 +245,7 @@ fun MainPageLayout(drawerState: DrawerState) {
 }
 
 @Composable
-fun StandardBoxInRow(image: Int, string: Int) {
+fun StandardBoxInRow(navController: NavController, image: Int, string: Int) {
     Box(modifier = Modifier
         .width(90.dp)
         .height(180.dp)) {
@@ -259,6 +261,9 @@ fun StandardBoxInRow(image: Int, string: Int) {
                     .width(90.dp)
                     .height(139.dp)
                     .clip(RoundedCornerShape(10.dp))
+                    .clickable {
+                        navController.navigate(Screen.MoviePage.route)
+                    }
             )
             Text(
                 stringResource(string),
@@ -287,7 +292,7 @@ fun SeparationBox() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, drawerState: DrawerState) {
-    MainPageLayout(drawerState)
+    MainPageLayout(navController = navController, drawerState = drawerState)
 }
 
 /*

@@ -27,4 +27,12 @@
     <color name="teal">#1A9E8E</color>
     <color name="lightpurple">#8B2B9B</color>
     <color name="lightbackground">#2B2930</color>
+    <color name="login_background_color">#FF141218</color>
+    <color name="login_text_color">#FFE6E0E9</color>
+    <color name="login_textfield_background">#FF36343B</color>
+    <color name="login_textfield_label">#FFD0BCFF</color>
+    <color name="login_textfield_text">#FFE6E0E9</color>
+    <color name="login_button">#FF4A4458</color>
+    <color name="login_button_text">#FFE8DEF8</color>
+    <color name="login_button_text_sign">#FF2D35F6</color>
 </resources>

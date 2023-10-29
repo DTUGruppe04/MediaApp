@@ -73,19 +73,19 @@ fun ProfilePageLayout(navController: NavController, drawerState: DrawerState) {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         item {
-                            StandardBoxInRow(R.drawable.thegodfather, R.string.thegodfather)
+                            StandardBoxInRow(navController, R.drawable.thegodfather, R.string.thegodfather)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.parasite, R.string.parasite)
+                            StandardBoxInRow(navController, R.drawable.parasite, R.string.parasite)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.thematrix, R.string.thematrix)
+                            StandardBoxInRow(navController, R.drawable.thematrix, R.string.thematrix)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.casablanca, R.string.casablanca)
+                            StandardBoxInRow(navController, R.drawable.casablanca, R.string.casablanca)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.indianajones, R.string.indianajones)
+                            StandardBoxInRow(navController, R.drawable.indianajones, R.string.indianajones)
                         }
                     }
                 }
@@ -121,19 +121,19 @@ fun ProfilePageLayout(navController: NavController, drawerState: DrawerState) {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         item {
-                            StandardBoxInRow(R.drawable.oppenheimer, R.string.oppenheimer)
+                            StandardBoxInRow(navController, R.drawable.oppenheimer, R.string.oppenheimer)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.thedayaftertomorrow, R.string.thedayaftertomorrow)
+                            StandardBoxInRow(navController, R.drawable.thedayaftertomorrow, R.string.thedayaftertomorrow)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.avatarthewayofwater, R.string.avatarthewayofwater)
+                            StandardBoxInRow(navController, R.drawable.avatarthewayofwater, R.string.avatarthewayofwater)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.freeguy, R.string.freeguy)
+                            StandardBoxInRow(navController, R.drawable.freeguy, R.string.freeguy)
                         }
                         item {
-                            StandardBoxInRow(R.drawable.readyplayerone, R.string.readyplayerone)
+                            StandardBoxInRow(navController, R.drawable.readyplayerone, R.string.readyplayerone)
                         }
                     }
                 }

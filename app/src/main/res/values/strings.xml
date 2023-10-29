@@ -152,4 +152,20 @@
     <string name="ida">Ida Jensen</string>
     <string name="gustav">Gustav Ipsen</string>
     <string name="ph4ntom">PH4NTOM Thomsen</string>
+
+    //Login, Register and Forgot Password Pages
+    <string name="login_top_name">Media App</string>
+    <string name="login">Login</string>
+    <string name="login_big">LOGIN</string>
+    <string name="login_please">Please sign in to continue</string>
+    <string name="login_forgot_password">Forgot Password</string>
+    <string name="login_missing_account">Don\'t have an account yet?\u0020</string>
+    <string name="login_missing_account_sign">Sign up</string>
+    <string name="login_create_account_sign_up">SIGN UP</string>
+    <string name="login_already_account">Already have an account?\u0020</string>
+    <string name="login_already_account_sign">Sign in</string>
+    <string name="login_create_account">Create Account</string>
+    <string name="login_create_account_please">Please sign up to continue</string>
+    <string name="login_forgot_password_please">You can reset your password here</string>
+    <string name="login_forgot_password_reset">RESET PASSWORD</string>
 </resources>
