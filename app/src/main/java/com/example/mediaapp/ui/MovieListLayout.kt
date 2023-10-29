@@ -3,6 +3,7 @@ package com.example.mediaapp.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.mediaapp.Screen
 
 class MovieListLayout(private val movies: List<Movie>) {
 
@@ -38,7 +41,7 @@ class MovieListLayout(private val movies: List<Movie>) {
         val poster: Painter
     )
     @Composable
-    fun MovieList(){
+    fun MovieList(navController: NavController){
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -49,7 +52,8 @@ class MovieListLayout(private val movies: List<Movie>) {
                     title = movie.title,
                     genre = movie.genre,
                     description = movie.description,
-                    poster = movie.poster
+                    poster = movie.poster,
+                    navController = navController
                 )
                 Divider(
                     color = Color.Gray,
@@ -61,11 +65,14 @@ class MovieListLayout(private val movies: List<Movie>) {
     }
 
     @Composable
-    fun MovieListItem(title: String, genre: String, description: String, poster: Painter) {
+    fun MovieListItem(title: String, genre: String, description: String, poster: Painter, navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(12.dp)
+                .clickable {
+                    navController.navigate(Screen.MoviePage.route)
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(

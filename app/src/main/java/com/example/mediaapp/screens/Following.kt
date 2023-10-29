@@ -73,6 +73,6 @@ fun FollowingListPage(navController: NavController, drawerState: DrawerState) {
                 stringResource(R.string.recommended_by_valde_and_3_others), painterResource(id = R.drawable.poster_american_sniper))
         )
         val movieLayout = MovieListLayout(movies)
-        movieLayout.MovieList()
+        movieLayout.MovieList(navController = navController)
     }
 }

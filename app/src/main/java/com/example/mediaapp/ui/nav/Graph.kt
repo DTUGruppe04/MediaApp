@@ -13,7 +13,7 @@ import com.example.mediaapp.screens.HomeScreen
 import com.example.mediaapp.screens.FollowingListPage
 import com.example.mediaapp.screens.LoginPageLayout
 import com.example.mediaapp.screens.MainPageLayout
-import com.example.mediaapp.screens.MoviePageScreen
+import com.example.mediaapp.screens.MovieDetailPage
 import com.example.mediaapp.screens.WatchlistPage
 import com.example.mediaapp.screens.SearchScreen
 import com.example.mediaapp.screens.ProfilePageLayout
@@ -66,7 +66,7 @@ fun NavigationGraph(navController: NavHostController, drawerState: DrawerState) 
             SettingpageLayout(navController = navController, drawerState = drawerState)
         }
         composable(route = Screen.MoviePage.route) {
-            MoviePageScreen(navController = navController)
+            MovieDetailPage(navController = navController, drawerState = drawerState)
         }
     }
 }

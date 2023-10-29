@@ -276,10 +276,11 @@ fun TopNavBarC(navController: NavController, drawerState: DrawerState, modifier 
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBarD(navController: NavController, modifier : Modifier = Modifier) {
+fun TopNavBarD(navController: NavController, drawerState: DrawerState, modifier : Modifier = Modifier) {
     val containerColor = colorResource(R.color.top_navbar_container_color)
     val contentColor = colorResource(R.color.top_navbar_text_color)
     val iconColor = colorResource(R.color.top_navbar_icon_color)
+    var scope = rememberCoroutineScope()
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -289,7 +290,14 @@ fun TopNavBarD(navController: NavController, modifier : Modifier = Modifier) {
             actionIconContentColor = iconColor
         ),
         navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                navController.navigateUp()
+                scope.launch {
+                    if(drawerState.isOpen) {
+                        drawerState.close()
+                    }
+                }
+            }) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = "arrow back"
