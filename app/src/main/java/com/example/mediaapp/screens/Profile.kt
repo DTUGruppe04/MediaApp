@@ -32,115 +32,118 @@ import com.example.mediaapp.ui.nav.TopNavBarC
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfilePageLayout(navController: NavController, drawerState: DrawerState) {
-    LazyColumn(modifier = Modifier
-        .fillMaxSize()
-        .padding(bottom = 75.dp)
-        .background(color = Color(0xFF2E2E2E)))
-    {
-        item {
-            TopNavBarC(navController = navController, drawerState = drawerState)
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
-                ProfileDescription(
-                    profilePicture = R.drawable.profilepicture,
-                    description = R.string.description,
-                    countryFlag = R.drawable.dk,
-                    countryName = R.string.country,
-                    followers = R.string.followers_number,
-                    following = R.string.follows_number,
-                    username = R.string.username,
-                    nameOfUser = R.string.name_of_user
-                )
-            }
-        }
-        item {
-            Box(
-                modifier = Modifier
+    Column {
+        TopNavBarC(navController = navController, drawerState = drawerState)
+        LazyColumn(modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 75.dp)
+            .background(color = Color(0xFF2E2E2E)))
+        {
+            item {
+                Box(modifier = Modifier
                     .fillMaxWidth()
-                    .height(220.dp)
-                    .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
-                    .background(color = Color(0xFF3F3F3F))
-            ) {
-                Column {
-                    Text(
-                        stringResource(R.string.profile_page_favorite_movies),
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                    .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
+                    ProfileDescription(
+                        profilePicture = R.drawable.profilepicture,
+                        description = R.string.description,
+                        countryFlag = R.drawable.dk,
+                        countryName = R.string.country,
+                        followers = R.string.followers_number,
+                        following = R.string.follows_number,
+                        username = R.string.username,
+                        nameOfUser = R.string.name_of_user
                     )
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        item {
-                            StandardBoxInRow(navController, R.drawable.thegodfather, R.string.thegodfather)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.parasite, R.string.parasite)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.thematrix, R.string.thematrix)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.casablanca, R.string.casablanca)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.indianajones, R.string.indianajones)
+                }
+            }
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(220.dp)
+                        .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+                        .background(color = Color(0xFF3F3F3F))
+                ) {
+                    Column {
+                        Text(
+                            stringResource(R.string.profile_page_favorite_movies),
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                        )
+                        LazyRow(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            item {
+                                StandardBoxInRow(navController, R.drawable.thegodfather, R.string.thegodfather)
+                            }
+                            item {
+                                StandardBoxInRow(navController, R.drawable.parasite, R.string.parasite)
+                            }
+                            item {
+                                StandardBoxInRow(navController, R.drawable.thematrix, R.string.thematrix)
+                            }
+                            item {
+                                StandardBoxInRow(navController, R.drawable.casablanca, R.string.casablanca)
+                            }
+                            item {
+                                StandardBoxInRow(navController, R.drawable.indianajones, R.string.indianajones)
+                            }
                         }
                     }
                 }
             }
-        }
-        item {
-            Box(modifier = Modifier
-                .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
-                ProfileStatistics(
-                    R.string.watched_number,
-                    R.string.reviews_number,
-                    R.string.rated_number,
-                    R.string.recommends_number,
-                    R.string.saved_number
-                ) }
-        }
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(220.dp)
-                    .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
-                    .background(color = Color(0xFF3F3F3F))
-            ) {
-                Column {
-                    Text(
-                        stringResource(R.string.profile_page_recently),
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(start = 10.dp, top = 5.dp)
-                    )
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        item {
-                            StandardBoxInRow(navController, R.drawable.oppenheimer, R.string.oppenheimer)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.thedayaftertomorrow, R.string.thedayaftertomorrow)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.avatarthewayofwater, R.string.avatarthewayofwater)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.freeguy, R.string.freeguy)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.readyplayerone, R.string.readyplayerone)
+            item {
+                Box(modifier = Modifier
+                    .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
+                    ProfileStatistics(
+                        R.string.watched_number,
+                        R.string.reviews_number,
+                        R.string.rated_number,
+                        R.string.recommends_number,
+                        R.string.saved_number
+                    ) }
+            }
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(220.dp)
+                        .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+                        .background(color = Color(0xFF3F3F3F))
+                ) {
+                    Column {
+                        Text(
+                            stringResource(R.string.profile_page_recently),
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                        )
+                        LazyRow(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            item {
+                                StandardBoxInRow(navController, R.drawable.oppenheimer, R.string.oppenheimer)
+                            }
+                            item {
+                                StandardBoxInRow(navController, R.drawable.thedayaftertomorrow, R.string.thedayaftertomorrow)
+                            }
+                            item {
+                                StandardBoxInRow(navController, R.drawable.avatarthewayofwater, R.string.avatarthewayofwater)
+                            }
+                            item {
+                                StandardBoxInRow(navController, R.drawable.freeguy, R.string.freeguy)
+                            }
+                            item {
+                                StandardBoxInRow(navController, R.drawable.readyplayerone, R.string.readyplayerone)
+                            }
                         }
                     }
                 }
             }
         }
     }
-}
+    }
+
 
 @Composable
 fun ProfileStatistics(

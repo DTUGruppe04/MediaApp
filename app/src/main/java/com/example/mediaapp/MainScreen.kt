@@ -185,27 +185,3 @@ fun MainScreen() {
         },
     )
 }
-
-
-/*
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainScreen() {
-    val navController = rememberNavController()
-    Scaffold(
-        bottomBar = { BottomNavBar(navController = navController) },
-    ) { innerPadding ->
-        NavigationGraph(navController = navController)
-        Modifier.padding(innerPadding)
-    }
-}
-*/
-/*
-@Preview
-@Composable
-fun PreviewMainScreen() {
-    val navController = rememberNavController()
-    BottomNavigationBar(navController = navController)
-    NavBottomGraph(navController = navController)
-}
-*/
