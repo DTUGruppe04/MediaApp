@@ -7,7 +7,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +39,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MovieDescription("long movie description", "Oppenheimer")
+            MovieDescription("The story of American scientist, J Robert Oppenheimer, and his role in the development of the atomic bomb", "Oppenheimer")
         }
     }
 }
@@ -79,10 +83,37 @@ fun MovieDescription(description: String, title: String) {
             .padding(start = 130.dp)
             .padding(top = 60.dp)
             .height(20.dp)
-            .width(80.dp)) {
+            .fillMaxWidth()) {
             TagBox(shape = RoundedCornerShape(10.dp), "Drama")
+            Spacer(modifier = Modifier.padding(3.dp))
             TagBox(shape = RoundedCornerShape(10.dp), "Bibliography")
-            TagBox(shape = RoundedCornerShape(10.dp), "Drama")
+            Spacer(modifier = Modifier.padding(3.dp))
+            TagBox(shape = RoundedCornerShape(10.dp), "History")
+        }
+        Box(modifier = Modifier
+            .padding(start = 130.dp)
+            .padding(top = 90.dp)
+            .height(100.dp)
+            .fillMaxWidth()) {
+            Text(text = description, color = Color.White)
+        }
+        Row(modifier = Modifier
+            .padding(start = 130.dp)
+            .padding(top = 180.dp)
+            .fillMaxWidth()
+            .height(40.dp)) {
+            Box(modifier = Modifier
+                .fillMaxHeight()
+                .width(60.dp)
+                .clip(shape = RoundedCornerShape(20.dp))
+                .background(color = Color(0xff4a4458))
+                ) {
+                Text(text = "Rate this",
+                    color = Color.White,
+                    modifier = Modifier.align(Alignment.Center),
+                    fontSize = 12.sp)
+            }
+
         }
     }
 }
@@ -91,12 +122,16 @@ fun MovieDescription(description: String, title: String) {
 @Composable
 fun TagBox(shape : Shape, tag : String) {
     Column(modifier = Modifier
-        .fillMaxWidth()) {
+        .height(15.dp)
+        .width(80.dp)) {
         Box(modifier = Modifier
             .fillMaxSize()
             .clip(shape)
             .background(color = Color(0xFF282727))) {
-            Text(text = tag, color = Color.White, modifier = Modifier.align(Alignment.Center))
+            Text(text = tag,
+                color = Color.White,
+                modifier = Modifier.align(Alignment.Center),
+                fontSize = 10.sp)
         }
     }
 }
