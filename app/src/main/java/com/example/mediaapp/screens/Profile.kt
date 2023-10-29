@@ -122,7 +122,7 @@ fun ProfilePageLayout(navController: NavController, drawerState: DrawerState) {
                             modifier = Modifier.fillMaxSize()
                         ) {
                             item {
-                                StandardBoxInRow(navController, R.drawable.oppenheimer, R.string.oppenheimer)
+                                StandardBoxInRow(navController, R.drawable.oppenheimer2, R.string.oppenheimer)
                             }
                             item {
                                 StandardBoxInRow(navController, R.drawable.thedayaftertomorrow, R.string.thedayaftertomorrow)
