@@ -88,7 +88,6 @@ class TabsAndFilters(
             }
         }
     }
-
     @Composable
     fun TabButton(label: String, isSelected: Boolean, onClick: () -> Unit) {
         Column(
@@ -151,21 +150,19 @@ class TabsAndFilters(
         var selectedOption by remember { mutableStateOf(label) }
         var expanded by remember { mutableStateOf(false)}
         var clicked by remember { mutableStateOf(false)}
-        val backgroundColor by animateColorAsState(if (clicked) Color(0xFF4A4458) else Color(0x29CAC4D0))
-        val textColor by animateColorAsState(if (clicked) Color(0xFFE8DEF8) else Color(0xFFCAC4D0))
+        val (backgroundColor, textColor) = getDropdownColors(expanded)
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
                 .background(backgroundColor),
         ) {
-            DropdownMenuToggle(
-                label = selectedOption,
-                expanded = expanded,
-                onToggle = { expanded = !expanded },
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textColor = textColor
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                DropdownMenuLabel(selectedOption, textColor)
+                DropdownMenuIcon(expanded, textColor)
+            }
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = {expanded = false}
@@ -180,7 +177,37 @@ class TabsAndFilters(
             }
         }
     }
+    @Composable
+    private fun getDropdownColors(expanded: Boolean): Pair<Color, Color> {
+        val backgroundColor = animateColorAsState(if (expanded) Color(0xFF4A4458) else Color(0x29CAC4D0)).value
+        val textColor = animateColorAsState(if (expanded) Color(0xFFE8DEF8) else Color(0xFFCAC4D0)).value
+        return Pair(backgroundColor, textColor)
+    }
+    @Composable
+    fun DropdownMenuLabel(text: String, textColor: Color) {
+        Text(
+            text = text,
+            style = TextStyle(
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                fontWeight = FontWeight(500),
+                color = textColor,
+                textAlign = TextAlign.Center,
+                letterSpacing = 0.1.sp,
+            )
+        )
+    }
 
+    @Composable
+    fun DropdownMenuIcon(expanded: Boolean, tint: Color) {
+        Icon(
+            Icons.Filled.ArrowDropDown,
+            contentDescription = null,
+            tint = tint,
+            modifier = Modifier
+                .rotate(if (expanded) 180f else 0f)
+        )
+    }
     @Composable
     fun DropdownMenuToggle(
         label: String,
