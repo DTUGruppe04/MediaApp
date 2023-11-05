@@ -208,41 +208,5 @@ class TabsAndFilters(
                 .rotate(if (expanded) 180f else 0f)
         )
     }
-    @Composable
-    fun DropdownMenuToggle(
-        label: String,
-        expanded: Boolean,
-        onToggle: (Boolean) -> Unit,
-        modifier: Modifier = Modifier,
-        textColor: Color
-    ) {
-        Row(
-            modifier = modifier
-                .padding(start = 16.dp, top = 6.dp, end = 8.dp, bottom = 6.dp)
-                .clickable { onToggle(!expanded) },
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = label,
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 20.sp,
-                    fontWeight = FontWeight(500),
-                    color = textColor,
-                    textAlign = TextAlign.Center,
-                    letterSpacing = 0.1.sp,
-                )
-            )
-            Icon(
-                Icons.Filled.ArrowDropDown,
-                contentDescription = null,
-                tint = textColor,
-                modifier = Modifier
-                    .padding(1.dp)
-                    .width(18.dp)
-                    .height(18.dp)
-                    .rotate(if (expanded) 180f else 0f))
-        }
-    }
 }
 
