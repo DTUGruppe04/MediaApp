@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.mediaapp.R
+import com.example.mediaapp.ui.Movie
 import com.example.mediaapp.ui.MovieListLayout
 import com.example.mediaapp.ui.TabsAndFilters
 
@@ -43,19 +44,19 @@ fun WatchlistPage() {
         customUITabs.Render()
         // Movie List
         val movies = listOf(
-            MovieListLayout.Movie(
+            Movie(
                 stringResource(R.string.grown_ups_2),
                 stringResource(R.string.comedy),
                 stringResource(R.string.recommended_by_kevin_and_7_others), painterResource(id = R.drawable.poster_grownups2)),
-            MovieListLayout.Movie(
+            Movie(
                 stringResource(R.string.zohan),
                 stringResource(R.string.adventure),
                 stringResource(R.string.recommended_by_david_and_4_others), painterResource(id = R.drawable.poster_zohan)),
-            MovieListLayout.Movie(
+            Movie(
                 stringResource(R.string.borat),
                 stringResource(R.string.comedy),
                 stringResource(R.string.recommended_by_mikkel_and_2_others), painterResource(id = R.drawable.poster_borat)),
-            MovieListLayout.Movie(
+            Movie(
                 stringResource(R.string.step_brothers),
                 stringResource(R.string.comedy),
                 stringResource(R.string.recommended_by_jonathan), painterResource(id = R.drawable.poster_stepbrothers))
