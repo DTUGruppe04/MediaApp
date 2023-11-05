@@ -74,7 +74,7 @@ fun WatchlistPage(navController: NavController, drawerState: DrawerState) {
                 stringResource(R.string.recommended_by_jonathan), painterResource(id = R.drawable.poster_stepbrothers))
         )
         val movieLayout = MovieListLayout(movies)
-        movieLayout.MovieList(navController = navController)
+        movieLayout.MovieList()
     }
 }
 

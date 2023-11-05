@@ -27,7 +27,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+
 data class Movie(
     val title: String,
     val genre: String,
@@ -53,7 +53,7 @@ class MovieListLayout(private val movies: List<Movie>) {
             .height(142.dp)
     }
     @Composable
-    fun MovieList(navController: NavController){
+    fun MovieList() {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

@@ -80,6 +80,6 @@ fun SearchPage(navController: NavController, drawerState: DrawerState) {
                 stringResource(R.string.recommended_by_valde_and_3_others), painterResource(id = R.drawable.poster_grownups2))
         )
         val movieLayout = MovieListLayout(movies)
-        movieLayout.MovieList(navController)
+        movieLayout.MovieList()
     }
 }

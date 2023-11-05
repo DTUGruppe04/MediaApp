@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.wear.compose.material.ContentAlpha
 import com.example.mediaapp.R
 
 
@@ -39,47 +41,50 @@ class TabsAndFilters(
     @Composable
     fun Render() {
         var selectedTab by remember { mutableStateOf("All") }
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFF141218)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Top Tabs
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                tabs.forEach { tab ->
-                    Box(
-                        modifier = Modifier.weight(1f),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        TabButton(tab, selectedTab == tab) {
-                            selectedTab = tab
-                        }
+            TabsRow(tabs, selectedTab) { tab ->
+                selectedTab = tab
+            }
+            Divider(color = Color.Gray, thickness = 0.5.dp,)
+            FiltersRow(filters)
+        }
+    }
+    @Composable
+    private fun TabsRow(tabs: List<String>, selectedTab: String, onTabSelected: (String) -> Unit) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            tabs.forEach { tab ->
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    TabButton(tab, selectedTab == tab) {
+                        onTabSelected(tab)
                     }
                 }
             }
-
-            Divider(
-                color = Color.Gray,
-                thickness = 0.5.dp,
-            )
-            // Bottom filters
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState())
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                filters.forEach { filter ->
-                    FilterDropdown(filter.label , filter.options)
-                }
+        }
+    }
+    @Composable
+    private fun FiltersRow(filters: List<FilterOption>) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            filters.forEach { filter ->
+                FilterDropdown(filter.label , filter.options)
             }
         }
     }
@@ -89,54 +94,55 @@ class TabsAndFilters(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.clickable { if(!isSelected) onClick() }
+            modifier = Modifier.clickable { if (!isSelected) onClick() }
         ) {
-            Image(
-                modifier = Modifier
-                    .padding(1.dp)
-                    .width(24.dp)
-                    .height(24.dp),
-                painter = painterResource(id = R.drawable.icon),
-                contentDescription = "image description",
-                contentScale = ContentScale.None
+            TabIcon(isSelected = isSelected)
+            TabText(label = label, isSelected = isSelected)
+            TabIndicator(isSelected = isSelected)
+        }
+    }
+    @Composable
+    fun TabIcon(isSelected: Boolean) {
+        val imageAlpha = if (isSelected) 1f else ContentAlpha.medium
+        Image(
+            painter = painterResource(id = R.drawable.icon),
+            contentDescription = "Tab icon",
+            modifier = Modifier
+                .padding(1.dp)
+                .size(24.dp)
+                .alpha(imageAlpha),
+            contentScale = ContentScale.Fit
+        )
+    }
+    @Composable
+    fun TabText(label: String, isSelected: Boolean) {
+        Text(
+            text = label,
+            modifier = Modifier
+                .width(96.dp)
+                .height(20.dp),
+            style = TextStyle(
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                fontWeight = FontWeight(500),
+                color = Color(0xFFF5F5F5),
+                textAlign = TextAlign.Center,
+                letterSpacing = 0.1.sp,
             )
-            Text(
+        )
+    }
+    @Composable
+    fun TabIndicator(isSelected: Boolean) {
+        if (isSelected) {
+            Box(
                 modifier = Modifier
-                    .width(96.dp)
-                    .height(20.dp),
-                text = label,
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 20.sp,
-                    fontWeight = FontWeight(500),
-                    color = Color(0xFFF5F5F5),
-                    textAlign = TextAlign.Center,
-                    letterSpacing = 0.1.sp,
-                )
-            )
-            Box (
-                modifier =
-                if (isSelected) Modifier
-                    .padding(start = 5.dp, end = 5.dp, top = 4.dp)
-                    .width(92.dp)
                     .height(3.dp)
+                    .fillMaxWidth()
                     .background(
-                        color = Color(0xFFF5F5F5),
-                        shape = RoundedCornerShape(
-                            topStart = 100.dp,
-                            topEnd = 100.dp,
-                            bottomStart = 0.dp,
-                            bottomEnd = 0.dp
-                        ))
-                else
-                Modifier
-                    .padding(start = 5.dp, end = 5.dp, top = 4.dp)
-                    .width(92.dp)
-                    .height(3.dp)
-                    .background(color = Color.Transparent)
+                        color = Color.White,
+                        shape = RoundedCornerShape(topStartPercent = 100, topEndPercent = 100)
+                    )
             )
-
-
         }
     }
 
