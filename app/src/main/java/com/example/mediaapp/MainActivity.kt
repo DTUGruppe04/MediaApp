@@ -78,40 +78,40 @@ fun YoufollowPageLayout(){
             searchBar(R.string.searchtext)
             LazyColumn() {
                 item {
-                    ProfileListItem(name = R.string.benjamin, iconColor = R.color.purple, true)
+                    ProfileListItem(name = R.string.benjamin, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.kevin, iconColor = R.color.purple, true)
+                    ProfileListItem(name = R.string.kevin, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.valdemar, iconColor = R.color.lightgreen, true)
+                    ProfileListItem(name = R.string.valdemar, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.simon, iconColor = R.color.red, true)
+                    ProfileListItem(name = R.string.simon, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.david, iconColor = R.color.blue, true)
+                    ProfileListItem(name = R.string.david, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.jonathan, iconColor = R.color.teal, true)
+                    ProfileListItem(name = R.string.jonathan, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.patrick, iconColor = R.color.lightpurple, true)
+                    ProfileListItem(name = R.string.patrick, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.charlie, iconColor = R.color.blue, true)
+                    ProfileListItem(name = R.string.charlie, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.mikkel, iconColor = R.color.lightpurple, true)
+                    ProfileListItem(name = R.string.mikkel, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.tanja, iconColor = R.color.purple, true)
+                    ProfileListItem(name = R.string.tanja, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.valde, iconColor = R.color.purple, true)
+                    ProfileListItem(name = R.string.valde, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.mads, iconColor = R.color.purple, true)
+                    ProfileListItem(name = R.string.mads, true)
                 }
             }
         }
@@ -138,91 +138,107 @@ fun YourfollowersPageLayout(){
             searchBar(R.string.searchtext)
             LazyColumn() {
                 item {
-                    ProfileListItem(name = R.string.kevin, iconColor = R.color.purple, true)
+                    ProfileListItem(name = R.string.kevin, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.sara, iconColor = R.color.red, false)
+                    ProfileListItem(name = R.string.sara, false)
                 }
                 item {
-                    ProfileListItem(name = R.string.rasmus, iconColor = R.color.lightgreen, false)
+                    ProfileListItem(name = R.string.rasmus, false)
                 }
                 item {
-                    ProfileListItem(name = R.string.valde2, iconColor = R.color.lightgreen, true)
+                    ProfileListItem(name = R.string.valde2, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.mia, iconColor = R.color.blue, false)
+                    ProfileListItem(name = R.string.mia, false)
                 }
                 item {
-                    ProfileListItem(name = R.string.david, iconColor = R.color.blue, true)
+                    ProfileListItem(name = R.string.david, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.lars, iconColor = R.color.lightpurple, false)
+                    ProfileListItem(name = R.string.lars, false)
                 }
                 item {
-                    ProfileListItem(name = R.string.anna, iconColor = R.color.blue, false)
+                    ProfileListItem(name = R.string.anna, false)
                 }
                 item {
-                    ProfileListItem(name = R.string.jonathan, iconColor = R.color.teal, true)
+                    ProfileListItem(name = R.string.jonathan, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.john, iconColor = R.color.red, true)
+                    ProfileListItem(name = R.string.john, true)
                 }
                 item {
-                    ProfileListItem(name = R.string.ida, iconColor = R.color.red, false)
+                    ProfileListItem(name = R.string.ida, false)
                 }
                 item {
-                    ProfileListItem(name = R.string.gustav, iconColor = R.color.red, false)
+                    ProfileListItem(name = R.string.gustav, false)
                 }
                 item {
-                    ProfileListItem(name = R.string.ph4ntom, iconColor = R.color.red, false)
+                    ProfileListItem(name = R.string.ph4ntom, false)
                 }
             }
         }
     }
 }
+data class User(
+    val name: Int,
+    val following: Boolean,
+    val follower: Boolean
+)
 
+val userList: List<User> = listOf<User>()
 
 @Composable
-fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
+fun UserList() {
+
+}
+
+@Composable
+fun followersUserListLayout() {
+
+}
+@Composable
+fun ProfileListItem(name: Int, followstatus: Boolean) {
     var isFollowing by remember { mutableStateOf(followstatus) }
     var tempString = stringResource(id = name)
 
     Row(modifier = Modifier
         .fillMaxWidth()
-        .height(56.dp)
+        .wrapContentHeight()
         .background(colorResource(id = R.color.background)),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start ){
-        Box(modifier = Modifier
-            .padding(start = 16.dp)
-            .size(40.dp)
-            .clip(CircleShape)
-            .background(colorResource(id = iconColor)),
-            contentAlignment = Alignment.Center
+        horizontalArrangement = Arrangement.SpaceBetween ){
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
+            Box(modifier = Modifier
+                .padding(start = 16.dp)
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(colorResource(id = randomColor())),
+                contentAlignment = Alignment.Center
             ) {
+                Text (
+                    text = tempString[0].toString(),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight(400),
+                    color = colorResource(id = R.color.white),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                )
+            }
             Text (
-                text = tempString[0].toString(),
+                text = stringResource(id = name),
                 fontSize = 16.sp,
-                lineHeight = 24.sp,
                 fontWeight = FontWeight(400),
                 color = colorResource(id = R.color.white),
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Start,
                 modifier = Modifier
-                    .padding(top = 3.dp)
-                    .height(28.dp)
+                    .padding(start = 16.dp)
             )
         }
-        Text (
-            text = stringResource(id = name),
-            fontSize = 16.sp,
-            lineHeight = 28.sp,
-            fontWeight = FontWeight(400),
-            color = colorResource(id = R.color.white),
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .padding(start = 16.dp, top = 3.dp)
-                .size(width = 280.dp, height = 28.dp)
-        )
+
         Icon(
             imageVector = if (isFollowing) Icons.Filled.PersonRemove else Icons.Filled.PersonAddAlt1,
             contentDescription = if (isFollowing) "Person_Remove" else "Person_Add",
@@ -232,9 +248,15 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
                     // Toggle the follow status when clicked
                     isFollowing = !isFollowing
                 }
+                .padding(end = 16.dp)
         )
 
     }
+}
+
+fun randomColor(): Int {
+    val colors: List<Int> = listOf(R.color.purple, R.color.lightgreen, R.color.red, R.color.blue, R.color.teal, R.color.lightpurple)
+    return colors[(colors.indices).random()]
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
