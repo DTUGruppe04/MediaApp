@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mediaapp.ui.nav.BottomNavBar
 import com.example.mediaapp.ui.nav.NavigationGraph
@@ -39,7 +40,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(loginNavController: NavController) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -158,7 +159,9 @@ fun MainScreen() {
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            navController.navigate(Screen.Login.route)
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = colorResource(R.color.red)
                         ),
@@ -179,7 +182,7 @@ fun MainScreen() {
             Scaffold(
                 bottomBar = { BottomNavBar(navController = navController) },
             ) { innerPadding ->
-                NavigationGraph(navController = navController, drawerState = drawerState)
+                NavigationGraph(navController = navController, loginNavController = loginNavController, drawerState = drawerState)
                 Modifier.padding(innerPadding)
             }
         },
