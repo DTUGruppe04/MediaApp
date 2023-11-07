@@ -54,10 +54,7 @@ fun YoufollowPageLayout(/*navController: NavController, drawerState: DrawerState
     MediaAppTheme {
         Box(
             modifier = Modifier
-                .padding(bottom = 75.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.surface
-                )) {
+                .background(color = MaterialTheme.colorScheme.surface)) {
             Column {
                 //TopNavBarB(navController = navController, drawerState = drawerState)
                 Text(
@@ -123,33 +120,35 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
         .height(56.dp)
         .background(MaterialTheme.colorScheme.surface),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start ){
-        Box(modifier = Modifier
-            .padding(start = 16.dp)
-            .size(40.dp)
-            .clip(CircleShape)
-            .background(colorResource(id = iconColor)),
-            contentAlignment = Alignment.Center
-        ) {
+        horizontalArrangement = Arrangement.SpaceBetween ){
+
+        Row(horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)) {
+            Box(modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(colorResource(id = iconColor)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text (
+                    text = tempString[0].toString(),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                )
+            }
             Text (
-                text = tempString[0].toString(),
+                text = stringResource(id = name),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Start,
                 modifier = Modifier
-                    .padding(top = 3.dp)
-                    .height(28.dp)
+                    .padding(start = 16.dp)
             )
         }
-        Text (
-            text = stringResource(id = name),
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .padding(start = 16.dp, top = 3.dp)
-                .size(width = 280.dp, height = 28.dp)
-        )
+
         Icon(
             imageVector = if (isFollowing) Icons.Filled.PersonRemove else Icons.Filled.PersonAddAlt1,
             contentDescription = if (isFollowing) "Person_Remove" else "Person_Add",
@@ -159,6 +158,7 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
                     // Toggle the follow status when clicked
                     isFollowing = !isFollowing
                 }
+                .padding(end = 16.dp)
         )
 
     }
