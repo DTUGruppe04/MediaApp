@@ -44,67 +44,70 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.ui.nav.TopNavBarB
+import com.example.mediaapp.ui.theme.MediaAppTheme
 import com.example.mediaapp.ui.theme.onSurface
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun YoufollowPageLayout(/*navController: NavController, drawerState: DrawerState*/){
-    Box(
-        modifier = Modifier
-            .padding(bottom = 75.dp)
-            .background(
-                color = colorResource(id = R.color.background_settings)
-            )) {
-        Column {
-            //TopNavBarB(navController = navController, drawerState = drawerState)
-            Text(
-                text = stringResource(id = R.string.youfollow),
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .padding(start = 18.dp, bottom = 10.dp, top = 10.dp)
-                    .height(28.dp)
-                    .width(280.dp)
-            )
-            searchBar(R.string.searchtext)
-            LazyColumn() {
-                item {
-                    ProfileListItem(name = R.string.benjamin, iconColor = R.color.purple, true)
-                }
-                item {
-                    ProfileListItem(name = R.string.kevin, iconColor = R.color.purple, true)
-                }
-                item {
-                    ProfileListItem(name = R.string.valdemar, iconColor = R.color.lightgreen, true)
-                }
-                item {
-                    ProfileListItem(name = R.string.simon, iconColor = R.color.red, true)
-                }
-                item {
-                    ProfileListItem(name = R.string.david, iconColor = R.color.blue, true)
-                }
-                item {
-                    ProfileListItem(name = R.string.jonathan, iconColor = R.color.teal, true)
-                }
-                item {
-                    ProfileListItem(name = R.string.patrick, iconColor = R.color.lightpurple, true)
-                }
-                item {
-                    ProfileListItem(name = R.string.charlie, iconColor = R.color.blue, true)
-                }
-                item {
-                    ProfileListItem(name = R.string.mikkel, iconColor = R.color.lightpurple, true)
-                }
-                item {
-                    ProfileListItem(name = R.string.tanja, iconColor = R.color.purple, true)
-                }
-                item {
-                    ProfileListItem(name = R.string.valde, iconColor = R.color.purple, true)
-                }
-                item {
-                    ProfileListItem(name = R.string.mads, iconColor = R.color.purple, true)
+    MediaAppTheme {
+        Box(
+            modifier = Modifier
+                .padding(bottom = 75.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.surface
+                )) {
+            Column {
+                //TopNavBarB(navController = navController, drawerState = drawerState)
+                Text(
+                    text = stringResource(id = R.string.youfollow),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .padding(start = 18.dp, bottom = 10.dp, top = 10.dp)
+                        .height(28.dp)
+                        .width(280.dp)
+                )
+                searchBar(R.string.searchtext)
+                LazyColumn() {
+                    item {
+                        ProfileListItem(name = R.string.benjamin, iconColor = R.color.purple, true)
+                    }
+                    item {
+                        ProfileListItem(name = R.string.kevin, iconColor = R.color.purple, true)
+                    }
+                    item {
+                        ProfileListItem(name = R.string.valdemar, iconColor = R.color.lightgreen, true)
+                    }
+                    item {
+                        ProfileListItem(name = R.string.simon, iconColor = R.color.red, true)
+                    }
+                    item {
+                        ProfileListItem(name = R.string.david, iconColor = R.color.blue, true)
+                    }
+                    item {
+                        ProfileListItem(name = R.string.jonathan, iconColor = R.color.teal, true)
+                    }
+                    item {
+                        ProfileListItem(name = R.string.patrick, iconColor = R.color.lightpurple, true)
+                    }
+                    item {
+                        ProfileListItem(name = R.string.charlie, iconColor = R.color.blue, true)
+                    }
+                    item {
+                        ProfileListItem(name = R.string.mikkel, iconColor = R.color.lightpurple, true)
+                    }
+                    item {
+                        ProfileListItem(name = R.string.tanja, iconColor = R.color.purple, true)
+                    }
+                    item {
+                        ProfileListItem(name = R.string.valde, iconColor = R.color.purple, true)
+                    }
+                    item {
+                        ProfileListItem(name = R.string.mads, iconColor = R.color.purple, true)
+                    }
                 }
             }
         }
@@ -118,7 +121,7 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .height(56.dp)
-        .background(colorResource(id = R.color.background_settings)),
+        .background(MaterialTheme.colorScheme.surface),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start ){
         Box(modifier = Modifier
@@ -130,10 +133,8 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
         ) {
             Text (
                 text = tempString[0].toString(),
-                fontSize = 16.sp,
-                lineHeight = 24.sp,
-                fontWeight = FontWeight(400),
-                color = colorResource(id = R.color.white),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(top = 3.dp)
@@ -142,10 +143,8 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
         }
         Text (
             text = stringResource(id = name),
-            fontSize = 16.sp,
-            lineHeight = 28.sp,
-            fontWeight = FontWeight(400),
-            color = colorResource(id = R.color.white),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Start,
             modifier = Modifier
                 .padding(start = 16.dp, top = 3.dp)
@@ -154,7 +153,7 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
         Icon(
             imageVector = if (isFollowing) Icons.Filled.PersonRemove else Icons.Filled.PersonAddAlt1,
             contentDescription = if (isFollowing) "Person_Remove" else "Person_Add",
-            tint = colorResource(id = R.color.white),
+            tint = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .clickable {
                     // Toggle the follow status when clicked
@@ -173,18 +172,18 @@ fun searchBar(searchText: Int) {
     TextField(
         value = text,
         onValueChange = { text = it },
-        label = { Text(text = stringResource(id = searchText), color = Color(0xFFCAC4D0)) },
+        label = { Text(text = stringResource(id = searchText), color = MaterialTheme.colorScheme.onSurfaceVariant) },
         trailingIcon = { Icon(
             Icons.Filled.Search,
             contentDescription = null,
-            tint = Color(0xFFCAC4D0)) },
+            tint = MaterialTheme.colorScheme.onSurfaceVariant) },
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp),
         shape = RoundedCornerShape(size = 28.dp),
         colors = TextFieldDefaults.textFieldColors(
-            containerColor = colorResource(R.color.lightbackground),
-            textColor = Color(0xFFCAC4D0),
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent)
     )
