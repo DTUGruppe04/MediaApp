@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,22 +29,16 @@ import com.example.mediaapp.ui.nav.TopNavBarB
 fun YourfollowersPageLayout(navController: NavController, drawerState: DrawerState){
     Box(
         modifier = Modifier
-            .padding(bottom = 75.dp)
-            .background(color = colorResource(id = R.color.background_settings)
-        )) {
+            .background(color = MaterialTheme.colorScheme.surface)) {
         Column {
             TopNavBarB(navController = navController, drawerState = drawerState)
             Text(
                 text = stringResource(id = R.string.yourfollowers),
-                fontSize = 22.sp,
-                lineHeight = 28.sp,
-                fontWeight = FontWeight(400),
-                color = Color(0xFFFFFFFF),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .padding(start = 18.dp, bottom = 10.dp, top = 10.dp)
-                    .height(28.dp)
-                    .width(280.dp)
             )
             searchBar(R.string.searchtext)
             LazyColumn() {

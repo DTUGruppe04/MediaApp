@@ -64,8 +64,6 @@ fun YoufollowPageLayout(/*navController: NavController, drawerState: DrawerState
                     textAlign = TextAlign.Start,
                     modifier = Modifier
                         .padding(start = 18.dp, bottom = 10.dp, top = 10.dp)
-                        .height(28.dp)
-                        .width(280.dp)
                 )
                 searchBar(R.string.searchtext)
                 LazyColumn() {
@@ -124,7 +122,7 @@ fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
 
         Row(horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)) {
+            modifier = Modifier.padding(start = 16.dp)) {
             Box(modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape)
