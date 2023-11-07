@@ -24,18 +24,31 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.mediaapp.R
 import com.example.mediaapp.Screen
-import androidx.compose.ui.tooling.preview.Preview as Preview1
 
 class SearchQueryLayout(private val movies: List<MovieListLayout.Movie>) {
+
+    private val defaultTextStyle = TextStyle(
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        fontWeight = FontWeight(400),
+        color = Color(0xFFCAC4D0),
+        letterSpacing = 0.25.sp
+    )
+    private fun Modifier.composeImageModifier(): Modifier {
+        return this
+            .shadow(elevation = 4.dp, spotColor = Color(0x40000000), ambientColor = Color(0x40000000))
+            .border(1.dp, Color(0xFF000000), RoundedCornerShape(10.dp))
+            .padding(0.5.dp)
+            .width(96.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .height(142.dp)
+    }
     @Composable
     fun SearchQueryList(navController: NavController){
         LazyColumn(
@@ -64,7 +77,7 @@ class SearchQueryLayout(private val movies: List<MovieListLayout.Movie>) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = 24.dp, top = 8.dp, bottom = 8.dp)
+                .padding(start = 16.dp, end = 24.dp, top = 8.dp, bottom = 8.dp)
                 .clickable {
                     navController.navigate(Screen.MoviePage.route)
                 },
@@ -75,19 +88,7 @@ class SearchQueryLayout(private val movies: List<MovieListLayout.Movie>) {
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .shadow(
-                        elevation = 4.dp,
-                        spotColor = Color(0x40000000),
-                        ambientColor = Color(0x40000000)
-                    )
-                    .border(
-                        width = 1.dp,
-                        color = Color(0xFF000000),
-                        shape = RoundedCornerShape(size = 10.dp)
-                    )
-                    .width(45.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .height(67.dp),
+                    .composeImageModifier()
             )
             Column (
                 modifier = Modifier.padding(start = 16.dp)
@@ -98,56 +99,13 @@ class SearchQueryLayout(private val movies: List<MovieListLayout.Movie>) {
                         fontSize = 16.sp,
                         lineHeight = 24.sp,
                         fontWeight = FontWeight(400),
-                        color = Color(0xFFCAC4D0),
-
+                        color = Color(0xFFE6E0E9),
                         letterSpacing = 0.25.sp,
                     )
                 )
-                Text(
-                    text = actor,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFCAC4D0),
-                        letterSpacing = 0.25.sp,
-                    )
-                )
-                Text(
-                    text = description,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFCAC4D0),
-                        letterSpacing = 0.25.sp,
-                    )
-                )
+                Text(text = actor, style = defaultTextStyle)
+                Text(text = description, style = defaultTextStyle)
             }
         }
     }
-    @Preview1
-    @Composable
-    fun SearchQueryPreview(navController: NavController) {
-        val movies = listOf(
-            MovieListLayout.Movie(
-                stringResource(R.string.zohan),
-                stringResource(R.string.adventure),
-                stringResource(R.string.recommended_by_david_and_4_others), painterResource(id = R.drawable.poster_zohan)
-            ),
-            MovieListLayout.Movie(
-                stringResource(R.string.borat),
-                stringResource(R.string.comedy),
-                stringResource(R.string.recommended_by_mikkel_and_2_others), painterResource(id = R.drawable.poster_borat)
-            ),
-            MovieListLayout.Movie(
-                stringResource(R.string.step_brothers),
-                stringResource(R.string.comedy),
-                stringResource(R.string.recommended_by_jonathan), painterResource(id = R.drawable.poster_stepbrothers)
-            )
-        )
-        val searchLayout = SearchQueryLayout(movies)
-        searchLayout.SearchQueryList(navController = navController)
-    }
-
 }
