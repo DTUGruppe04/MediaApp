@@ -23,8 +23,10 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,28 +38,30 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.ui.nav.TopNavBarB
+import com.example.mediaapp.ui.theme.onSurface
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
-fun YoufollowPageLayout(navController: NavController, drawerState: DrawerState){
+fun YoufollowPageLayout(/*navController: NavController, drawerState: DrawerState*/){
     Box(
         modifier = Modifier
             .padding(bottom = 75.dp)
-            .background(color = colorResource(id = R.color.background_settings)
-        )) {
+            .background(
+                color = colorResource(id = R.color.background_settings)
+            )) {
         Column {
-            TopNavBarB(navController = navController, drawerState = drawerState)
+            //TopNavBarB(navController = navController, drawerState = drawerState)
             Text(
                 text = stringResource(id = R.string.youfollow),
-                fontSize = 22.sp,
-                lineHeight = 28.sp,
-                fontWeight = FontWeight(400),
-                color = Color(0xFFFFFFFF),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .padding(start = 18.dp, bottom = 10.dp, top = 10.dp)
@@ -174,7 +178,9 @@ fun searchBar(searchText: Int) {
             Icons.Filled.Search,
             contentDescription = null,
             tint = Color(0xFFCAC4D0)) },
-        modifier = Modifier.fillMaxWidth().height(56.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
         shape = RoundedCornerShape(size = 28.dp),
         colors = TextFieldDefaults.textFieldColors(
             containerColor = colorResource(R.color.lightbackground),
