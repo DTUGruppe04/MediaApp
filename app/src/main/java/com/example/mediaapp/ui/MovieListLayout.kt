@@ -34,10 +34,11 @@ import com.example.mediaapp.Screen
 class MovieListLayout(private val movies: List<Movie>) {
 
     data class Movie(
-        val title: String,
-        val genre: String,
-        val description: String,
-        val poster: Painter
+        val title: String = "",
+        val genre: String = "",
+        val description: String = "",
+        val poster: Painter,
+        val actor: String = "",
     )
     @Composable
     fun MovieList(navController: NavController){
