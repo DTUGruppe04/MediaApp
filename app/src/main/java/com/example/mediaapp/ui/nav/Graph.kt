@@ -37,7 +37,7 @@ fun NavigationGraph(navController: NavHostController, drawerState: DrawerState) 
             ProfilePageLayout(navController = navController, drawerState = drawerState)
         }
         composable(route = Screen.YouFollow.route) {
-            YoufollowPageLayout(/*navController = navController, drawerState = drawerState*/)
+            YoufollowPageLayout(navController = navController, drawerState = drawerState)
         }
         composable(route = Screen.YourFollowers.route) {
             YourfollowersPageLayout(navController = navController, drawerState = drawerState)

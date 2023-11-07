@@ -48,15 +48,14 @@ import com.example.mediaapp.ui.theme.MediaAppTheme
 import com.example.mediaapp.ui.theme.onSurface
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun YoufollowPageLayout(/*navController: NavController, drawerState: DrawerState*/){
+fun YoufollowPageLayout(navController: NavController, drawerState: DrawerState){
     MediaAppTheme {
         Box(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.surface)) {
             Column {
-                //TopNavBarB(navController = navController, drawerState = drawerState)
+                TopNavBarB(navController = navController, drawerState = drawerState)
                 Text(
                     text = stringResource(id = R.string.youfollow),
                     style = MaterialTheme.typography.titleLarge,
