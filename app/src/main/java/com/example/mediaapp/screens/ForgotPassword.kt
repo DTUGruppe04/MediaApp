@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -20,10 +21,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.mediaapp.R
+import com.example.mediaapp.Screen
 
 @Composable
-fun ForgotPasswordPageLayout() {
+fun ForgotPasswordPageLayout(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,10 +49,11 @@ fun ForgotPasswordPageLayout() {
         MainTitleText(R.string.login_forgot_password)
         SubTitleText(R.string.login_forgot_password_please)
         TextfieldForEmail()
-        Button(onClick = { /*TODO*/ },
+        Button(onClick = {
+            navController.navigate(Screen.Login.route)
+        },
             modifier = Modifier
-                .width(152.dp)
-                .height(76.dp)
+                .wrapContentSize()
                 .padding(top = 36.dp, end = 29.dp)
                 .align(Alignment.End),
             colors = ButtonDefaults.buttonColors(
@@ -61,6 +65,6 @@ fun ForgotPasswordPageLayout() {
                 color = colorResource(R.color.login_button_text)
             )
         }
-        BottomSignText(R.string.login_already_account, R.string.login_already_account_sign)
+        BottomSignText(R.string.login_already_account, R.string.login_already_account_sign, navController)
     }
 }

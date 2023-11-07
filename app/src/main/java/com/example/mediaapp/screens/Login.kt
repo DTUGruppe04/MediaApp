@@ -1,6 +1,7 @@
 package com.example.mediaapp.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -50,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
+import com.example.mediaapp.Screen
 
 
 @Composable
@@ -79,13 +82,18 @@ fun LoginPageLayout(navController: NavController) {
         Text(stringResource(R.string.login_forgot_password),
             modifier = Modifier
                 .padding(start = 250.dp, top = 11.dp, end = 29.dp)
+                .clickable {
+                    navController.navigate(Screen.ForgotPassword.route)
+                }
                 .fillMaxWidth(),
             fontSize = 14.sp,
             lineHeight = 16.sp,
             color = Color.White,
             textDecoration = TextDecoration.Underline
         )
-        Button(onClick = { /*TODO*/ },
+        Button(onClick = {
+            navController.navigate(Screen.MainScreen.route)
+        },
             modifier = Modifier
                 .width(152.dp)
                 .height(76.dp)
@@ -99,7 +107,7 @@ fun LoginPageLayout(navController: NavController) {
                 color = colorResource(R.color.login_button_text)
             )
         }
-        BottomSignText(R.string.login_missing_account, R.string.login_missing_account_sign)
+        BottomSignText(R.string.login_missing_account, R.string.login_missing_account_sign, navController)
     }
 }
 
@@ -126,29 +134,41 @@ fun SubTitleText(string: Int) {
 }
 
 @Composable
-fun BottomSignText(string1: Int, string2: Int) {
+fun BottomSignText(string1: Int, string2: Int, navController: NavController) {
     Column(modifier = Modifier
         .padding(bottom = 27.dp)
         .fillMaxSize(),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(buildAnnotatedString {
-            withStyle(style = SpanStyle(
-                fontSize = 16.sp,
-                color = Color.White
+        Text(
+            modifier = Modifier
+                .clickable {
+                    if(string1 == R.string.login_missing_account) {
+                        navController.navigate(Screen.Register.route)
+                    } else {
+                        navController.navigate(Screen.Login.route)
+                    }
+                },
+            text = buildAnnotatedString (
             )
-            ) {
-                append(stringResource(string1))
+            {
+                withStyle(style = SpanStyle(
+                    fontSize = 16.sp,
+                    color = Color.White
+                )
+                ) {
+                    append(stringResource(string1))
+                }
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 16.sp,
+                        color = colorResource(R.color.login_button_text_sign),
+                        textDecoration = TextDecoration.Underline,
+                    )
+                ) {
+                    append(stringResource(string2))
+                }
             }
-            withStyle(style = SpanStyle(
-                fontSize = 16.sp,
-                color = colorResource(R.color.login_button_text_sign),
-                textDecoration = TextDecoration.Underline
-            )
-            ) {
-                append(stringResource(string2))
-            }
-        }
         )
     }
 }
@@ -317,6 +337,7 @@ fun TextfieldForConfirmPassword() {
     )
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun LoginPagePreview() {
@@ -326,3 +347,5 @@ fun LoginPagePreview() {
         ForgotPasswordPageLayout()
     }
 }
+
+ */

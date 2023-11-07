@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
+import com.example.mediaapp.Screen
 
 @Composable
 fun CreateAccountPageLayout(navController: NavController) {
@@ -50,7 +51,10 @@ fun CreateAccountPageLayout(navController: NavController) {
         TextfieldForEmail()
         TextfieldForPassword()
         TextfieldForConfirmPassword()
-        Button(onClick = { /*TODO*/ },
+        Button(
+            onClick = {
+            navController.navigate(Screen.Login.route)
+        },
             modifier = Modifier
                 .width(152.dp)
                 .height(76.dp)
@@ -65,6 +69,6 @@ fun CreateAccountPageLayout(navController: NavController) {
                 color = colorResource(R.color.login_button_text)
             )
         }
-        BottomSignText(R.string.login_already_account, R.string.login_already_account_sign)
+        BottomSignText(R.string.login_already_account, R.string.login_already_account_sign, navController)
     }
 }
