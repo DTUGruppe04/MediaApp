@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
+import com.example.mediaapp.ui.Movie
 import com.example.mediaapp.ui.MovieListLayout
 import com.example.mediaapp.ui.SearchBar
 import com.example.mediaapp.ui.TabsAndFilters
@@ -64,25 +65,25 @@ fun SearchPage(navController: NavController, drawerState: DrawerState) {
             customUITabs.Render()
             // Movie List
             val movies = listOf(
-                MovieListLayout.Movie(
+                Movie(
                     stringResource(R.string.mad_max),
                     stringResource(R.string.adventure),
                     stringResource(R.string.recommended_by_david_and_4_others), painterResource(id = R.drawable.poster_madmax)),
-                MovieListLayout.Movie(
+                Movie(
                     stringResource(R.string.zohan),
                     stringResource(R.string.action),
                     stringResource(R.string.recommended_by_jonathan), painterResource(id = R.drawable.poster_zohan)),
-                MovieListLayout.Movie(
+                Movie(
                     stringResource(R.string.die_hard),
                     stringResource(R.string.action),
                     stringResource(R.string.recommended_by_mikkel_and_7_others), painterResource(id = R.drawable.poster_diehard)),
-                MovieListLayout.Movie(
+                Movie(
                     stringResource(R.string.grown_ups_2),
                     stringResource(R.string.comedy),
                     stringResource(R.string.recommended_by_valde_and_3_others), painterResource(id = R.drawable.poster_grownups2))
             )
             val movieLayout = MovieListLayout(movies)
-            movieLayout.MovieList(navController)
+            movieLayout.MovieList()
         }
     }
 }
