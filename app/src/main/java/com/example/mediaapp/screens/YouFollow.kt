@@ -95,14 +95,16 @@ fun YoufollowPageLayout(navController: NavController, drawerState: DrawerState){
         }
     }
 }
+private val stdWidthHeightFollowPage = Modifier
+    .fillMaxWidth()
+    .height(56.dp)
+
 @Composable
 fun ProfileListItem(name: Int, iconColor: Int, followstatus: Boolean) {
     var isFollowing by remember { mutableStateOf(followstatus) }
     var tempString = stringResource(id = name)
 
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .height(56.dp)
+    Row(modifier = stdWidthHeightFollowPage
         .background(MaterialTheme.colorScheme.surface),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween ){
@@ -157,15 +159,20 @@ fun searchBar(searchText: Int) {
     TextField(
         value = text,
         onValueChange = { text = it },
-        label = { Text(text = stringResource(id = searchText), color = MaterialTheme.colorScheme.onSurfaceVariant) },
+
+        label = {
+            Text(text = stringResource(id = searchText),
+            color = MaterialTheme.colorScheme.onSurfaceVariant) },
+
         trailingIcon = { Icon(
             Icons.Filled.Search,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurfaceVariant) },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp),
+
+        modifier = stdWidthHeightFollowPage,
+
         shape = RoundedCornerShape(size = 28.dp),
+
         colors = TextFieldDefaults.textFieldColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             textColor = MaterialTheme.colorScheme.onSurfaceVariant,

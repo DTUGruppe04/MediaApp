@@ -54,6 +54,8 @@ fun SettingpageLayout(navController: NavController, drawerState: DrawerState) {
 
 }
 
+private val stdPaddingSettingItem = Modifier.padding(start = 20.dp, top = 12.dp)
+
 @Composable
 fun SettingsItem(settingName: Int, icon: ImageVector, settingDesc: Int = R.string.settingnodesc) {
     Box(modifier = Modifier
@@ -64,15 +66,17 @@ fun SettingsItem(settingName: Int, icon: ImageVector, settingDesc: Int = R.strin
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon( modifier = Modifier
                 .padding(start = 12.dp)
-                .size(24.dp), imageVector = icon, contentDescription = icon.name, tint = MaterialTheme.colorScheme.primary)
+                .size(24.dp),
+                imageVector = icon,
+                contentDescription = icon.name,
+                tint = MaterialTheme.colorScheme.primary)
             Column() {
                 Text (
                     text = stringResource(id = settingName),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Start,
-                    modifier = Modifier
-                        .padding(start = 20.dp, top = 12.dp)
+                    modifier = stdPaddingSettingItem
                 )
                 if (settingDesc.equals(R.string.settingnodesc)) {
                     Text(
@@ -80,8 +84,7 @@ fun SettingsItem(settingName: Int, icon: ImageVector, settingDesc: Int = R.strin
                         fontSize = 0.sp,
                         lineHeight = 0.sp,
                         textAlign = TextAlign.Start,
-                        modifier = Modifier
-                            .padding(start = 20.dp, top = 12.dp)
+                        modifier = stdPaddingSettingItem
                     )
                 } else {
                     Text (
@@ -89,8 +92,7 @@ fun SettingsItem(settingName: Int, icon: ImageVector, settingDesc: Int = R.strin
                         style = MaterialTheme.typography.labelMedium,
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier
-                            .padding(start = 20.dp, bottom = 12.dp)
+                        modifier = stdPaddingSettingItem
                             .width(269.dp)
                     )
                 }
