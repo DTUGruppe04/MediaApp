@@ -225,7 +225,7 @@ fun TopNavBarC(navController: NavController, drawerState: DrawerState, modifier 
     val containerColor = colorResource(R.color.top_navbar_container_color)
     val contentColor = colorResource(R.color.top_navbar_text_color)
     val iconColor = colorResource(R.color.top_navbar_icon_color)
-    val bottomColor = colorResource(R.color.indicator_color_navbar)
+    val buttonColor = colorResource(R.color.indicator_color_navbar)
     val scope = rememberCoroutineScope()
 
     TopAppBar(
@@ -253,7 +253,7 @@ fun TopNavBarC(navController: NavController, drawerState: DrawerState, modifier 
             Button(
                 onClick = { /*TODO*/  },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = bottomColor
+                    containerColor = buttonColor
                 ),
             ) {
                 Text(stringResource(R.string.edit))

@@ -232,7 +232,7 @@ fun TextfieldForEmail() {
         label = {labelStyle("Email")},
         placeholder = {placeholderStyle("Enter your email")},
         colors = textFieldColors(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
     )
 }
 
