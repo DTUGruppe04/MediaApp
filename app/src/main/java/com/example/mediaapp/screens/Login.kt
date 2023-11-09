@@ -21,6 +21,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -57,58 +58,57 @@ import com.example.mediaapp.Screen
 
 @Composable
 fun LoginPageLayout(navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                colorResource(R.color.login_background_color)
-            )
-    ) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp),
-            contentAlignment = Alignment.Center) {
-            Text(stringResource(R.string.login_top_name),
-                fontSize = 22.sp,
-                lineHeight = 28.sp,
-                color = Color.White,
-                textAlign = TextAlign.Center
-            )
-        }
-        MainTitleText(R.string.login)
-        SubTitleText(R.string.login_please)
-        TextfieldForEmail()
-        TextfieldForPassword()
-        Text(stringResource(R.string.login_forgot_password),
+    MediaAppTheme {
+        Column(
             modifier = Modifier
-                .padding(start = 250.dp, top = 11.dp, end = 29.dp)
-                .clickable {
-                    navController.navigate(Screen.ForgotPassword.route)
-                }
-                .fillMaxWidth(),
-            fontSize = 14.sp,
-            lineHeight = 16.sp,
-            color = Color.White,
-            textDecoration = TextDecoration.Underline
-        )
-        Button(onClick = {
-            navController.navigate(Screen.MainScreen.route)
-        },
-            modifier = Modifier
-                .width(152.dp)
-                .height(76.dp)
-                .padding(top = 36.dp, end = 29.dp)
-                .align(Alignment.End),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(R.color.login_button)
-            )
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
         ) {
-            Text(stringResource(R.string.login_big),
-                color = colorResource(R.color.login_button_text)
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+                contentAlignment = Alignment.Center) {
+                Text(stringResource(R.string.login_top_name),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center
+                )
+            }
+            MainTitleText(R.string.login)
+            SubTitleText(R.string.login_please)
+            TextfieldForEmail()
+            TextfieldForPassword()
+            Text(stringResource(R.string.login_forgot_password),
+                modifier = Modifier
+                    .padding(start = 250.dp, top = 11.dp, end = 29.dp)
+                    .clickable {
+                        navController.navigate(Screen.ForgotPassword.route)
+                    }
+                    .fillMaxWidth(),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                textDecoration = TextDecoration.Underline
             )
+            Button(onClick = {
+                navController.navigate(Screen.MainScreen.route)
+            },
+                modifier = Modifier
+                    .width(152.dp)
+                    .height(76.dp)
+                    .padding(top = 36.dp, end = 29.dp)
+                    .align(Alignment.End),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Text(stringResource(R.string.login_big),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+            BottomSignText(R.string.login_missing_account, R.string.login_missing_account_sign, navController)
         }
-        BottomSignText(R.string.login_missing_account, R.string.login_missing_account_sign, navController)
     }
+
 }
 
 @Composable
@@ -116,7 +116,7 @@ fun MainTitleText(string: Int) {
     Text(stringResource(string),
         fontSize = 30.sp,
         lineHeight = 28.sp,
-        color = Color.White,
+        color = MaterialTheme.colorScheme.onSurface,
         modifier = Modifier
             .padding(start = 29.dp, top = 45.dp)
     )
@@ -125,9 +125,8 @@ fun MainTitleText(string: Int) {
 @Composable
 fun SubTitleText(string: Int) {
     Text(stringResource(string),
-        fontSize = 12.sp,
-        lineHeight = 28.sp,
-        color = Color.White,
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.onSurface,
         modifier = Modifier
             .padding(start = 30.dp)
     )
@@ -154,7 +153,7 @@ fun BottomSignText(string1: Int, string2: Int, navController: NavController) {
             {
                 withStyle(style = SpanStyle(
                     fontSize = 16.sp,
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 ) {
                     append(stringResource(string1))
@@ -162,7 +161,7 @@ fun BottomSignText(string1: Int, string2: Int, navController: NavController) {
                 withStyle(
                     style = SpanStyle(
                         fontSize = 16.sp,
-                        color = colorResource(R.color.login_button_text_sign),
+                        color = MaterialTheme.colorScheme.inversePrimary,
                         textDecoration = TextDecoration.Underline,
                     )
                 ) {
@@ -173,36 +172,50 @@ fun BottomSignText(string1: Int, string2: Int, navController: NavController) {
     }
 }
 
+@Composable
+private fun textFieldModifier() = Modifier
+    .padding(start = 29.dp, top = 16.dp, end = 29.dp)
+    .fillMaxWidth()
+    .height(56.dp)
+    .clip(RoundedCornerShape(10.dp))
+
+@Composable
+private fun labelStyle(text: String) = Text(
+    text = text,
+    color = MaterialTheme.colorScheme.primary,
+    style = MaterialTheme.typography.labelMedium
+)
+
+@Composable
+private fun placeholderStyle(text: String) = Text(
+    text = text,
+    color = MaterialTheme.colorScheme.onSurfaceVariant,
+    fontStyle = FontStyle.Italic,
+    style = MaterialTheme.typography.titleMedium,
+    letterSpacing = 0.5.sp
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun textFieldColors() = TextFieldDefaults.textFieldColors(
+    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+    textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+    unfocusedIndicatorColor = Color.Transparent
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextfieldForUsername() {
     var text by remember { mutableStateOf(TextFieldValue("")) }
+
     TextField(
-        modifier = Modifier
-            .padding(start = 29.dp, top = 16.dp, end = 29.dp)
-            .fillMaxWidth()
-            .height(56.dp)
-            .clip(RoundedCornerShape(10.dp)),
+        modifier = textFieldModifier(),
         value = text,
-        onValueChange = {
-            text = it
-        },
-        label = { Text(text = "Username",
-            color = colorResource(R.color.login_textfield_label),
-            fontSize = 12.sp,
-            lineHeight = 16.sp) },
-        placeholder = { Text(text = "Enter your username",
-            color = colorResource(R.color.login_textfield_text),
-            fontStyle = FontStyle.Italic,
-            fontSize = 16.sp,
-            lineHeight = 24.sp,
-            letterSpacing = 0.5.sp) },
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = colorResource(R.color.login_textfield_background),
-            textColor = colorResource(R.color.login_textfield_text),
-            focusedIndicatorColor = colorResource(R.color.login_textfield_label),
-            unfocusedIndicatorColor = Color.Transparent
-        ),
+        onValueChange = { text = it },
+        label = {labelStyle("Username")},
+        placeholder = {placeholderStyle("Enter your username")},
+        colors = textFieldColors(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
     )
 }
@@ -211,34 +224,30 @@ fun TextfieldForUsername() {
 @Composable
 fun TextfieldForEmail() {
     var text by remember { mutableStateOf(TextFieldValue("")) }
+
     TextField(
-        modifier = Modifier
-            .padding(start = 29.dp, top = 16.dp, end = 29.dp)
-            .fillMaxWidth()
-            .height(56.dp)
-            .clip(RoundedCornerShape(10.dp)),
+        modifier = textFieldModifier(),
         value = text,
-        onValueChange = {
-            text = it
-        },
-        label = { Text(text = "Email",
-            color = colorResource(R.color.login_textfield_label),
-            fontSize = 12.sp,
-            lineHeight = 16.sp) },
-        placeholder = { Text(text = "Enter your email",
-            color = colorResource(R.color.login_textfield_text),
-            fontStyle = FontStyle.Italic,
-            fontSize = 16.sp,
-            lineHeight = 24.sp,
-            letterSpacing = 0.5.sp) },
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = colorResource(R.color.login_textfield_background),
-            textColor = colorResource(R.color.login_textfield_text),
-            focusedIndicatorColor = colorResource(R.color.login_textfield_label),
-            unfocusedIndicatorColor = Color.Transparent
-        ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+        onValueChange = { text = it },
+        label = {labelStyle("Email")},
+        placeholder = {placeholderStyle("Enter your email")},
+        colors = textFieldColors(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
     )
+}
+
+@Composable
+fun PasswordVisibilityToggle(passwordVisible: Boolean, onToggle: () -> Unit) {
+    val image = if (passwordVisible)
+        Icons.Filled.Visibility
+    else Icons.Filled.VisibilityOff
+
+    // Description for the visibility icon
+    val description = if (passwordVisible) "Hide password" else "Show password"
+
+    IconButton(onClick = onToggle) {
+        Icon(imageVector = image, description)
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -246,44 +255,19 @@ fun TextfieldForEmail() {
 fun TextfieldForPassword() {
     var text by remember { mutableStateOf(TextFieldValue("")) }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
     TextField(
-        modifier = Modifier
-            .padding(start = 29.dp, top = 16.dp, end = 29.dp)
-            .fillMaxWidth()
-            .height(56.dp)
-            .clip(RoundedCornerShape(10.dp)),
+        modifier = textFieldModifier(),
         value = text,
-        onValueChange = {
-            text = it
-        },
-        label = { Text(text = "Password",
-            color = colorResource(R.color.login_textfield_label),
-            fontSize = 12.sp,
-            lineHeight = 16.sp) },
-        placeholder = { Text(text = "Enter your password",
-            color = colorResource(R.color.login_textfield_text),
-            fontStyle = FontStyle.Italic,
-            fontSize = 16.sp,
-            lineHeight = 24.sp,
-            letterSpacing = 0.5.sp) },
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = colorResource(R.color.login_textfield_background),
-            textColor = colorResource(R.color.login_textfield_text),
-            focusedIndicatorColor = colorResource(R.color.login_textfield_label),
-            unfocusedIndicatorColor = Color.Transparent
-        ),
+        onValueChange = { text = it },
+        label = { labelStyle("Password") },
+        placeholder = { placeholderStyle("Enter your password") },
+        colors = textFieldColors(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
-            val image = if (passwordVisible)
-                Icons.Filled.Visibility
-            else Icons.Filled.VisibilityOff
-
-            //Description for the visibility icon
-            val description = if (passwordVisible) "Hide password" else "Show password"
-
-            IconButton(onClick = {passwordVisible = !passwordVisible}){
-                Icon(imageVector  = image, description)
+            PasswordVisibilityToggle(passwordVisible) {
+                passwordVisible = !passwordVisible
             }
         }
     )
@@ -294,44 +278,19 @@ fun TextfieldForPassword() {
 fun TextfieldForConfirmPassword() {
     var text by remember { mutableStateOf(TextFieldValue("")) }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
     TextField(
-        modifier = Modifier
-            .padding(start = 29.dp, top = 16.dp, end = 29.dp)
-            .fillMaxWidth()
-            .height(56.dp)
-            .clip(RoundedCornerShape(10.dp)),
+        modifier = textFieldModifier(),
         value = text,
-        onValueChange = {
-            text = it
-        },
-        label = { Text(text = "Confirm Password",
-            color = colorResource(R.color.login_textfield_label),
-            fontSize = 12.sp,
-            lineHeight = 16.sp) },
-        placeholder = { Text(text = "Confirm your password",
-            color = colorResource(R.color.login_textfield_text),
-            fontStyle = FontStyle.Italic,
-            fontSize = 16.sp,
-            lineHeight = 24.sp,
-            letterSpacing = 0.5.sp) },
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = colorResource(R.color.login_textfield_background),
-            textColor = colorResource(R.color.login_textfield_text),
-            focusedIndicatorColor = colorResource(R.color.login_textfield_label),
-            unfocusedIndicatorColor = Color.Transparent
-        ),
+        onValueChange = { text = it },
+        label = { labelStyle("Confirm Password") },
+        placeholder = { placeholderStyle("Confirm your password") },
+        colors = textFieldColors(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
-            val image = if (passwordVisible)
-                Icons.Filled.Visibility
-            else Icons.Filled.VisibilityOff
-
-            //Description for the visibility icon
-            val description = if (passwordVisible) "Hide password" else "Show password"
-
-            IconButton(onClick = {passwordVisible = !passwordVisible}){
-                Icon(imageVector  = image, description)
+            PasswordVisibilityToggle(passwordVisible) {
+                passwordVisible = !passwordVisible
             }
         }
     )
