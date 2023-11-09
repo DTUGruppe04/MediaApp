@@ -28,100 +28,79 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.example.mediaapp.Screen
+
+data class Movie(
+    val title: String = "",
+    val genre: String = "",
+    val description: String = "",
+    val poster: Painter,
+    val actor: String = "",
+)
 
 class MovieListLayout(private val movies: List<Movie>) {
 
-    data class Movie(
-        val title: String = "",
-        val genre: String = "",
-        val description: String = "",
-        val poster: Painter,
-        val actor: String = "",
-    )
-    @Composable
-    fun MovieList(navController: NavController){
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFF141218)),
-        ) {
-            items(movies) { movie ->
-                MovieListItem(
-                    title = movie.title,
-                    genre = movie.genre,
-                    description = movie.description,
-                    poster = movie.poster,
-                    navController = navController
+    class MovieListLayout(private val movies: List<Movie>) {
+
+        private val defaultTextStyle = TextStyle(
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            fontWeight = FontWeight(400),
+            color = Color(0xFFCAC4D0),
+            letterSpacing = 0.25.sp
+        )
+
+        private fun Modifier.composeImageModifier(): Modifier {
+            return this
+                .shadow(
+                    elevation = 4.dp,
+                    spotColor = Color(0x40000000),
+                    ambientColor = Color(0x40000000)
                 )
-                Divider(
-                    color = Color.Gray,
-                    thickness = 0.5.dp,
-                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
-                )
+                .border(1.dp, Color(0xFF000000), RoundedCornerShape(10.dp))
+                .padding(0.5.dp)
+                .width(96.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .height(142.dp)
+        }
+
+        @Composable
+        fun MovieList() {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0xFF141218)),
+            ) {
+                items(movies) { movie ->
+                    MovieListItem(movie)
+                    Divider(
+                        color = Color.Gray,
+                        thickness = 0.5.dp,
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                }
             }
         }
-    }
 
-    @Composable
-    fun MovieListItem(title: String, genre: String, description: String, poster: Painter, navController: NavController) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
-                .clickable {
-                    navController.navigate(Screen.MoviePage.route)
-                },
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = poster,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
+        @Composable
+        fun MovieListItem(movie: Movie) {
+            Row(
                 modifier = Modifier
-                    .shadow(elevation = 4.dp, spotColor = Color(0x40000000), ambientColor = Color(0x40000000))
-                    .border(width = 1.dp, color = Color(0xFF000000), shape = RoundedCornerShape(size = 10.dp))
-                    .padding(0.5.dp)
-                    .width(96.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .height(142.dp),
-            )
-            Column (
-                modifier = Modifier.padding(start = 16.dp)
-            ){
-                Text(
-                    text = title,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFCAC4D0),
-
-                        letterSpacing = 0.25.sp,
-                    )
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = movie.poster,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .composeImageModifier()
                 )
-                Text(
-                    text = genre,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFCAC4D0),
-                        letterSpacing = 0.25.sp,
-                    )
-                )
-                Text(
-                    text = description,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFCAC4D0),
-
-                        letterSpacing = 0.25.sp,
-                    )
-                )
+                Column(modifier = Modifier.padding(start = 16.dp)) {
+                    Text(text = movie.title, style = defaultTextStyle)
+                    Text(text = movie.genre, style = defaultTextStyle)
+                    Text(text = movie.description, style = defaultTextStyle)
+                }
             }
         }
     }

@@ -3,7 +3,6 @@ package com.example.mediaapp.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,18 +26,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar() {
+fun SearchBar(
+    onSearch: (TextFieldValue) -> Unit = {}
+) {
     var text by remember { mutableStateOf(TextFieldValue("")) }
     var isFocused by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
 
+    val tint = Color(0xFFCAC4D0)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,15 +61,20 @@ fun SearchBar() {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "Back arrow",
-                tint = Color(0xFFCAC4D0),
+                tint = tint,
                 modifier = Modifier
-                    .clickable {}
+                    .clickable {focusManager.clearFocus()}
                     .padding(start = 16.dp)
             )
         }
         TextField(
             value = text,
-            onValueChange = {text = it},
+            onValueChange = {
+                text = it
+                onSearch(it)
+            },
+            maxLines = 1,
+            singleLine = true,
             placeholder = {
                 Text(
                     text = "Search",
@@ -72,7 +82,7 @@ fun SearchBar() {
                         fontSize = 16.sp,
                         lineHeight = 24.sp,
                         fontWeight = FontWeight(400),
-                        color = Color(0xFFCAC4D0),
+                        color = tint,
                         letterSpacing = 0.5.sp
                     ),
                     modifier = Modifier
@@ -80,7 +90,7 @@ fun SearchBar() {
                 )
             },
             colors = TextFieldDefaults.textFieldColors(
-                textColor = Color(0xFFCAC4D0),
+                textColor = tint,
                 containerColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
@@ -92,25 +102,30 @@ fun SearchBar() {
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
                 }
+
         )
         if (isFocused) {
-            Box(modifier = Modifier.padding(end = 24.dp)){
-                Icon(
-                    imageVector = Icons.Filled.Clear,
-                    contentDescription = "Clear icon",
-                    tint = Color(0xFFCAC4D0),
-                    modifier = Modifier.clickable { text = TextFieldValue("") }  // clear the text when clicked
-                )
-            }
+            Icon(
+                imageVector = Icons.Filled.Clear,
+                contentDescription = "Clear icon",
+                tint = tint,
+                modifier = Modifier
+                    .clickable { text = TextFieldValue("") }
+                    .padding(end = 24.dp)
+            )
         } else {
-            Box(modifier = Modifier.padding(end = 24.dp))
-            {
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = "Search icon",
-                    tint = Color(0xFFCAC4D0)
-                )
-            }
+            Icon(
+                imageVector = Icons.Filled.Search,
+                contentDescription = "Search icon",
+                tint = tint,
+                modifier = Modifier.padding(end = 24.dp)
+            )
         }
     }
+}
+
+@Preview
+@Composable
+fun PreviewSearch(){
+    SearchBar()
 }
