@@ -242,7 +242,6 @@ fun PasswordVisibilityToggle(passwordVisible: Boolean, onToggle: () -> Unit) {
         Icons.Filled.Visibility
     else Icons.Filled.VisibilityOff
 
-    // Description for the visibility icon
     val description = if (passwordVisible) "Hide password" else "Show password"
 
     IconButton(onClick = onToggle) {
