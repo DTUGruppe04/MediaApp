@@ -3,7 +3,6 @@ package com.example.mediaapp.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,68 +38,65 @@ data class Movie(
 
 class MovieListLayout(private val movies: List<Movie>) {
 
-    class MovieListLayout(private val movies: List<Movie>) {
+    private val defaultTextStyle = TextStyle(
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        fontWeight = FontWeight(400),
+        color = Color(0xFFCAC4D0),
+        letterSpacing = 0.25.sp
+    )
 
-        private val defaultTextStyle = TextStyle(
-            fontSize = 14.sp,
-            lineHeight = 20.sp,
-            fontWeight = FontWeight(400),
-            color = Color(0xFFCAC4D0),
-            letterSpacing = 0.25.sp
-        )
+    private fun Modifier.composeImageModifier(): Modifier {
+        return this
+            .shadow(
+                elevation = 4.dp,
+                spotColor = Color(0x40000000),
+                ambientColor = Color(0x40000000)
+            )
+            .border(1.dp, Color(0xFF000000), RoundedCornerShape(10.dp))
+            .padding(0.5.dp)
+            .width(96.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .height(142.dp)
+    }
 
-        private fun Modifier.composeImageModifier(): Modifier {
-            return this
-                .shadow(
-                    elevation = 4.dp,
-                    spotColor = Color(0x40000000),
-                    ambientColor = Color(0x40000000)
+    @Composable
+    fun MovieList() {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF141218)),
+        ) {
+            items(movies) { movie ->
+                MovieListItem(movie)
+                Divider(
+                    color = Color.Gray,
+                    thickness = 0.5.dp,
+                    modifier = Modifier.padding(horizontal = 8.dp)
                 )
-                .border(1.dp, Color(0xFF000000), RoundedCornerShape(10.dp))
-                .padding(0.5.dp)
-                .width(96.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .height(142.dp)
-        }
-
-        @Composable
-        fun MovieList() {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color(0xFF141218)),
-            ) {
-                items(movies) { movie ->
-                    MovieListItem(movie)
-                    Divider(
-                        color = Color.Gray,
-                        thickness = 0.5.dp,
-                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                }
             }
         }
+    }
 
-        @Composable
-        fun MovieListItem(movie: Movie) {
-            Row(
+    @Composable
+    fun MovieListItem(movie: Movie) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = movie.poster,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = movie.poster,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .composeImageModifier()
-                )
-                Column(modifier = Modifier.padding(start = 16.dp)) {
-                    Text(text = movie.title, style = defaultTextStyle)
-                    Text(text = movie.genre, style = defaultTextStyle)
-                    Text(text = movie.description, style = defaultTextStyle)
-                }
+                    .composeImageModifier()
+            )
+            Column(modifier = Modifier.padding(start = 16.dp)) {
+                Text(text = movie.title, style = defaultTextStyle)
+                Text(text = movie.genre, style = defaultTextStyle)
+                Text(text = movie.description, style = defaultTextStyle)
             }
         }
     }

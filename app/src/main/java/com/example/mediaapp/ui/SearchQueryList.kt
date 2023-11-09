@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.Screen
 
-class SearchQueryLayout(private val movies: List<MovieListLayout.Movie>) {
+class SearchQueryLayout(private val movies: List<Movie>) {
 
     private val defaultTextStyle = TextStyle(
         fontSize = 14.sp,
