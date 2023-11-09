@@ -85,5 +85,4 @@ fun SearchPage(navController: NavController, drawerState: DrawerState) {
             movieLayout.MovieList(navController)
         }
     }
-
 }
