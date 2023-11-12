@@ -58,20 +58,32 @@ fun FollowingListPage(navController: NavController, drawerState: DrawerState) {
         val movies = listOf(
             Movie(
                 stringResource(R.string.grown_ups_2),
-                stringResource(R.string.action),
-                stringResource(R.string.recommended_by_david_and_4_others), painterResource(id = R.drawable.poster_avatar)),
+                listOf(stringResource(R.string.action)),
+                stringResource(R.string.recommended_by_david_and_4_others), painterResource(id = R.drawable.poster_avatar),
+                listOf(stringResource(R.string.cillian_murphy), stringResource(R.string.florence_pugh), stringResource(R.string.robert_downey_jr)),
+                stringResource(R.string.christopher_nolan),
+                stringResource(R.string.year_2023)),
             Movie(
                 stringResource(R.string.zohan),
-                stringResource(R.string.action),
-                stringResource(R.string.recommended_by_jonathan), painterResource(id = R.drawable.poster_madmax)),
+                listOf(stringResource(R.string.action)),
+                stringResource(R.string.recommended_by_jonathan), painterResource(id = R.drawable.poster_madmax),
+                listOf(stringResource(R.string.cillian_murphy), stringResource(R.string.florence_pugh), stringResource(R.string.robert_downey_jr)),
+                stringResource(R.string.christopher_nolan),
+                stringResource(R.string.year_2023)),
             Movie(
                 stringResource(R.string.borat),
-                stringResource(R.string.action),
-                stringResource(R.string.recommended_by_mikkel_and_7_others), painterResource(id = R.drawable.poster_diehard)),
+                listOf(stringResource(R.string.action)),
+                stringResource(R.string.recommended_by_mikkel_and_7_others), painterResource(id = R.drawable.poster_diehard),
+                listOf(stringResource(R.string.cillian_murphy), stringResource(R.string.florence_pugh), stringResource(R.string.robert_downey_jr)),
+                stringResource(R.string.christopher_nolan),
+                stringResource(R.string.year_2023)),
             Movie(
                 stringResource(R.string.step_brothers),
-                stringResource(R.string.action),
-                stringResource(R.string.recommended_by_valde_and_3_others), painterResource(id = R.drawable.poster_american_sniper))
+                listOf(stringResource(R.string.action)),
+                stringResource(R.string.recommended_by_valde_and_3_others), painterResource(id = R.drawable.poster_american_sniper),
+                listOf(stringResource(R.string.cillian_murphy), stringResource(R.string.florence_pugh), stringResource(R.string.robert_downey_jr)),
+                stringResource(R.string.christopher_nolan),
+                stringResource(R.string.year_2023))
         )
         val movieLayout = MovieListLayout(movies)
         movieLayout.MovieList()

@@ -59,7 +59,7 @@ class SearchQueryLayout(private val movies: List<Movie>) {
             items(movies) { movie ->
                 SearchQueryListItem(
                     title = movie.title,
-                    actor = movie.actor,
+                    actor = movie.actors.get(0),
                     description = movie.description,
                     poster = movie.poster,
                     navController = navController

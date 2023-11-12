@@ -35,21 +35,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
+import com.example.mediaapp.ui.Movie
 import com.example.mediaapp.ui.nav.TopNavBarD
 import com.example.mediaapp.ui.theme.MediaAppTheme
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
+    val oppenheimer = Movie(
+        stringResource(R.string.oppenheimer),
+        listOf(stringResource(R.string.drama,
+            R.string.bibliography,
+            R.string.historical)),
+        stringResource(R.string.oppenheimer_description),
+        painterResource(R.drawable.oppenheimerposter),
+        listOf(stringResource(R.string.cillian_murphy), stringResource(R.string.florence_pugh), stringResource(R.string.robert_downey_jr)),
+        stringResource(R.string.christopher_nolan),
+        stringResource(R.string.year_2023)
+    )
     MediaAppTheme {
         LazyColumn(
             modifier = Modifier
@@ -155,43 +170,35 @@ fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
             item {
                 //Top part
                 MovieDescription(
-                    "The story of American scientist, J Robert Oppenheimer, and his role in the development of the atomic bomb",
-                    "Oppenheimer",
+                    oppenheimer.description,
+                    oppenheimer.title,
                     "8,7/10",
-                    "2023"
+                    oppenheimer.releaseDate,
+                    oppenheimer.poster
                 )
             }
             item {
-                Detail(detail = "Director", info = "Christopher Nolan")
+                Detail(detail = "Director", infoList = listOf(oppenheimer.director))
             }
             item {
-                Detail(detail = "Director", info = "Christopher Nolan")
+                Detail(detail = "Director", infoList = oppenheimer.actors)
             }
             item {
-                Detail(detail = "Director", info = "Christopher Nolan")
+                Detail(detail = "Director", infoList = listOf(oppenheimer.director))
             }
-            item {
-                Detail(detail = "Director", info = "Christopher Nolan")
-            }
-            item {
-                Detail(detail = "Director", info = "Christopher Nolan")
-            }
-            item {
-                Detail(detail = "Director", info = "Christopher Nolan")
-            }
+
         }
     }
 }
 
 //060404
 @Composable
-fun MovieDescription(description: String, title: String, rating : String, year : String) {
+fun MovieDescription(description: String, title: String, rating : String, year : String, poster: Painter) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .background(color = Color(0xFF3F3F3F))
         .height(250.dp)) {
-        Image(painter = painterResource(
-            id = R.drawable.oppenheimerposter),
+        Image(painter = poster,
             contentDescription = "Oppenheimer poster",
             contentScale = ContentScale.FillHeight,
             modifier = Modifier
@@ -302,7 +309,7 @@ fun TagBox(shape : Shape, tag : String) {
 }
 
 @Composable
-fun Detail(detail : String, info : String) {
+fun Detail(detail : String, infoList : List<String>) {
     Box(modifier = Modifier
         .padding(top = 20.dp)
         .padding(start = 20.dp)) {
@@ -310,10 +317,13 @@ fun Detail(detail : String, info : String) {
             fontWeight = FontWeight.Bold,
             color = Color.White)
     }
-    Box(modifier = Modifier
-        .padding(top = 5.dp)
-        .padding(start = 20.dp)) {
-        Text(text = info,
-            color = Color.White)
+    for (info in infoList) {
+        Box(modifier = Modifier
+            .padding(top = 5.dp)
+            .padding(start = 20.dp)) {
+            Text(text = info,
+                color = Color.White)
+        }
     }
+
 }

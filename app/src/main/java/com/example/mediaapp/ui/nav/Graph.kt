@@ -22,6 +22,7 @@ import com.example.mediaapp.screens.SearchPage
 import com.example.mediaapp.screens.SettingpageLayout
 import com.example.mediaapp.screens.YoufollowPageLayout
 import com.example.mediaapp.screens.YourfollowersPageLayout
+import com.example.mediaapp.ui.Movie
 
 //Main NavigationGraph for the APP
 @OptIn(ExperimentalMaterial3Api::class)

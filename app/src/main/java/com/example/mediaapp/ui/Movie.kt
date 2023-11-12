@@ -4,8 +4,12 @@ import androidx.compose.ui.graphics.painter.Painter
 
 data class Movie(
     val title: String = "",
-    val genre: String = "",
+    val genres: List<String>,
     val description: String = "",
     val poster: Painter,
-    val actor: String = "",
+    var actors: List<String>,
+    var director: String = "",
+    var releaseDate: String = "",
 )
+
+

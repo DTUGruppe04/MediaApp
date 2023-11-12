@@ -87,7 +87,7 @@ class MovieListLayout(private val movies: List<Movie>) {
             )
             Column(modifier = Modifier.padding(start = 16.dp)) {
                 Text(text = movie.title, style = defaultTextStyle)
-                Text(text = movie.genre, style = defaultTextStyle)
+                Text(text = movie.genres.get(0), style = defaultTextStyle)
                 Text(text = movie.description, style = defaultTextStyle)
             }
         }
