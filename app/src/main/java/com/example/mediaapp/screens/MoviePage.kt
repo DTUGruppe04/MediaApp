@@ -44,121 +44,141 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.ui.nav.TopNavBarD
+import com.example.mediaapp.ui.theme.MediaAppTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
-    LazyColumn(modifier = Modifier
-        .fillMaxSize()
-        .padding(bottom = 80.dp)
-        .background(color = Color(0xFF2E2E2E))) {
-        item {
-            TopNavBarD(navController = navController, drawerState = drawerState)
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)) {
-                Image(painter = painterResource(R.drawable.oppenheimer2),
-                    contentDescription = "Oppenheimer",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop)
-                Row (
+    MediaAppTheme {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 80.dp)
+                .background(color = Color(0xFF2E2E2E))
+        ) {
+            item {
+                TopNavBarD(navController = navController, drawerState = drawerState)
+                Box(
                     modifier = Modifier
-                        .padding(top = 20.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .fillMaxWidth()
+                        .height(200.dp)
                 ) {
-                    Box(modifier = Modifier
-                        .padding(start = 8.dp)
-                        .height(32.dp)
-                        .width(132.dp)
-                        .wrapContentWidth()
-                        .clip(shape = RoundedCornerShape(8.dp))
-                        .background(color = Color(0xFF1D1B20))
+                    Image(
+                        painter = painterResource(R.drawable.oppenheimer2),
+                        contentDescription = "Oppenheimer",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                    Row(
+                        modifier = Modifier
+                            .padding(top = 20.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        IconButton(
-                            onClick = { /*TODO*/ },
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .padding(start = 8.dp)
+                                .height(32.dp)
+                                .width(132.dp)
+                                .wrapContentWidth()
+                                .clip(shape = RoundedCornerShape(8.dp))
+                                .background(color = Color(0xFF1D1B20))
                         ) {
-                            Row (
-                                verticalAlignment = Alignment.CenterVertically
+                            IconButton(
+                                onClick = { /*TODO*/ },
+                                modifier = Modifier
+                                    .fillMaxWidth()
                             ) {
-                                Icon(imageVector = Icons.Outlined.VisibilityOff,
-                                    contentDescription = "N/A",
-                                    tint = colorResource(R.color.white),
-                                    modifier = Modifier
-                                        .padding(start = 8.dp)
-                                        .size(18.dp)
-                                )
-                                Text(text = "Not Watched",
-                                    color = Color.White,
-                                    fontSize = 14.sp,
-                                    modifier = Modifier
-                                        .padding(start = 8.dp, end = 8.dp)
-                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.VisibilityOff,
+                                        contentDescription = "N/A",
+                                        tint = colorResource(R.color.white),
+                                        modifier = Modifier
+                                            .padding(start = 8.dp)
+                                            .size(18.dp)
+                                    )
+                                    Text(
+                                        text = "Not Watched",
+                                        color = Color.White,
+                                        fontSize = 14.sp,
+                                        modifier = Modifier
+                                            .padding(start = 8.dp, end = 8.dp)
+                                    )
+                                }
+
+                            }
+                        }
+                        Box(
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .height(32.dp)
+                                .width(126.dp)
+                                .clip(shape = RoundedCornerShape(8.dp))
+                                .background(color = Color(0xff4a4458))
+                        ) {
+                            IconButton(
+                                onClick = { /*TODO*/ },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Recommend,
+                                        contentDescription = "N/A",
+                                        tint = colorResource(R.color.white),
+                                        modifier = Modifier
+                                            .padding(start = 8.dp)
+                                            .size(18.dp)
+                                    )
+                                    Text(
+                                        text = "Recommend",
+                                        color = Color.White,
+                                        fontSize = 14.sp,
+                                        modifier = Modifier
+                                            .padding(start = 8.dp, end = 8.dp)
+                                    )
+                                }
+
                             }
 
                         }
-                    }
-                    Box(modifier = Modifier
-                        .padding(end = 8.dp)
-                        .height(32.dp)
-                        .width(126.dp)
-                        .clip(shape = RoundedCornerShape(8.dp))
-                        .background(color = Color(0xff4a4458))
-                    ) {
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ) {
-                            Row (
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(imageVector = Icons.Outlined.Recommend,
-                                    contentDescription = "N/A",
-                                    tint = colorResource(R.color.white),
-                                    modifier = Modifier
-                                        .padding(start = 8.dp)
-                                        .size(18.dp)
-                                )
-                                Text(text = "Recommend",
-                                    color = Color.White,
-                                    fontSize = 14.sp,
-                                    modifier = Modifier
-                                        .padding(start = 8.dp, end = 8.dp)
-                                )
-                            }
-
-                        }
-
                     }
                 }
-            }
 
-        }
-        item {
-            //Top part
-            MovieDescription("The story of American scientist, J Robert Oppenheimer, and his role in the development of the atomic bomb", "Oppenheimer", "8,7/10", "2023")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
+            }
+            item {
+                //Top part
+                MovieDescription(
+                    "The story of American scientist, J Robert Oppenheimer, and his role in the development of the atomic bomb",
+                    "Oppenheimer",
+                    "8,7/10",
+                    "2023"
+                )
+            }
+            item {
+                Detail(detail = "Director", info = "Christopher Nolan")
+            }
+            item {
+                Detail(detail = "Director", info = "Christopher Nolan")
+            }
+            item {
+                Detail(detail = "Director", info = "Christopher Nolan")
+            }
+            item {
+                Detail(detail = "Director", info = "Christopher Nolan")
+            }
+            item {
+                Detail(detail = "Director", info = "Christopher Nolan")
+            }
+            item {
+                Detail(detail = "Director", info = "Christopher Nolan")
+            }
         }
     }
 }

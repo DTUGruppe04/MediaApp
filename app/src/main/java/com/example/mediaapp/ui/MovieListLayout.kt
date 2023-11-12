@@ -28,14 +28,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-data class Movie(
-    val title: String = "",
-    val genre: String = "",
-    val description: String = "",
-    val poster: Painter,
-    val actor: String = "",
-)
-
 class MovieListLayout(private val movies: List<Movie>) {
 
     private val defaultTextStyle = TextStyle(
