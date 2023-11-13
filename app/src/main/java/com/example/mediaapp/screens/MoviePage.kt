@@ -35,143 +35,170 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
+import com.example.mediaapp.ui.Movie
 import com.example.mediaapp.ui.nav.TopNavBarD
+import com.example.mediaapp.ui.theme.MediaAppTheme
+import com.example.mediaapp.ui.theme.md_theme_dark_background
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
-    LazyColumn(modifier = Modifier
-        .fillMaxSize()
-        .padding(bottom = 80.dp)
-        .background(color = Color(0xFF2E2E2E))) {
-        item {
-            TopNavBarD(navController = navController, drawerState = drawerState)
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)) {
-                Image(painter = painterResource(R.drawable.oppenheimer2),
-                    contentDescription = "Oppenheimer",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop)
-                Row (
+    val oppenheimer = Movie(
+        stringResource(R.string.oppenheimer),
+        listOf(stringResource(R.string.drama,
+            R.string.bibliography,
+            R.string.historical)),
+        stringResource(R.string.oppenheimer_description),
+        painterResource(R.drawable.oppenheimerposter),
+        listOf(stringResource(R.string.cillian_murphy), stringResource(R.string.florence_pugh), stringResource(R.string.robert_downey_jr)),
+        stringResource(R.string.christopher_nolan),
+        stringResource(R.string.year_2023),
+        painterResource(R.drawable.oppenheimer2)
+    )
+
+    MediaAppTheme {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 80.dp)
+                .background(md_theme_dark_background)
+        ) {
+            item {
+                TopNavBarD(navController = navController, drawerState = drawerState)
+                Box(
                     modifier = Modifier
-                        .padding(top = 20.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .fillMaxWidth()
+                        .height(200.dp)
                 ) {
-                    Box(modifier = Modifier
-                        .padding(start = 8.dp)
-                        .height(32.dp)
-                        .width(132.dp)
-                        .wrapContentWidth()
-                        .clip(shape = RoundedCornerShape(8.dp))
-                        .background(color = Color(0xFF1D1B20))
+                    Image(
+                        painter = painterResource(R.drawable.oppenheimer2),
+                        contentDescription = "Oppenheimer",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                    Row(
+                        modifier = Modifier
+                            .padding(top = 20.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        IconButton(
-                            onClick = { /*TODO*/ },
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .padding(start = 8.dp)
+                                .height(32.dp)
+                                .width(132.dp)
+                                .wrapContentWidth()
+                                .clip(shape = RoundedCornerShape(8.dp))
+                                .background(color = Color(0xFF1D1B20))
                         ) {
-                            Row (
-                                verticalAlignment = Alignment.CenterVertically
+                            IconButton(
+                                onClick = { /*TODO*/ },
+                                modifier = Modifier
+                                    .fillMaxWidth()
                             ) {
-                                Icon(imageVector = Icons.Outlined.VisibilityOff,
-                                    contentDescription = "N/A",
-                                    tint = colorResource(R.color.white),
-                                    modifier = Modifier
-                                        .padding(start = 8.dp)
-                                        .size(18.dp)
-                                )
-                                Text(text = "Not Watched",
-                                    color = Color.White,
-                                    fontSize = 14.sp,
-                                    modifier = Modifier
-                                        .padding(start = 8.dp, end = 8.dp)
-                                )
-                            }
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.VisibilityOff,
+                                        contentDescription = "N/A",
+                                        tint = colorResource(R.color.white),
+                                        modifier = Modifier
+                                            .padding(start = 8.dp)
+                                            .size(18.dp)
+                                    )
+                                    Text(
+                                        text = "Not Watched",
+                                        color = Color.White,
+                                        fontSize = 14.sp,
+                                        modifier = Modifier
+                                            .padding(start = 8.dp, end = 8.dp)
+                                    )
+                                }
 
+                            }
                         }
-                    }
-                    Box(modifier = Modifier
-                        .padding(end = 8.dp)
-                        .height(32.dp)
-                        .width(126.dp)
-                        .clip(shape = RoundedCornerShape(8.dp))
-                        .background(color = Color(0xff4a4458))
-                    ) {
-                        IconButton(
-                            onClick = { /*TODO*/ },
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .padding(end = 8.dp)
+                                .height(32.dp)
+                                .width(126.dp)
+                                .clip(shape = RoundedCornerShape(8.dp))
+                                .background(color = Color(0xff4a4458))
                         ) {
-                            Row (
-                                verticalAlignment = Alignment.CenterVertically
+                            IconButton(
+                                onClick = { /*TODO*/ },
+                                modifier = Modifier
+                                    .fillMaxWidth()
                             ) {
-                                Icon(imageVector = Icons.Outlined.Recommend,
-                                    contentDescription = "N/A",
-                                    tint = colorResource(R.color.white),
-                                    modifier = Modifier
-                                        .padding(start = 8.dp)
-                                        .size(18.dp)
-                                )
-                                Text(text = "Recommend",
-                                    color = Color.White,
-                                    fontSize = 14.sp,
-                                    modifier = Modifier
-                                        .padding(start = 8.dp, end = 8.dp)
-                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Recommend,
+                                        contentDescription = "N/A",
+                                        tint = colorResource(R.color.white),
+                                        modifier = Modifier
+                                            .padding(start = 8.dp)
+                                            .size(18.dp)
+                                    )
+                                    Text(
+                                        text = "Recommend",
+                                        color = Color.White,
+                                        fontSize = 14.sp,
+                                        modifier = Modifier
+                                            .padding(start = 8.dp, end = 8.dp)
+                                    )
+                                }
+
                             }
-
                         }
-
                     }
                 }
             }
+            item {
+                //Top part
+                MovieDescription(
+                    oppenheimer.description,
+                    oppenheimer.title,
+                    "8,7/10",
+                    oppenheimer.releaseDate,
+                    oppenheimer.poster
+                )
+            }
+            item {
+                Detail(detail = "Director", infoList = listOf(oppenheimer.director))
+            }
+            item {
+                Detail(detail = "Actors", infoList = oppenheimer.actors)
+            }
+            item {
+                Detail(detail = "Director", infoList = listOf(oppenheimer.director))
+            }
 
-        }
-        item {
-            //Top part
-            MovieDescription("The story of American scientist, J Robert Oppenheimer, and his role in the development of the atomic bomb", "Oppenheimer", "8,7/10", "2023")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
-        }
-        item {
-            Detail(detail = "Director", info = "Christopher Nolan")
         }
     }
 }
 
 //060404
 @Composable
-fun MovieDescription(description: String, title: String, rating : String, year : String) {
+fun MovieDescription(description: String, title: String, rating : String, year : String, poster: Painter) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .background(color = Color(0xFF3F3F3F))
         .height(250.dp)) {
-        Image(painter = painterResource(
-            id = R.drawable.oppenheimerposter),
+        Image(painter = poster,
             contentDescription = "Oppenheimer poster",
             contentScale = ContentScale.FillHeight,
             modifier = Modifier
@@ -282,7 +309,7 @@ fun TagBox(shape : Shape, tag : String) {
 }
 
 @Composable
-fun Detail(detail : String, info : String) {
+fun Detail(detail : String, infoList : List<String>) {
     Box(modifier = Modifier
         .padding(top = 20.dp)
         .padding(start = 20.dp)) {
@@ -290,10 +317,13 @@ fun Detail(detail : String, info : String) {
             fontWeight = FontWeight.Bold,
             color = Color.White)
     }
-    Box(modifier = Modifier
-        .padding(top = 5.dp)
-        .padding(start = 20.dp)) {
-        Text(text = info,
-            color = Color.White)
+    for (info in infoList) {
+        Box(modifier = Modifier
+            .padding(top = 5.dp)
+            .padding(start = 20.dp)) {
+            Text(text = info,
+                color = Color.White)
+        }
     }
+
 }
