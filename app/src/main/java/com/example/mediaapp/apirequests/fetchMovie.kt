@@ -1,6 +1,6 @@
 package com.example.mediaapp.apirequests
 
-data class popularMovie(
+data class TMDBMovie(
     val adult: Boolean,
     val backdrop_path: String,
     val genre_ids: List<Int>,
@@ -16,4 +16,11 @@ data class popularMovie(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int
+)
+
+data class TMDBMovieResponse(
+    val page: Int,
+    val results: List<TMDBMovie>,
+    val total_pages: Int,
+    val total_results: Int
 )
