@@ -48,7 +48,7 @@ import com.example.mediaapp.R
 import com.example.mediaapp.ui.Movie
 import com.example.mediaapp.ui.nav.TopNavBarD
 import com.example.mediaapp.ui.theme.MediaAppTheme
-
+import com.example.mediaapp.ui.theme.md_theme_dark_background
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,14 +63,16 @@ fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
         painterResource(R.drawable.oppenheimerposter),
         listOf(stringResource(R.string.cillian_murphy), stringResource(R.string.florence_pugh), stringResource(R.string.robert_downey_jr)),
         stringResource(R.string.christopher_nolan),
-        stringResource(R.string.year_2023)
+        stringResource(R.string.year_2023),
+        painterResource(R.drawable.oppenheimer2)
     )
+
     MediaAppTheme {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 80.dp)
-                .background(color = Color(0xFF2E2E2E))
+                .background(md_theme_dark_background)
         ) {
             item {
                 TopNavBarD(navController = navController, drawerState = drawerState)
@@ -161,11 +163,9 @@ fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
                                 }
 
                             }
-
                         }
                     }
                 }
-
             }
             item {
                 //Top part
@@ -181,7 +181,7 @@ fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
                 Detail(detail = "Director", infoList = listOf(oppenheimer.director))
             }
             item {
-                Detail(detail = "Director", infoList = oppenheimer.actors)
+                Detail(detail = "Actors", infoList = oppenheimer.actors)
             }
             item {
                 Detail(detail = "Director", infoList = listOf(oppenheimer.director))

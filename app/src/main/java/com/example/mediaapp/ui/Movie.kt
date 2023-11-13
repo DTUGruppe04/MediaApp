@@ -10,6 +10,7 @@ data class Movie(
     var actors: List<String>,
     var director: String = "",
     var releaseDate: String = "",
+    val topImage: Painter,
 )
 
 
