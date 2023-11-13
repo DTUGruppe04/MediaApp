@@ -15,6 +15,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -144,7 +145,8 @@ class TabsAndFilters(
                         shape = RoundedCornerShape(
                             topStart = 100.dp,
                             topEnd = 100.dp,
-                        ))
+                        )
+                    )
                 else
                     Modifier
                         .padding(start = 5.dp, end = 5.dp, top = 4.dp)
@@ -204,14 +206,7 @@ class TabsAndFilters(
         ) {
             Text(
                 text = label,
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 20.sp,
-                    fontWeight = FontWeight(500),
-                    color = textColor,
-                    textAlign = TextAlign.Center,
-                    letterSpacing = 0.1.sp,
-                )
+                style = MaterialTheme.typography.labelLarge
             )
             Icon(
                 Icons.Filled.ArrowDropDown,
@@ -226,8 +221,12 @@ class TabsAndFilters(
     }
     @Composable
     private fun getDropdownColors(expanded: Boolean): Pair<Color, Color> {
-        val backgroundColor = animateColorAsState(if (expanded) Color(0xFF4A4458) else Color(0x29CAC4D0)).value
-        val textColor = animateColorAsState(if (expanded) Color(0xFFE8DEF8) else Color(0xFFCAC4D0)).value
+        val backgroundColor = animateColorAsState(if (expanded) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+            label = ""
+        ).value
+        val textColor = animateColorAsState(if (expanded) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+            label = ""
+        ).value
         return Pair(backgroundColor, textColor)
     }
 }
