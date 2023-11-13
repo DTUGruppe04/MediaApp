@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavigationGraphLogin(navController = navController)
                     scope.launch {
-                        val popularMovies = APIHandler().getPopularMovieData()
+                        val popularMovies = APIHandler().getPopularMovieData("day")
                         if (popularMovies != null) {
                             Log.d("API", popularMovies.results[1].title)
                             Log.d("API", popularMovies.results[1].genre_ids[0].toString())

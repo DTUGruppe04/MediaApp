@@ -1,6 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -9,6 +8,7 @@ plugins {
 android {
     namespace = "com.example.mediaapp"
     compileSdk = 34
+    //android.buildFeatures.buildConfig = true
 
     defaultConfig {
         applicationId = "com.example.mediaapp"
@@ -25,11 +25,12 @@ android {
 
     buildTypes {
         /*
-        val key: String = gradleLocalProperties(rootDir).getProperty("tmdb_api_key")
+        val key: String = gradleLocalProperties(rootDir).getProperty("key")
 
         getByName("debug") {
-            buildConfigField("String", "tmdb_api_key", key)
+            buildConfigField("String", "key", key)
         }
+
          */
         release {
             isMinifyEnabled = false
@@ -45,6 +46,7 @@ android {
     }
     buildFeatures {
         compose = true
+
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
