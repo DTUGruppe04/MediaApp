@@ -1,6 +1,7 @@
 package com.example.mediaapp.ui.nav
 
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -22,6 +23,7 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -225,7 +227,7 @@ fun TopNavBarC(navController: NavController, drawerState: DrawerState, modifier 
     val containerColor = colorResource(R.color.top_navbar_container_color)
     val contentColor = colorResource(R.color.top_navbar_text_color)
     val iconColor = colorResource(R.color.top_navbar_icon_color)
-    val buttonColor = colorResource(R.color.indicator_color_navbar)
+    val buttonColor = MaterialTheme.colorScheme.secondaryContainer
     val scope = rememberCoroutineScope()
 
     TopAppBar(
@@ -255,8 +257,12 @@ fun TopNavBarC(navController: NavController, drawerState: DrawerState, modifier 
                 colors = ButtonDefaults.buttonColors(
                     containerColor = buttonColor
                 ),
+                modifier = modifier.padding(end = 6.dp)
             ) {
-                Text(stringResource(R.string.edit))
+                Text(stringResource(R.string.edit),
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    style = MaterialTheme.typography.labelLarge
+                )
             }
         }
     )
