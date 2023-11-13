@@ -33,11 +33,14 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavigationGraphLogin(navController = navController)
                     scope.launch {
-                        val popularMovies = APIHandler().getPopularMovieData("day")
-                        if (popularMovies != null) {
-                            Log.d("API", popularMovies.results[1].title)
-                            Log.d("API", popularMovies.results[1].genre_ids[0].toString())
-                            Log.d("API", popularMovies.results[1].poster_path)
+                        //val movie = APIHandler().getPopularMovie("day")
+                        //val movie = APIHandler().searchForMovie("Bluebittle")
+                        //val movie = APIHandler().getMovieDetail("872585")
+                        //val movie = APIHandler().getSimilarMovies("872585")
+                        val movie = APIHandler().getMovieReviews("872585")
+                        if (movie != null) {
+                            Log.d("API", movie.results[0].author)
+                            Log.d("API", movie.results[0].content)
                         } else {
                             Log.d("API", "Returned Null")
                         }
