@@ -1,6 +1,6 @@
 package com.example.mediaapp.apirequests
 
-//Data Structure for Search, getPopularMovie, getSimilarMovies
+//Data Structure for Search, getPopularMovie, getSimilarMovies, getMovieSuggestions
 data class TMDBMovie(
     val adult: Boolean,
     val backdrop_path: String,
@@ -104,6 +104,77 @@ data class AuthorDetails(
     val rating: Double?,
     val username: String
 )
+
+// Data structure for getMovieCredits
+
+data class TMDBMovieCredits(
+    val cast: List<Cast>,
+    val crew: List<Crew>,
+    val id: Int
+)
+
+data class Crew(
+    val adult: Boolean,
+    val credit_id: String,
+    val department: String,
+    val gender: Int,
+    val id: Int,
+    val job: String,
+    val known_for_department: String,
+    val name: String,
+    val original_name: String,
+    val popularity: Double,
+    val profile_path: String
+)
+
+data class Cast(
+    val adult: Boolean,
+    val cast_id: Int,
+    val character: String,
+    val credit_id: String,
+    val gender: Int,
+    val id: Int,
+    val known_for_department: String,
+    val name: String,
+    val order: Int,
+    val original_name: String,
+    val popularity: Double,
+    val profile_path: String
+)
+
+// Data Structure for getUpcomingMovies and getNowPlayingMovies
+data class TMDBUpcomingMovies(
+    val dates: Dates,
+    val page: Int,
+    val results: List<Result2>,
+    val total_pages: Int,
+    val total_results: Int
+)
+
+data class Dates(
+    val maximum: String,
+    val minimum: String
+)
+
+data class Result2(
+    val adult: Boolean,
+    val backdrop_path: String,
+    val genre_ids: List<Int>,
+    val id: Int,
+    val original_language: String,
+    val original_title: String,
+    val overview: String,
+    val popularity: Double,
+    val poster_path: String,
+    val release_date: String,
+    val title: String,
+    val video: Boolean,
+    val vote_average: Double,
+    val vote_count: Int
+)
+
+
+/*
 
 // getWhereToWatchMovie()
 // This Data Structure isn't done yet.
@@ -468,3 +539,5 @@ data class AR(
     val link: String,
     val rent: List<Rent>
 )
+
+ */

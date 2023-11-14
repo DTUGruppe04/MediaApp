@@ -40,9 +40,48 @@ interface TMDBApi {
         @Query("page") page: Int
     ) : Call<TMDBMovieReview>
 
-    // https://api.themoviedb.org/3/movie/9445/watch/providers?api_key=4d8b26c7e474409c5926dca8433a8262
+    //https://api.themoviedb.org/3/movie/872585/credits?language=en-US&api_key=4d8b26c7e474409c5926dca8433a8262
+    @GET("movie/{id}/credits?api_key=4d8b26c7e474409c5926dca8433a8262")
+    fun getMovieCredits(
+        @Path("id") id: String,
+        @Query("language") language: String
+    ) : Call<TMDBMovieCredits>
 
+
+    //https://api.themoviedb.org/3/movie/872585/recommendations?language=en-US&page=1&api_key=4d8b26c7e474409c5926dca8433a8262
+    @GET("movie/{id}/recommendations?api_key=4d8b26c7e474409c5926dca8433a8262")
+    fun getMovieSuggestions(
+        @Path("id") id: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ) : Call<TMDBMovieResponse>
+
+
+    //https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&api_key=4d8b26c7e474409c5926dca8433a8262
+    @GET("movie/top_rated?api_key=4d8b26c7e474409c5926dca8433a8262")
+    fun getTopRatedMovies(
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ) : Call<TMDBMovieResponse>
+
+    //https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&api_key=4d8b26c7e474409c5926dca8433a8262
+    @GET("movie/upcoming?api_key=4d8b26c7e474409c5926dca8433a8262")
+    fun getUpcomingMovies(
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ) : Call<TMDBUpcomingMovies>
+
+    //https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=4d8b26c7e474409c5926dca8433a8262
+    @GET("movie/now_playing?api_key=4d8b26c7e474409c5926dca8433a8262")
+    fun getNowPlayingMovies(
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ) : Call<TMDBUpcomingMovies>
+
+
+    /*
+    // https://api.themoviedb.org/3/movie/9445/watch/providers?api_key=4d8b26c7e474409c5926dca8433a8262
     @GET("movie/{id}/watch/providers?api_key=4d8b26c7e474409c5926dca8433a8262")
     fun getWhereToWatchMovie(@Path("id") id: String) : Call<TMDBWhereToWatchMovie>
-
+     */
 }

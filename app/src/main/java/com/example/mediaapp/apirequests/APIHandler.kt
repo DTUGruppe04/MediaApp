@@ -101,7 +101,8 @@ class APIHandler {
      * getSimilarMovies
      *
      * This function retrieves similar movies as JSON and serialize
-     * the JSON into usable Data Objects.
+     * the JSON into usable Data Objects. The API uses keywords as genres, cast and directors to determine
+     * similar movies.
      *
      * @param id (Required) The id of the specific movie
      * @param language (Optional) Specifies the language for the movie data. If not provided,
@@ -141,7 +142,7 @@ class APIHandler {
      * If return is null something went wrong
      */
     suspend fun getMovieReviews(id: String, language: String = "en-US", page: Int = 1) : TMDBMovieReview? {
-        try{
+        try {
             val response = api.getMovieReviews(id, language, page).awaitResponse()
             if (response.isSuccessful) {
                 var data = response.body()
@@ -156,6 +157,158 @@ class APIHandler {
         }
     }
 
+    /**
+     * getMovieCredits
+     *
+     * This function retrieves credits for a specific movie as JSON and serialize
+     * the JSON into usable Data Objects.
+     *
+     * @param id (Required) The id of the specific movie
+     * @param language (Optional) Specifies the language for the movie data. If not provided,
+     * the default language is 'en-US'.
+     *
+     * @return Returns a Data Objects containing credits for a specific movie.
+     * If return is null something went wrong
+     */
+    suspend fun getMovieCredits(id: String, language: String = "en-US") : TMDBMovieCredits? {
+        try {
+            val response = api.getMovieCredits(id, language).awaitResponse()
+            if (response.isSuccessful) {
+                var data = response.body()
+                if (data != null) {
+                    return data
+                }
+            }
+            return null
+        } catch (e: Exception) {
+            Log.e("APIError", e.toString())
+            return null
+        }
+    }
+
+    /**
+     * getMovieSuggestions
+     *
+     * This function retrieves suggestions based on a specific movie as JSON and serialize
+     * the JSON into usable Data Objects. The suggestions are based on user ratings and favorite
+     * data from users.
+     *
+     * @param id (Required) The id of the specific movie
+     * @param language (Optional) Specifies the language for the movie data. If not provided,
+     * the default language is 'en-US'.
+     * @param page (Optional) Looking for new data of increase int page. If not provided,
+     * the default int page is 1
+     *
+     * @return Returns a Data Objects containing suggestions of movies.
+     * If return is null something went wrong
+     */
+    suspend fun getMovieSuggestions(id: String, language: String = "en-US", page: Int = 1) : TMDBMovieResponse? {
+        try {
+            val response = api.getMovieSuggestions(id, language, page).awaitResponse()
+            if (response.isSuccessful) {
+                var data = response.body()
+                if (data != null && data.total_results != 0) {
+                    return data
+                }
+            }
+            return null
+        } catch (e: Exception) {
+            Log.e("APIError", e.toString())
+            return null
+        }
+    }
+
+    /**
+     * getTopRatedMovies
+     *
+     * This function retrieves top rated movies as JSON and serialize
+     * the JSON into usable Data Objects.
+     *
+     * @param language (Optional) Specifies the language for the movie data. If not provided,
+     * the default language is 'en-US'.
+     * @param page (Optional) Looking for new data of increase int page. If not provided,
+     * the default int page is 1
+     *
+     * @return Returns a Data Objects containing top rated movies.
+     * If return is null something went wrong
+     */
+    suspend fun getTopRatedMovies(language: String = "en-US", page: Int = 1) : TMDBMovieResponse? {
+        try {
+            val response = api.getTopRatedMovies(language, page).awaitResponse()
+            if (response.isSuccessful) {
+                var data = response.body()
+                if (data != null && data.total_results != 0) {
+                    return data
+                }
+            }
+            return null
+        } catch (e: Exception) {
+            Log.e("APIError", e.toString())
+            return null
+        }
+    }
+
+    /**
+     * getUpcomingMovies
+     *
+     * This function retrieves top rated movies as JSON and serialize
+     * the JSON into usable Data Objects.
+     *
+     * @param language (Optional) Specifies the language for the movie data. If not provided,
+     * the default language is 'en-US'.
+     * @param page (Optional) Looking for new data of increase int page. If not provided,
+     * the default int page is 1
+     *
+     * @return Returns a Data Objects containing upcoming movies.
+     * If return is null something went wrong
+     */
+    suspend fun getUpcomingMovies(language: String = "en-US", page: Int = 1) : TMDBUpcomingMovies? {
+        try {
+            val response = api.getUpcomingMovies(language, page).awaitResponse()
+            if (response.isSuccessful) {
+                var data = response.body()
+                if (data != null && data.total_results != 0) {
+                    return data
+                }
+            }
+            return null
+        } catch (e: Exception) {
+            Log.e("APIError", e.toString())
+            return null
+        }
+    }
+
+    /**
+     * getNowPlayingMovies
+     *
+     * This function retrieves movies currently playing in theatres as JSON and serialize
+     * the JSON into usable Data Objects.
+     *
+     * @param language (Optional) Specifies the language for the movie data. If not provided,
+     * the default language is 'en-US'.
+     * @param page (Optional) Looking for new data of increase int page. If not provided,
+     * the default int page is 1
+     *
+     * @return Returns a Data Objects containing movies currently playing in theatres.
+     * If return is null something went wrong
+     */
+    suspend fun getNowPlayingMovies(language: String = "en-US", page: Int = 1) : TMDBUpcomingMovies? {
+        try {
+            val response = api.getNowPlayingMovies(language, page).awaitResponse()
+            if (response.isSuccessful) {
+                var data = response.body()
+                if (data != null && data.total_results != 0) {
+                    return data
+                }
+            }
+            return null
+        } catch (e: Exception) {
+            Log.e("APIError", e.toString())
+            return null
+        }
+    }
+
+    /*
     //Function isnt done yet
     suspend fun getWhereToWatchMovie(id: String) : TMDBWhereToWatchMovie? {
         try {
@@ -172,5 +325,6 @@ class APIHandler {
             return null
         }
     }
+     */
 
 }

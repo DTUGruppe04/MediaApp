@@ -37,12 +37,17 @@ class MainActivity : ComponentActivity() {
                         //val movie = APIHandler().searchForMovie("Bluebittle")
                         //val movie = APIHandler().getMovieDetail("872585")
                         //val movie = APIHandler().getSimilarMovies("872585")
-                        val movie = APIHandler().getMovieReviews("872585")
+                        //val movie = APIHandler().getMovieReviews("872585")
+                        //val movie = APIHandler().getMovieCredits("872585")
+                        //val movie = APIHandler().getMovieSuggestions("872585")
+                        //val movie = APIHandler().getTopRatedMovies()
+                        //val movie = APIHandler().getUpcomingMovies()
+                        val movie = APIHandler().getNowPlayingMovies()
                         if (movie != null) {
-                            Log.d("API", movie.results[0].author)
-                            Log.d("API", movie.results[0].content)
+                            Log.d("API", movie.results[0].title)
+                            Log.d("API", movie.results[0].poster_path)
                         } else {
-                            Log.d("API", "Returned Null")
+                            Log.e("APIError", "Returned Null")
                         }
                     }
 
