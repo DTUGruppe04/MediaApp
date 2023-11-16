@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -24,14 +22,6 @@ android {
     }
 
     buildTypes {
-        /*
-        val key: String = gradleLocalProperties(rootDir).getProperty("key")
-
-        getByName("debug") {
-            buildConfigField("String", "key", key)
-        }
-
-         */
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

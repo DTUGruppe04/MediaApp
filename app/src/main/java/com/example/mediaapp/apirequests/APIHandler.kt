@@ -151,7 +151,7 @@ class APIHandler {
             val response = api.getMovieReviews(id, language, page).awaitResponse()
             if (response.isSuccessful) {
                 var data = response.body()
-                if (data != null) {
+                if (data != null && data.total_results != 0) {
                     return data
                 }
             }
