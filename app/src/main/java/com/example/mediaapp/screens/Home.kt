@@ -23,6 +23,7 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -42,199 +43,284 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
+import com.example.mediaapp.ui.theme.MediaAppTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
     val scope = rememberCoroutineScope()
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 70.dp)
-    ){
-        item {
-            //This is the uppermost part of the main page
-            Box() {
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                ) {
-                    Image(painter = painterResource(R.drawable.barbie),
-                        contentDescription = "barbie",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop)
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(60.dp)
-                        .background(colorResource(R.color.box_separation_color))) {
-                        Row {
-                            Column {
-                                Text(
-                                    stringResource(R.string.main_page_text1),
-                                    color = Color.White,
-                                    fontSize = 16.sp,
-                                    modifier = Modifier.padding(start = 120.dp, top = 5.dp)
-                                )
-                                Text(
-                                    stringResource(R.string.main_page_text2),
-                                    color = Color.White,
-                                    fontSize = 10.sp,
-                                    modifier = Modifier.padding(start = 120.dp)
+    MediaAppTheme {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 70.dp)
+        ) {
+            item {
+                //This is the uppermost part of the main page
+                Box() {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.barbie),
+                            contentDescription = "barbie",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(60.dp)
+                                .background(MaterialTheme.colorScheme.surface)
+                        ) {
+                            Row {
+                                Column {
+                                    Text(
+                                        stringResource(R.string.main_page_text1),
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        modifier = Modifier.padding(start = 120.dp, top = 5.dp)
+                                    )
+                                    Text(
+                                        stringResource(R.string.main_page_text2),
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        style = MaterialTheme.typography.labelMedium,
+                                        modifier = Modifier.padding(start = 120.dp)
+                                    )
+                                }
+                                Spacer(Modifier.size(75.dp))
+                                Image(
+                                    painter = painterResource(R.drawable.bookmark),
+                                    contentDescription = "bookmark",
+                                    modifier = Modifier
+                                        .padding(5.dp)
+                                        .size(33.dp)
                                 )
                             }
-                            Spacer(Modifier.size(75.dp))
-                            Image(painter = painterResource(R.drawable.bookmark),
-                                contentDescription = "bookmark",
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .size(33.dp))
                         }
                     }
-                }
-                Image(painter = painterResource(R.drawable.barbie_icon),
-                    contentDescription = "barbie_icon",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(start = 32.dp, top = 152.dp)
-                        .height(121.dp)
-                        .width(72.dp)
-                        .clip(RoundedCornerShape(10.dp)))
-                IconButton(onClick = {
-                    scope.launch {
-                        drawerState.open()
-                    }
-                }) {
-                    Icon(
-                        imageVector = Icons.Filled.Menu,
-                        contentDescription = "menu",
-                        tint = colorResource(R.color.top_navbar_icon_color),
+                    Image(
+                        painter = painterResource(R.drawable.barbie_icon),
+                        contentDescription = "barbie_icon",
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .padding(10.dp)
-                            .size(24.dp)
+                            .padding(start = 32.dp, top = 152.dp)
+                            .height(121.dp)
+                            .width(72.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                    )
+                    IconButton(onClick = {
+                        scope.launch {
+                            drawerState.open()
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "menu",
+                            tint = colorResource(R.color.top_navbar_icon_color),
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .size(24.dp)
+                        )
+                    }
+                    Image(
+                        painter = painterResource(R.drawable.arrow_left),
+                        contentDescription = "arrow_left",
+                        modifier = Modifier
+                            .padding(start = 10.dp, top = 210.dp)
+                            .size(16.dp)
+                    )
+                    Image(
+                        painter = painterResource(R.drawable.arrow_right),
+                        contentDescription = "arrow_right",
+                        modifier = Modifier
+                            .padding(start = 365.dp, top = 210.dp)
+                            .size(16.dp)
                     )
                 }
-                Image(
-                    painter = painterResource(R.drawable.arrow_left),
-                    contentDescription = "arrow_left",
-                    modifier = Modifier
-                        .padding(start = 10.dp, top = 210.dp)
-                        .size(16.dp)
-                )
-                Image(
-                    painter = painterResource(R.drawable.arrow_right),
-                    contentDescription = "arrow_right",
-                    modifier = Modifier
-                        .padding(start = 365.dp, top = 210.dp)
-                        .size(16.dp)
-                )
             }
-        }
-        item {
-            //This is for the first horizontal list
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(220.dp)
-                .background(colorResource(R.color.box_row_color))) {
-                Column {
-                    Text(
-                        stringResource(R.string.main_page_trending),
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(start = 10.dp, top = 5.dp)
-                    )
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        item {
-                            StandardBoxInRow(navController, R.drawable.first_movie, R.string.main_page_first_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.second_movie, R.string.main_page_second_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.third_movie, R.string.main_page_third_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.fourth_movie, R.string.main_page_fourth_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.fifth_movie, R.string.main_page_fourth_movie)
+            item {
+                //This is for the first horizontal list
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(220.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Column {
+                        Text(
+                            stringResource(R.string.main_page_trending),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 20.sp,
+                            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                        )
+                        LazyRow(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.first_movie,
+                                    R.string.main_page_first_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.second_movie,
+                                    R.string.main_page_second_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.third_movie,
+                                    R.string.main_page_third_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.fourth_movie,
+                                    R.string.main_page_fourth_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.fifth_movie,
+                                    R.string.main_page_fourth_movie
+                                )
+                            }
                         }
                     }
                 }
             }
-        }
-        item {
-            SeparationBox()
-        }
-        item {
-            //This is for the second horizontal list
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(220.dp)
-                .background(colorResource(R.color.box_row_color))) {
-                Column {
-                    Text(
-                        stringResource(R.string.main_page_top_picks),
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(start = 10.dp, top = 5.dp)
-                    )
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        item {
-                            StandardBoxInRow(navController, R.drawable.second_row_first_movie, R.string.main_page_first_row_first_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.second_row_second_movie, R.string.main_page_first_row_second_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.second_row_third_movie, R.string.main_page_first_row_third_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.second_row_fourth_movie, R.string.main_page_first_row_fourth_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.second_row_fifth_movie, R.string.main_page_first_row_fifth_movie)
+            item {
+                SeparationBox()
+            }
+            item {
+                //This is for the second horizontal list
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(220.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Column {
+                        Text(
+                            stringResource(R.string.main_page_top_picks),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 20.sp,
+                            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                        )
+                        LazyRow(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.second_row_first_movie,
+                                    R.string.main_page_first_row_first_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.second_row_second_movie,
+                                    R.string.main_page_first_row_second_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.second_row_third_movie,
+                                    R.string.main_page_first_row_third_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.second_row_fourth_movie,
+                                    R.string.main_page_first_row_fourth_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.second_row_fifth_movie,
+                                    R.string.main_page_first_row_fifth_movie
+                                )
+                            }
                         }
                     }
                 }
             }
-        }
-        item {
-            SeparationBox()
-        }
-        item {
-            //This is for the third horizontal list
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(220.dp)
-                .background(colorResource(R.color.box_row_color))) {
-                Column {
-                    Text(
-                        stringResource(R.string.main_page_friends_recommend),
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(start = 10.dp, top = 5.dp)
-                    )
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        item {
-                            StandardBoxInRow(navController, R.drawable.third_row_first_movie, R.string.main_page_third_row_first_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.third_row_second_movie, R.string.main_page_third_row_second_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.third_row_third_movie, R.string.main_page_third_row_third_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.third_row_fourth_movie, R.string.main_page_third_row_fourth_movie)
-                        }
-                        item {
-                            StandardBoxInRow(navController, R.drawable.third_row_fifth_movie, R.string.main_page_third_row_fifth_movie)
+            item {
+                SeparationBox()
+            }
+            item {
+                //This is for the third horizontal list
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(220.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Column {
+                        Text(
+                            stringResource(R.string.main_page_friends_recommend),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 20.sp,
+                            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                        )
+                        LazyRow(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.third_row_first_movie,
+                                    R.string.main_page_third_row_first_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.third_row_second_movie,
+                                    R.string.main_page_third_row_second_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.third_row_third_movie,
+                                    R.string.main_page_third_row_third_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.third_row_fourth_movie,
+                                    R.string.main_page_third_row_fourth_movie
+                                )
+                            }
+                            item {
+                                StandardBoxInRow(
+                                    navController,
+                                    R.drawable.third_row_fifth_movie,
+                                    R.string.main_page_third_row_fifth_movie
+                                )
+                            }
                         }
                     }
                 }
@@ -247,7 +333,8 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
 fun StandardBoxInRow(navController: NavController, image: Int, string: Int) {
     Box(modifier = Modifier
         .width(90.dp)
-        .height(180.dp)) {
+        .height(180.dp)
+    ) {
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally) {
@@ -266,7 +353,8 @@ fun StandardBoxInRow(navController: NavController, image: Int, string: Int) {
             )
             Text(
                 stringResource(string),
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelMedium,
                 fontSize = 12.sp,
                 modifier = Modifier.padding(start = 10.dp, top = 5.dp),
                 softWrap = true,
@@ -285,7 +373,8 @@ fun SeparationBox() {
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(8.dp)
-        .background(colorResource(R.color.box_separation_color)))
+        .background(MaterialTheme.colorScheme.surface)
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
