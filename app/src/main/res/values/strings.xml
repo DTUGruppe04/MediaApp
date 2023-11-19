@@ -2,8 +2,10 @@
     //App name
     <string name="app_name">MediaApp</string>
     <string name="empty">Lorem ipsum dolor sit amet</string>
-    <string name="main_page_text1">Barbie (2023)</string>
-    <string name="main_page_text2">Genre: Action, Comedy, Fantasy</string>
+    <string name="main_page_text1_1">Barbie (2023)</string>
+    <string name="main_page_text1_2">Oppenheimer (2023)</string>
+    <string name="main_page_text2_1">Genre: Action, Comedy, Fantasy</string>
+    <string name="main_page_text2_2">Genre: Oppenheimer</string>
     <string name="main_page_trending">Trending Today</string>
     <string name="main_page_first_movie">Scarface</string>
     <string name="main_page_second_movie">Fight Club</string>

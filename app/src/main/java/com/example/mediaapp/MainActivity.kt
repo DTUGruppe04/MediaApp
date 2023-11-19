@@ -17,6 +17,7 @@ import com.example.mediaapp.screens.LoginPageLayout
 import com.example.mediaapp.ui.nav.NavigationGraphLogin
 import com.example.mediaapp.ui.theme.MediaAppTheme
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

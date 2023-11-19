@@ -1,5 +1,6 @@
 package com.example.mediaapp.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,11 +12,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -46,10 +52,26 @@ import com.example.mediaapp.Screen
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
     val scope = rememberCoroutineScope()
+    val mainPageTopPicture = listOf(
+        R.drawable.barbie,
+        R.drawable.oppenheimer
+    )
+    val mainPageTopString1 = listOf(
+        R.string.main_page_text1_1,
+        R.string.main_page_text1_2
+    )
+    val mainPageTopString2 = listOf(
+        R.string.main_page_text2_1,
+        R.string.main_page_text2_2
+    )
+    val mainPageTopPoster = listOf(
+        R.drawable.barbie_icon,
+        R.drawable.oppenheimerposter
+    )
     MediaAppTheme {
         LazyColumn(
             modifier = Modifier
@@ -58,88 +80,64 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
         ) {
             item {
                 //This is the uppermost part of the main page
-                Box() {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Image(
-                            painter = painterResource(R.drawable.barbie),
-                            contentDescription = "barbie",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(60.dp)
-                                .background(MaterialTheme.colorScheme.surface)
-                        ) {
-                            Row {
-                                Column {
-                                    Text(
-                                        stringResource(R.string.main_page_text1),
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        modifier = Modifier.padding(start = 120.dp, top = 5.dp)
-                                    )
-                                    Text(
-                                        stringResource(R.string.main_page_text2),
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                        style = MaterialTheme.typography.labelMedium,
-                                        modifier = Modifier.padding(start = 120.dp)
-                                    )
-                                }
-                                Spacer(Modifier.size(75.dp))
+                val pagerState = rememberPagerState(pageCount = {mainPageTopPicture.size})
+                Box(modifier = Modifier
+                    .height(280.dp)
+                    .fillMaxWidth()
+                ) {
+                    HorizontalPager(
+                        state = pagerState,
+                        key = { mainPageTopPicture[it] },
+                        pageSize = PageSize.Fill
+                    ) { index ->
+                        Box {
+                            Column {
                                 Image(
-                                    painter = painterResource(R.drawable.bookmark),
-                                    contentDescription = "bookmark",
+                                    painter = painterResource(id = mainPageTopPicture[index]),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
                                     modifier = Modifier
-                                        .padding(5.dp)
-                                        .size(33.dp)
+                                        .fillMaxWidth()
+                                        .height(220.dp)
                                 )
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Column {
+                                        Text(
+                                            stringResource(id = mainPageTopString1[index]),
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            style = MaterialTheme.typography.titleMedium,
+                                            textAlign = TextAlign.Center,
+                                            modifier = Modifier
+                                                .padding(5.dp)
+                                        )
+                                        Text(
+                                            stringResource(id = mainPageTopString2[index]),
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            style = MaterialTheme.typography.labelMedium,
+                                            fontSize = 10.sp,
+                                            modifier = Modifier
+                                                .padding(start = 5.dp, bottom = 5.dp)
+                                        )
+                                    }
+                                }
                             }
+                            Image(
+                                painter = painterResource(id = mainPageTopPoster[index]),
+                                contentDescription = "poster",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .offset(x = 33.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .height(121.dp)
+                                    .width(72.dp)
+                                    .align(Alignment.BottomStart)
+                            )
                         }
                     }
-                    Image(
-                        painter = painterResource(R.drawable.barbie_icon),
-                        contentDescription = "barbie_icon",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .padding(start = 32.dp, top = 152.dp)
-                            .height(121.dp)
-                            .width(72.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                    )
-                    IconButton(onClick = {
-                        scope.launch {
-                            drawerState.open()
-                            }
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "menu",
-                            tint = colorResource(R.color.top_navbar_icon_color),
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .size(24.dp)
-                        )
-                    }
-                    Image(
-                        painter = painterResource(R.drawable.arrow_left),
-                        contentDescription = "arrow_left",
-                        modifier = Modifier
-                            .padding(start = 10.dp, top = 210.dp)
-                            .size(16.dp)
-                    )
-                    Image(
-                        painter = painterResource(R.drawable.arrow_right),
-                        contentDescription = "arrow_right",
-                        modifier = Modifier
-                            .padding(start = 365.dp, top = 210.dp)
-                            .size(16.dp)
-                    )
                 }
             }
             item {
