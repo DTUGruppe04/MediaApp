@@ -30,18 +30,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.mediaapp.Screen
 import com.example.mediaapp.models.TMDBMovie
 
-class SearchQueryLayout(private val movies: List<Movie>) {
-
-    @Composable
-    private fun Modifier.composeImageModifier(): Modifier {
-        return this
-            .shadow(elevation = 4.dp, spotColor = MaterialTheme.colorScheme.background)
-            .border(1.dp, Color(0xFF000000), RoundedCornerShape(10.dp))
-            .padding(0.5.dp)
-            .width(96.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .height(142.dp)
-    }
+object SearchQueryLayout {
     @Composable
     fun SearchQueryList(movies: List<TMDBMovie>, navController: NavController) {
         LazyColumn(
@@ -92,5 +81,15 @@ class SearchQueryLayout(private val movies: List<Movie>) {
                 Text(text = description, style = MaterialTheme.typography.titleSmall)
             }
         }
+    }
+    @Composable
+    private fun Modifier.composeImageModifier(): Modifier {
+        return this
+            .shadow(elevation = 4.dp, spotColor = MaterialTheme.colorScheme.background)
+            .border(1.dp, Color(0xFF000000), RoundedCornerShape(10.dp))
+            .padding(0.5.dp)
+            .width(96.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .height(142.dp)
     }
 }

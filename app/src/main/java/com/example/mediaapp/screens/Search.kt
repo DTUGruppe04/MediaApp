@@ -24,11 +24,14 @@ import com.example.mediaapp.ui.TabsAndFilters
 import com.example.mediaapp.ui.nav.TopNavBarA
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mediaapp.models.TMDBMovie
 import com.example.mediaapp.ui.SearchQueryLayout
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavController, drawerState: DrawerState) {
+
     val searchResults by viewModel.searchResults.collectAsState()
     val isSearchActive by viewModel.isSearchActive.collectAsState()
 
@@ -42,7 +45,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
             SearchBar(onSearch = { query -> viewModel.setSearchQuery(query) })
 
             if (isSearchActive) {
-
+                SearchQueryLayout.SearchQueryList(movies = searchResults, navController = navController)
             }
             // UI Tabs and Filters
             val customUITabs = TabsAndFilters(
