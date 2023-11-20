@@ -106,6 +106,11 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(220.dp)
+                                    .clickable {
+                                        scope.launch {
+                                            navController.navigate(Screen.MoviePage.route)
+                                        }
+                                    }
                             )
                             Row(
                                 verticalAlignment = Alignment.Bottom,
@@ -125,6 +130,11 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                         .clip(RoundedCornerShape(10.dp))
                                         .height(121.dp)
                                         .width(72.dp)
+                                        .clickable {
+                                            scope.launch {
+                                                navController.navigate(Screen.MoviePage.route)
+                                            }
+                                        }
                                 )
                                 Column(
                                     verticalArrangement = Arrangement.Bottom
@@ -137,6 +147,11 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                         modifier = Modifier
                                             .offset(x = -(18).dp)
                                             .padding(start = 10.dp)
+                                            .clickable {
+                                                scope.launch {
+                                                    navController.navigate(Screen.MoviePage.route)
+                                                }
+                                            }
                                     )
                                     Text(
                                         stringResource(id = mainPageTopString2[index]),
@@ -146,6 +161,11 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                         modifier = Modifier
                                             .offset(x = -(18).dp)
                                             .padding(start = 10.dp, bottom = 5.dp)
+                                            .clickable {
+                                                scope.launch {
+                                                    navController.navigate(Screen.MoviePage.route)
+                                                }
+                                            }
                                     )
                                 }
                             }
@@ -207,6 +227,22 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                             modifier = Modifier
                                 .padding(10.dp)
                                 .size(40.dp)
+                        )
+                    }
+                    //Add to watchlist button
+                    IconButton(onClick = {
+                            /*TODO*/
+                        },
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.bookmark),
+                            contentDescription = "bookmark",
+                            modifier = Modifier
+                                .size(33.dp)
+                                .offset(y = -(13).dp)
+                                .padding(end = 5.dp)
                         )
                     }
                 }
