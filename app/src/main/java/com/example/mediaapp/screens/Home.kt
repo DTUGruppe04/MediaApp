@@ -24,6 +24,10 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -81,6 +85,7 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
             item {
                 //This is the uppermost part of the main page
                 val pagerState = rememberPagerState(pageCount = {mainPageTopPicture.size})
+                //The sliding horizontal pager
                 Box(modifier = Modifier
                     .height(280.dp)
                     .fillMaxWidth()
@@ -90,53 +95,119 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                         key = { mainPageTopPicture[it] },
                         pageSize = PageSize.Fill
                     ) { index ->
-                        Box {
-                            Column {
-                                Image(
-                                    painter = painterResource(id = mainPageTopPicture[index]),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(220.dp)
-                                )
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Column {
-                                        Text(
-                                            stringResource(id = mainPageTopString1[index]),
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                            style = MaterialTheme.typography.titleMedium,
-                                            textAlign = TextAlign.Center,
-                                            modifier = Modifier
-                                                .padding(5.dp)
-                                        )
-                                        Text(
-                                            stringResource(id = mainPageTopString2[index]),
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                            style = MaterialTheme.typography.labelMedium,
-                                            fontSize = 10.sp,
-                                            modifier = Modifier
-                                                .padding(start = 5.dp, bottom = 5.dp)
-                                        )
-                                    }
-                                }
-                            }
+                        Box(modifier = Modifier
+                            .height(280.dp)
+                            .fillMaxWidth()
+                        ) {
                             Image(
-                                painter = painterResource(id = mainPageTopPoster[index]),
-                                contentDescription = "poster",
+                                painter = painterResource(id = mainPageTopPicture[index]),
+                                contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
-                                    .offset(x = 33.dp)
-                                    .clip(RoundedCornerShape(10.dp))
-                                    .height(121.dp)
-                                    .width(72.dp)
+                                    .fillMaxWidth()
+                                    .height(220.dp)
+                            )
+                            Row(
+                                verticalAlignment = Alignment.Bottom,
+                                horizontalArrangement = Arrangement.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 18.dp)
                                     .align(Alignment.BottomStart)
+                            ) {
+                                Image(
+                                    painter = painterResource(id = mainPageTopPoster[index]),
+                                    contentDescription = "poster",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .offset(x = -(18).dp)
+                                        .padding(bottom = 5.dp)
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .height(121.dp)
+                                        .width(72.dp)
+                                )
+                                Column(
+                                    verticalArrangement = Arrangement.Bottom
+                                ) {
+                                    Text(
+                                        stringResource(id = mainPageTopString1[index]),
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier
+                                            .offset(x = -(18).dp)
+                                            .padding(start = 10.dp)
+                                    )
+                                    Text(
+                                        stringResource(id = mainPageTopString2[index]),
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        style = MaterialTheme.typography.labelMedium,
+                                        fontSize = 10.sp,
+                                        modifier = Modifier
+                                            .offset(x = -(18).dp)
+                                            .padding(start = 10.dp, bottom = 5.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    //The two arrows in the top
+                    Box(
+                        modifier = Modifier
+                            .offset(y = -(65).dp)
+                            .fillMaxWidth()
+                            .align(Alignment.BottomCenter)
+                    ) {
+                        IconButton(
+                            onClick = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(
+                                      pagerState.currentPage - 1
+                                    )
+                                }
+                            },
+                            modifier = Modifier.align(Alignment.CenterStart)
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                                contentDescription = "Go back",
+                                modifier = Modifier
+                                    .size(32.dp)
                             )
                         }
+                        IconButton(
+                            onClick = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(
+                                        pagerState.currentPage + 1
+                                    )
+                                }
+                            },
+                            modifier = Modifier.align(Alignment.CenterEnd)
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                contentDescription = "Go forward",
+                                modifier = Modifier
+                                    .size(32.dp)
+                            )
+                        }
+                    }
+                    //Menu-button in the top
+                    IconButton(onClick = {
+                        scope.launch {
+                            drawerState.open()
+                        }
+                    }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "menu",
+                            tint = colorResource(R.color.top_navbar_icon_color),
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .size(40.dp)
+                        )
                     }
                 }
             }
