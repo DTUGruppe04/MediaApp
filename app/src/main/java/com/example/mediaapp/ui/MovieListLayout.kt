@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 class MovieListLayout(private val movies: List<Movie>) {
-
     private val defaultTextStyle = TextStyle(
         fontSize = 14.sp,
         lineHeight = 20.sp,
