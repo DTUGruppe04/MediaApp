@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
 import kotlinx.coroutines.launch
@@ -59,10 +60,19 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                 Column(modifier = Modifier
                     .fillMaxWidth()
                 ) {
+                    AsyncImage(
+                        model = "https://image.tmdb.org/t/p/original/fm6KqXpk3M2HVveHwCrBSSBaO0V.jpg",
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                    /*
                     Image(painter = painterResource(R.drawable.barbie),
                         contentDescription = "barbie",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop)
+
+                     */
                     Box(modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp)

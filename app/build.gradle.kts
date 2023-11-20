@@ -48,6 +48,9 @@ android {
 }
 
 dependencies {
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
     implementation("androidx.navigation:navigation-runtime-ktx")
     implementation("androidx.wear.compose:compose-material:1.2.1")
     implementation("androidx.wear.compose:compose-material3:1.0.0-alpha14")
