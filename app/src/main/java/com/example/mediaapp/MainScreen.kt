@@ -17,6 +17,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -47,27 +48,27 @@ fun MainScreen(loginNavController: NavController) {
     ModalNavigationDrawer(
         drawerContent = {
             ModalDrawerSheet (
-                drawerContainerColor = colorResource(R.color.black_navbar),
-                drawerContentColor = colorResource(R.color.black_navbar)
+                drawerContainerColor = MaterialTheme.colorScheme.surface,
+                drawerContentColor = MaterialTheme.colorScheme.surface
 
             ) {
                 TopNavBarE(navController = navController, drawerState = drawerState)
                 Text(
                     stringResource(R.string.menu),
-                    color = colorResource(R.color.top_navbar_text_color),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(16.dp)
                 )
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.profilename)) },
                     colors = NavigationDrawerItemDefaults.colors(
-                        selectedContainerColor = colorResource(R.color.indicator_color_navbar),
-                        selectedTextColor = colorResource(R.color.top_navbar_text_color)
+                        selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer
                     ),
                     icon = {
                         Icon(
                             imageVector = Icons.Outlined.AccountCircle,
                             contentDescription = "account circle",
-                            tint = colorResource(R.color.white_navitem)
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     },
                     selected = true,
@@ -83,18 +84,18 @@ fun MainScreen(loginNavController: NavController) {
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.youfollow)) },
                     colors = NavigationDrawerItemDefaults.colors(
-                        unselectedContainerColor = colorResource(R.color.black_navbar),
-                        unselectedTextColor = colorResource(R.color.top_navbar_text_color)
+                        unselectedContainerColor = MaterialTheme.colorScheme.surface,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurface
                     ),
                     icon = {
                         Icon(
                             imageVector = Icons.Outlined.Group,
                             contentDescription = "group",
-                            tint = colorResource(R.color.white_navitem)
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     },
                     selected = false,
-                    badge = { Badge { Text("100+") } },
+                    badge = { Badge(containerColor = MaterialTheme.colorScheme.tertiaryContainer) { Text(text = "100+", color = MaterialTheme.colorScheme.onTertiaryContainer) }  },
                     onClick = {
                         navController.navigate(Screen.YouFollow.route)
                         scope.launch {
@@ -107,18 +108,18 @@ fun MainScreen(loginNavController: NavController) {
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.yourfollowers)) },
                     colors = NavigationDrawerItemDefaults.colors(
-                        unselectedContainerColor = colorResource(R.color.black_navbar),
-                        unselectedTextColor = colorResource(R.color.top_navbar_text_color)
+                        unselectedContainerColor = MaterialTheme.colorScheme.surface,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurface
                     ),
                     icon = {
                         Icon(
                             imageVector = Icons.Outlined.Groups,
                             contentDescription = "group",
-                            tint = colorResource(R.color.white_navitem)
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     },
                     selected = false,
-                    badge = { Badge { Text("100+") } },
+                    badge = { Badge(containerColor = MaterialTheme.colorScheme.tertiaryContainer) { Text(text = "100+", color = MaterialTheme.colorScheme.onTertiaryContainer) } },
                     onClick = {
                         navController.navigate(Screen.YourFollowers.route)
                         scope.launch {
@@ -131,14 +132,14 @@ fun MainScreen(loginNavController: NavController) {
                 NavigationDrawerItem(
                     label = { Text(stringResource(R.string.settings)) },
                     colors = NavigationDrawerItemDefaults.colors(
-                        unselectedContainerColor = colorResource(R.color.black_navbar),
-                        unselectedTextColor = colorResource(R.color.top_navbar_text_color)
+                        unselectedContainerColor = MaterialTheme.colorScheme.surface,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurface
                     ),
                     icon = {
                         Icon(
                             imageVector = Icons.Outlined.Settings,
                             contentDescription = "settings",
-                            tint = colorResource(R.color.white_navitem)
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     },
                     selected = false,
@@ -163,13 +164,15 @@ fun MainScreen(loginNavController: NavController) {
                             navController.navigate(Screen.Login.route)
                         },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.red)
+                            containerColor = MaterialTheme.colorScheme.errorContainer
                         ),
                         modifier = Modifier
                             .width(296.dp)
                             .height(40.dp)
                     ) {
-                        Text(text = stringResource(R.string.logout))
+                        Text(
+                            text = stringResource(R.string.logout),
+                            color = MaterialTheme.colorScheme.onErrorContainer)
                     }
                 }
 

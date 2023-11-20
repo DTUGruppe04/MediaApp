@@ -86,9 +86,9 @@ fun BottomNavBar(navController: NavController, modifier : Modifier = Modifier) {
         mutableStateOf(0)
     }
 
-    val contentColor = colorResource(R.color.white_navitem)
-    val containerColor = colorResource(R.color.black_navbar)
-    val indicatorColor = colorResource(R.color.indicator_color_navbar)
+    val contentColor = MaterialTheme.colorScheme.onSurface
+    val containerColor = MaterialTheme.colorScheme.surface
+    val indicatorColor = MaterialTheme.colorScheme.secondaryContainer
 
     NavigationBar(
         containerColor = containerColor,
@@ -137,9 +137,9 @@ fun BottomNavBar(navController: NavController, modifier : Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNavBarA(navController: NavController, drawerState: DrawerState, modifier : Modifier = Modifier) {
-    val containerColor = colorResource(R.color.top_navbar_container_color)
-    val contentColor = colorResource(R.color.top_navbar_text_color)
-    val iconColor = colorResource(R.color.top_navbar_icon_color)
+    val containerColor = MaterialTheme.colorScheme.surface
+    val contentColor = MaterialTheme.colorScheme.onSurface
+    val iconColor = MaterialTheme.colorScheme.onSurface
     val scope = rememberCoroutineScope()
 
     TopAppBar(
@@ -179,9 +179,9 @@ fun TopNavBarA(navController: NavController, drawerState: DrawerState, modifier 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNavBarB(navController: NavController, drawerState: DrawerState, modifier : Modifier = Modifier) {
-    val containerColor = colorResource(R.color.top_navbar_container_color)
-    val contentColor = colorResource(R.color.top_navbar_text_color)
-    val iconColor = colorResource(R.color.top_navbar_icon_color)
+    val containerColor = MaterialTheme.colorScheme.surface
+    val contentColor = MaterialTheme.colorScheme.onSurface
+    val iconColor = MaterialTheme.colorScheme.onSurface
     var scope = rememberCoroutineScope()
 
     CenterAlignedTopAppBar(
@@ -224,9 +224,9 @@ fun TopNavBarB(navController: NavController, drawerState: DrawerState, modifier 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNavBarC(navController: NavController, drawerState: DrawerState, modifier : Modifier = Modifier) {
-    val containerColor = colorResource(R.color.top_navbar_container_color)
-    val contentColor = colorResource(R.color.top_navbar_text_color)
-    val iconColor = colorResource(R.color.top_navbar_icon_color)
+    val containerColor = MaterialTheme.colorScheme.surface
+    val contentColor = MaterialTheme.colorScheme.onSurface
+    val iconColor = MaterialTheme.colorScheme.onSurface
     val buttonColor = MaterialTheme.colorScheme.secondaryContainer
     val scope = rememberCoroutineScope()
 
@@ -281,9 +281,9 @@ fun TopNavBarC(navController: NavController, drawerState: DrawerState, modifier 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNavBarD(navController: NavController, drawerState: DrawerState, modifier : Modifier = Modifier) {
-    val containerColor = colorResource(R.color.top_navbar_container_color)
-    val contentColor = colorResource(R.color.top_navbar_text_color)
-    val iconColor = colorResource(R.color.top_navbar_icon_color)
+    val containerColor = MaterialTheme.colorScheme.surface
+    val contentColor = MaterialTheme.colorScheme.onSurface
+    val iconColor = MaterialTheme.colorScheme.onSurface
     var scope = rememberCoroutineScope()
 
     CenterAlignedTopAppBar(
@@ -335,9 +335,9 @@ fun TopNavBarD(navController: NavController, drawerState: DrawerState, modifier 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNavBarE(navController: NavController,  drawerState: DrawerState, modifier : Modifier = Modifier) {
-    val containerColor = colorResource(R.color.top_navbar_container_color)
-    val contentColor = colorResource(R.color.top_navbar_text_color)
-    val iconColor = colorResource(R.color.top_navbar_icon_color)
+    val containerColor = MaterialTheme.colorScheme.surface
+    val contentColor = MaterialTheme.colorScheme.onSurface
+    val iconColor = MaterialTheme.colorScheme.onSurface
     val scope = rememberCoroutineScope()
 
     TopAppBar(
