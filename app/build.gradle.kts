@@ -6,7 +6,6 @@ plugins {
 android {
     namespace = "com.example.mediaapp"
     compileSdk = 34
-    //android.buildFeatures.buildConfig = true
 
     defaultConfig {
         applicationId = "com.example.mediaapp"
@@ -36,7 +35,6 @@ android {
     }
     buildFeatures {
         compose = true
-
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -57,6 +55,9 @@ dependencies {
     //coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     implementation("androidx.navigation:navigation-runtime-ktx")
     implementation("androidx.wear.compose:compose-material:1.2.1")
