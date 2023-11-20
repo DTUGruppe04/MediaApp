@@ -1,5 +1,6 @@
 package com.example.mediaapp.screens
 
+import SearchViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -7,6 +8,8 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -20,10 +23,15 @@ import com.example.mediaapp.ui.SearchBar
 import com.example.mediaapp.ui.TabsAndFilters
 import com.example.mediaapp.ui.nav.TopNavBarA
 import com.example.mediaapp.ui.theme.MediaAppTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mediaapp.ui.SearchQueryLayout
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchPage(navController: NavController, drawerState: DrawerState) {
+fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavController, drawerState: DrawerState) {
+    val searchResults by viewModel.searchResults.collectAsState()
+    val isSearchActive by viewModel.isSearchActive.collectAsState()
+
     MediaAppTheme {
         Column(
             modifier = Modifier
@@ -31,7 +39,11 @@ fun SearchPage(navController: NavController, drawerState: DrawerState) {
                 .background(MaterialTheme.colorScheme.surface)
         ) {
             TopNavBarA(navController = navController, drawerState = drawerState)
-            SearchBar()
+            SearchBar(onSearch = { query -> viewModel.setSearchQuery(query) })
+
+            if (isSearchActive) {
+
+            }
             // UI Tabs and Filters
             val customUITabs = TabsAndFilters(
                 tabs = listOf(
@@ -62,6 +74,8 @@ fun SearchPage(navController: NavController, drawerState: DrawerState) {
                         (0..10).map { it.toString() })
                 )
             )
+
+        /*
             customUITabs.Render()
             // Movie List
             val movies = listOf(
@@ -100,6 +114,7 @@ fun SearchPage(navController: NavController, drawerState: DrawerState) {
             )
             val movieLayout = MovieListLayout(movies)
             movieLayout.MovieList()
+            */
         }
     }
 }

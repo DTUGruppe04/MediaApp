@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -36,10 +37,9 @@ import com.example.mediaapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(
-    onSearch: (TextFieldValue) -> Unit = {}
-) {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+fun SearchBar(onSearch: (String) -> Unit) {
+
+    var text by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
@@ -58,7 +58,7 @@ fun SearchBar(
     ) {
         if (isFocused) {
             Icon(
-                imageVector = Icons.Filled.ArrowBack,
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back arrow",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
@@ -103,7 +103,7 @@ fun SearchBar(
                 contentDescription = stringResource(R.string.clear_icon),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
-                    .clickable { text = TextFieldValue("") }
+                    .clickable { text = TextFieldValue("").toString() }
                     .padding(end = 24.dp)
             )
         } else {
@@ -115,10 +115,4 @@ fun SearchBar(
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewSearch(){
-    SearchBar()
 }

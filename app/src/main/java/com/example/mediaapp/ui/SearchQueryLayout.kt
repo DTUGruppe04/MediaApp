@@ -23,11 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.mediaapp.Screen
+import com.example.mediaapp.models.TMDBMovie
 
 class SearchQueryLayout(private val movies: List<Movie>) {
 
@@ -42,7 +43,7 @@ class SearchQueryLayout(private val movies: List<Movie>) {
             .height(142.dp)
     }
     @Composable
-    fun SearchQueryList(navController: NavController){
+    fun SearchQueryList(movies: List<TMDBMovie>, navController: NavController) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -51,9 +52,8 @@ class SearchQueryLayout(private val movies: List<Movie>) {
             items(movies) { movie ->
                 SearchQueryListItem(
                     title = movie.title,
-                    actor = movie.actors.get(0),
-                    description = movie.description,
-                    poster = movie.poster,
+                    description = movie.overview,
+                    posterURL = movie.poster_path,
                     navController = navController
                 )
                 Divider(
@@ -65,7 +65,7 @@ class SearchQueryLayout(private val movies: List<Movie>) {
         }
     }
     @Composable
-    fun SearchQueryListItem(title: String, actor: String, description: String, poster: Painter, navController: NavController) {
+    fun SearchQueryListItem(title: String, description: String, posterURL: String, navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -76,7 +76,7 @@ class SearchQueryLayout(private val movies: List<Movie>) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = poster,
+                painter = rememberAsyncImagePainter(model = posterURL),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -89,7 +89,6 @@ class SearchQueryLayout(private val movies: List<Movie>) {
                     text = title,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Text(text = actor, style = MaterialTheme.typography.titleSmall)
                 Text(text = description, style = MaterialTheme.typography.titleSmall)
             }
         }
