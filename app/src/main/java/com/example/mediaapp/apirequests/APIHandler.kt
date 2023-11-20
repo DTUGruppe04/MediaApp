@@ -308,6 +308,37 @@ class APIHandler {
         }
     }
 
+    fun getGenrebyID(ids: List<Int>) : String {
+        val tempList = mutableListOf<String>()
+        for (item in ids) {
+            when(item) {
+                28 -> tempList.add("Action")
+                12 -> tempList.add("Adventure")
+                16 -> tempList.add("Animation")
+                35 -> tempList.add("Comedy")
+                80 -> tempList.add("Crime")
+                99 -> tempList.add("Documentary")
+                18 -> tempList.add("Drama")
+                10751 -> tempList.add("Family")
+                14 -> tempList.add("Fantasy")
+                36 -> tempList.add("History")
+                27 -> tempList.add("Horror")
+                10402 -> tempList.add("Music")
+                9648 -> tempList.add("Mystery")
+                10749 -> tempList.add("Romance")
+                878 -> tempList.add("Science Fiction")
+                10770 -> tempList.add("TV Movie")
+                53 -> tempList.add("Thriller")
+                10752 -> tempList.add("War")
+                37 -> tempList.add("Western")
+                else -> {
+                    return "No Genre"
+                }
+            }
+        }
+        return tempList.joinToString()
+    }
+
     /*
     //Function isnt done yet
     suspend fun getWhereToWatchMovie(id: String) : TMDBWhereToWatchMovie? {

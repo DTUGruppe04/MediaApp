@@ -36,6 +36,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,16 +53,23 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
+import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.apirequests.TMDBMovieResponse
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import kotlinx.coroutines.launch
+import com.example.mediaapp.viewmodels.ViewModelPager
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
     val scope = rememberCoroutineScope()
+
+    /*
     val mainPageTopPicture = listOf(
         R.drawable.barbie,
         R.drawable.oppenheimer
@@ -76,6 +86,8 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
         R.drawable.barbie_icon,
         R.drawable.oppenheimerposter
     )
+     */
+
     MediaAppTheme {
         LazyColumn(
             modifier = Modifier
@@ -84,7 +96,19 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
         ) {
             item {
                 //This is the uppermost part of the main page
-                val pagerState = rememberPagerState(pageCount = {mainPageTopPicture.size})
+                val initPagerViewModel = viewModel<ViewModelPager>()
+                val movies = remember { mutableStateOf<TMDBMovieResponse?>(null) }
+                val baseURL = "https://image.tmdb.org/t/p/original"
+                val failURL = "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
+
+                LaunchedEffect(initPagerViewModel.movies) {
+                    initPagerViewModel.movies.observeForever { movieResponse ->
+                        movies.value = movieResponse
+                    }
+                }
+
+                //val pagerState = rememberPagerState(pageCount = {mainPageTopPicture.size})
+                val pagerState = rememberPagerState(pageCount = { movies.value?.results?.size ?: 0})
                 //The sliding horizontal pager
                 Box(modifier = Modifier
                     .height(280.dp)
@@ -92,13 +116,28 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                 ) {
                     HorizontalPager(
                         state = pagerState,
-                        key = { mainPageTopPicture[it] },
+                        //key = { mainPageTopPicture[it] },
+                        key = {it},
                         pageSize = PageSize.Fill
                     ) { index ->
                         Box(modifier = Modifier
                             .height(280.dp)
                             .fillMaxWidth()
                         ) {
+                            AsyncImage(
+                                model = baseURL + (movies.value?.results?.get(index)?.backdrop_path ?: failURL),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(220.dp)
+                                    .clickable {
+                                        scope.launch {
+                                            navController.navigate(Screen.MoviePage.route)
+                                        }
+                                    }
+                            )
+                            /*
                             Image(
                                 painter = painterResource(id = mainPageTopPicture[index]),
                                 contentDescription = null,
@@ -112,6 +151,8 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                         }
                                     }
                             )
+
+                             */
                             Row(
                                 verticalAlignment = Alignment.Bottom,
                                 horizontalArrangement = Arrangement.Center,
@@ -120,6 +161,23 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                     .padding(bottom = 18.dp)
                                     .align(Alignment.BottomStart)
                             ) {
+                                AsyncImage(
+                                    model = baseURL + (movies.value?.results?.get(index)?.poster_path ?: failURL),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .offset(x = -(18).dp)
+                                        .padding(bottom = 5.dp)
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .height(121.dp)
+                                        .width(72.dp)
+                                        .clickable {
+                                            scope.launch {
+                                                navController.navigate(Screen.MoviePage.route)
+                                            }
+                                        }
+                                )
+                                /*
                                 Image(
                                     painter = painterResource(id = mainPageTopPoster[index]),
                                     contentDescription = "poster",
@@ -136,25 +194,49 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                             }
                                         }
                                 )
+
+                                 */
                                 Column(
                                     verticalArrangement = Arrangement.Bottom
                                 ) {
-                                    Text(
-                                        stringResource(id = mainPageTopString1[index]),
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier
-                                            .offset(x = -(18).dp)
-                                            .padding(start = 10.dp)
-                                            .clickable {
-                                                scope.launch {
-                                                    navController.navigate(Screen.MoviePage.route)
+                                    movies.value?.results?.get(index)?.let {
+                                        Text(
+                                            //stringResource(id = mainPageTopString1[index]),
+                                            //stringResource(id = movies.value.results[index].title)
+                                            text = it.title,
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            style = MaterialTheme.typography.titleMedium,
+                                            textAlign = TextAlign.Center,
+                                            modifier = Modifier
+                                                .offset(x = -(18).dp)
+                                                .padding(start = 10.dp)
+                                                .clickable {
+                                                    scope.launch {
+                                                        navController.navigate(Screen.MoviePage.route)
+                                                    }
                                                 }
-                                            }
-                                    )
+                                        )
+                                    }
+                                    movies.value?.results?.get(index)?.let {
+                                        Text(
+                                            //stringResource(id = mainPageTopString2[index])
+                                            text = "Genre: " + APIHandler().getGenrebyID(it.genre_ids),
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            style = MaterialTheme.typography.labelMedium,
+                                            fontSize = 10.sp,
+                                            modifier = Modifier
+                                                .offset(x = -(18).dp)
+                                                .padding(start = 10.dp, bottom = 5.dp)
+                                                .clickable {
+                                                    scope.launch {
+                                                        navController.navigate(Screen.MoviePage.route)
+                                                    }
+                                                }
+                                        )
+                                    }
+                                    /*
                                     Text(
-                                        stringResource(id = mainPageTopString2[index]),
+                                        //stringResource(id = mainPageTopString2[index])
                                         color = MaterialTheme.colorScheme.onSurface,
                                         style = MaterialTheme.typography.labelMedium,
                                         fontSize = 10.sp,
@@ -167,6 +249,8 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                                 }
                                             }
                                     )
+
+                                     */
                                 }
                             }
                         }

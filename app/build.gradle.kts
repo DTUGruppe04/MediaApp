@@ -59,6 +59,12 @@ dependencies {
     // Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
 
+    // Implementations for ViewModel
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+    //implementation("androidx.compose.runtime:runtime-livedata:2.6.2")
+
+    //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
     implementation("androidx.navigation:navigation-runtime-ktx")
     implementation("androidx.wear.compose:compose-material:1.2.1")
     implementation("androidx.wear.compose:compose-material3:1.0.0-alpha14")

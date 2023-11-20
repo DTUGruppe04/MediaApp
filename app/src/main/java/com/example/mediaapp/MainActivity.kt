@@ -33,26 +33,6 @@ class MainActivity : ComponentActivity() {
                     val scope = rememberCoroutineScope()
                     val navController = rememberNavController()
                     NavigationGraphLogin(navController = navController)
-                    scope.launch {
-                        //val movie = APIHandler().getPopularMovie("day")
-                        //val movie = APIHandler().searchForMovie("Bluebittle")
-                        val movie = APIHandler().getMovieDetail("tt0284978")
-                        //val movie = APIHandler().getSimilarMovies("872585")
-                        //val movie = APIHandler().getMovieReviews("tt19760052")
-                        //val movie = APIHandler().getMovieCredits("872585")
-                        //val movie = APIHandler().getMovieSuggestions("872585")
-                        //val movie = APIHandler().getTopRatedMovies()
-                        //val movie = APIHandler().getUpcomingMovies()
-                        //val movie = APIHandler().getNowPlayingMovies()
-                        if (movie != null) {
-                            Log.d("API", movie.title)
-                            Log.d("API", movie.overview)
-                            Log.d("API", movie.poster_path)
-                        } else {
-                            Log.e("APIError", "Returned Null")
-                        }
-                    }
-
                 }
             }
         }
