@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,25 +25,16 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mediaapp.Screen
 
 class SearchQueryLayout(private val movies: List<Movie>) {
 
-    private val defaultTextStyle = TextStyle(
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        fontWeight = FontWeight(400),
-        color = Color(0xFFCAC4D0),
-        letterSpacing = 0.25.sp
-    )
+    @Composable
     private fun Modifier.composeImageModifier(): Modifier {
         return this
-            .shadow(elevation = 4.dp, spotColor = Color(0x40000000), ambientColor = Color(0x40000000))
+            .shadow(elevation = 4.dp, spotColor = MaterialTheme.colorScheme.background)
             .border(1.dp, Color(0xFF000000), RoundedCornerShape(10.dp))
             .padding(0.5.dp)
             .width(96.dp)
@@ -54,7 +46,7 @@ class SearchQueryLayout(private val movies: List<Movie>) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF2B2930)),
+                .background(MaterialTheme.colorScheme.background),
         ) {
             items(movies) { movie ->
                 SearchQueryListItem(
@@ -65,7 +57,7 @@ class SearchQueryLayout(private val movies: List<Movie>) {
                     navController = navController
                 )
                 Divider(
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.outline,
                     thickness = 0.5.dp,
                     modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                 )
@@ -95,16 +87,10 @@ class SearchQueryLayout(private val movies: List<Movie>) {
             ){
                 Text(
                     text = title,
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 24.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFE6E0E9),
-                        letterSpacing = 0.25.sp,
-                    )
+                    style = MaterialTheme.typography.titleMedium
                 )
-                Text(text = actor, style = defaultTextStyle)
-                Text(text = description, style = defaultTextStyle)
+                Text(text = actor, style = MaterialTheme.typography.titleSmall)
+                Text(text = description, style = MaterialTheme.typography.titleSmall)
             }
         }
     }

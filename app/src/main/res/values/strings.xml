@@ -189,4 +189,6 @@
 
     //Search Page
     <string name="all_movies">All Movies</string>
+    <string name="clear_icon">Clear icon</string>
+    <string name="search_icon">Search icon</string>
 </resources>

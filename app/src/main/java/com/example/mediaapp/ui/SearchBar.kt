@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -27,12 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.mediaapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +43,6 @@ fun SearchBar(
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
-    val tint = Color(0xFFCAC4D0)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,7 +50,7 @@ fun SearchBar(
             .height(56.dp)
             .background(
                 shape = RoundedCornerShape(size = 28.dp),
-                color = Color(0xFF2B2930)
+                color = MaterialTheme.colorScheme.background
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
@@ -61,9 +60,9 @@ fun SearchBar(
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "Back arrow",
-                tint = tint,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
-                    .clickable {focusManager.clearFocus()}
+                    .clickable { focusManager.clearFocus() }
                     .padding(start = 16.dp)
             )
         }
@@ -77,20 +76,14 @@ fun SearchBar(
             singleLine = true,
             placeholder = {
                 Text(
-                    text = "Search",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 24.sp,
-                        fontWeight = FontWeight(400),
-                        color = tint,
-                        letterSpacing = 0.5.sp
-                    ),
+                    text = stringResource(R.string.search),
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
                         .fillMaxWidth()
                 )
             },
             colors = TextFieldDefaults.textFieldColors(
-                textColor = tint,
+                textColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 containerColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
@@ -107,8 +100,8 @@ fun SearchBar(
         if (isFocused) {
             Icon(
                 imageVector = Icons.Filled.Clear,
-                contentDescription = "Clear icon",
-                tint = tint,
+                contentDescription = stringResource(R.string.clear_icon),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .clickable { text = TextFieldValue("") }
                     .padding(end = 24.dp)
@@ -116,8 +109,8 @@ fun SearchBar(
         } else {
             Icon(
                 imageVector = Icons.Filled.Search,
-                contentDescription = "Search icon",
-                tint = tint,
+                contentDescription = stringResource(R.string.search_icon),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(end = 24.dp)
             )
         }
