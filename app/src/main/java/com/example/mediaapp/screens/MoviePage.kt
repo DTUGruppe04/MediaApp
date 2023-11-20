@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -54,7 +53,7 @@ import com.example.mediaapp.ui.theme.md_theme_dark_background
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
-    val oppenheimer = Movie(
+    val movie = Movie(
         stringResource(R.string.oppenheimer),
         listOf(stringResource(R.string.drama,
             R.string.bibliography,
@@ -170,21 +169,21 @@ fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
             item {
                 //Top part
                 MovieDescription(
-                    oppenheimer.description,
-                    oppenheimer.title,
+                    movie.description,
+                    movie.title,
                     "8,7/10",
-                    oppenheimer.releaseDate,
-                    oppenheimer.poster
+                    movie.releaseDate,
+                    movie.poster
                 )
             }
             item {
-                Detail(detail = "Director", infoList = listOf(oppenheimer.director))
+                Detail(detail = "Director", infoList = listOf(movie.director))
             }
             item {
-                Detail(detail = "Actors", infoList = oppenheimer.actors)
+                Detail(detail = "Actors", infoList = movie.actors)
             }
             item {
-                Detail(detail = "Director", infoList = listOf(oppenheimer.director))
+                Detail(detail = "Director", infoList = listOf(movie.director))
             }
 
         }

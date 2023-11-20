@@ -20,15 +20,40 @@ class MovieDetailViewModel(private val apiHandler: APIHandler) : ViewModel() {
         _isLoading.value = true
         viewModelScope.launch {
             try {
-                val detials = apiHandler.getMovieDetail(movieId)
-                _movieDetails.value = detials
-            }
-            catch (e: Exception){
+                val details = apiHandler.getMovieDetail(movieId)
+                _movieDetails.value = details
+            } catch (e: Exception) {
                 _movieDetails.value = null
-            }
-            finally {
+            } finally {
                 _isLoading.value = false
             }
         }
     }
+
+    /*
+    Implement later when watchlist is functional
+
+    private val _isInWatchlist = MutableStateFlow(false)
+    val isInWatchlist: StateFlow<Boolean> = _isInWatchlist.asStateFlow()
+
+    fun addToWatchlist(movieId: String) {
+        viewModelScope.launch {
+            try {
+                _isInWatchlist.value = true
+            } catch (e: Exception) {
+                // Handle errors
+            }
+        }
+    }
+
+    fun removeFromWatchlist(movieId: String) {
+        viewModelScope.launch {
+            try {
+                _isInWatchlist.value = false
+            } catch (e: Exception) {
+                // Handle errors
+            }
+        }
+    }
+    */
 }
