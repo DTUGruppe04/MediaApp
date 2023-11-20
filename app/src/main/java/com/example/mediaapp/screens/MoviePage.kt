@@ -66,7 +66,6 @@ fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
         stringResource(R.string.year_2023),
         painterResource(R.drawable.oppenheimer2)
     )
-
     MediaAppTheme {
         LazyColumn(
             modifier = Modifier
@@ -82,7 +81,7 @@ fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
                         .height(200.dp)
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.oppenheimer2),
+                        painter = oppenheimer.topImage,
                         contentDescription = "Oppenheimer",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
