@@ -11,20 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mediaapp.R
-import com.example.mediaapp.ui.Movie
-import com.example.mediaapp.ui.MovieListLayout
 import com.example.mediaapp.ui.SearchBar
 import com.example.mediaapp.ui.TabsAndFilters
 import com.example.mediaapp.ui.nav.TopNavBarA
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mediaapp.models.TMDBMovie
 import com.example.mediaapp.ui.SearchQueryLayout
 
 
@@ -42,7 +37,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
                 .background(MaterialTheme.colorScheme.surface)
         ) {
             TopNavBarA(navController = navController, drawerState = drawerState)
-            SearchBar(onSearch = { query -> viewModel.setSearchQuery(query) })
+            SearchBar(onSearch = { query -> viewModel.performSearch(query) })
 
             if (isSearchActive) {
                 SearchQueryLayout.SearchQueryList(movies = searchResults, navController = navController)

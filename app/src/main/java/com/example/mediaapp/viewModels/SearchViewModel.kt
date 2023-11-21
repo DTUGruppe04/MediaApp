@@ -1,5 +1,4 @@
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.apirequests.APIHandler
 import com.example.mediaapp.models.TMDBMovie
@@ -24,31 +23,23 @@ class SearchViewModel() : ViewModel() {
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    fun setSearchQuery(query: String) {
-        if (query.isNotEmpty()) {
-            _searchQuery.value = query
-            _isSearchActive.value = true
-            performSearch()
-        } else {
-            _isSearchActive.value = false
-            resetSearch()
-        }
-    }
-
-    fun performSearch() {
-        val query = _searchQuery.value
+    fun performSearch(query: String) {
         if (query.isNotEmpty()) {
             _isSearchActive.value = true
             viewModelScope.launch {
                 searchRepository.searchMovies(query).also { result ->
-                    _isSearchActive.value = false
                     result.onSuccess { movies ->
                         _searchResults.value = movies
+                        _isSearchActive.value = false
                     }.onFailure { throwable ->
                         _error.value = throwable.localizedMessage ?: "Unknown Error"
                     }
                 }
             }
+        }
+        else {
+            _isSearchActive.value = false
+            resetSearch()
         }
     }
 

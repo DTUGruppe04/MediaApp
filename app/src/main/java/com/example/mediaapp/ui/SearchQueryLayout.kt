@@ -41,7 +41,7 @@ object SearchQueryLayout {
             items(movies) { movie ->
                 SearchQueryListItem(
                     title = movie.title,
-                    description = movie.overview,
+                    genre = movie.overview,
                     posterURL = movie.poster_path,
                     navController = navController
                 )
@@ -54,7 +54,7 @@ object SearchQueryLayout {
         }
     }
     @Composable
-    fun SearchQueryListItem(title: String, description: String, posterURL: String, navController: NavController) {
+    fun SearchQueryListItem(title: String, genre: String, posterURL: String, navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -78,7 +78,7 @@ object SearchQueryLayout {
                     text = title,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Text(text = description, style = MaterialTheme.typography.titleSmall)
+                Text(text = genre, style = MaterialTheme.typography.titleSmall)
             }
         }
     }
