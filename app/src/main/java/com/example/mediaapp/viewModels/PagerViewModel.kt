@@ -1,5 +1,3 @@
-package com.example.mediaapp.viewmodels
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.apirequests.APIHandler
@@ -18,8 +16,6 @@ class PagerViewModel(): ViewModel() {
     private val _popularMovies = MutableStateFlow<List<TMDBMovie>>(emptyList())
     val popularMovies: StateFlow<List<TMDBMovie>> = _popularMovies.asStateFlow()
 
-    //private val _isLoading = MutableStateFlow(false)
-
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
@@ -34,23 +30,4 @@ class PagerViewModel(): ViewModel() {
             }
         }
     }
-
-
-
-    /*
-    val movies = MutableLiveData<TMDBMovieResponse>()
-
-    private fun fetchPopularMovies() {
-        viewModelScope.launch {
-            val movieList = apiService.getPopularMovie("week")
-            if (movieList != null) {
-                movies.value = movieList
-            }
-        }
-    }
-    init {
-        fetchPopularMovies()
-    }
-
-     */
 }
