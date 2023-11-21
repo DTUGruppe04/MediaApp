@@ -1,6 +1,7 @@
 package com.example.mediaapp.screens
 
 import PagerViewModel
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -56,6 +57,7 @@ import com.example.mediaapp.R
 import com.example.mediaapp.Screen
 import com.example.mediaapp.apirequests.APIHandler
 import com.example.mediaapp.ui.theme.MediaAppTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -71,13 +73,28 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
             item {
                 //This is the uppermost part of the main page
                 val popularMovies by viewModel.popularMovies.collectAsState()
+                val pageCount = popularMovies.size
+                val pagerState = rememberPagerState(pageCount = {pageCount})
+                val intervalMillis: Long = 5000
 
                 LaunchedEffect("week") {
                     viewModel.fetchPopularMovies()
+                    /*
+                    Log.d("Inside Launch", pageCount.toString())
+                    while (true) {
+                        delay(intervalMillis)
+                        scope.launch {
+                            val nextPage = (pagerState.currentPage + 1) % pageCount
+                            pagerState.animateScrollToPage(nextPage)
+                        }
+                    }
+
+                     */
                 }
+                // Log.d("Outside Launch", pageCount.toString())
+
                 val baseURL = "https://image.tmdb.org/t/p/original"
 
-                val pagerState = rememberPagerState(pageCount = {popularMovies.size})
                 //The sliding horizontal pager
                 Box(modifier = Modifier
                     .height(280.dp)
@@ -178,7 +195,7 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                             onClick = {
                                 scope.launch {
                                     pagerState.animateScrollToPage(
-                                      pagerState.currentPage - 1
+                                        (pagerState.currentPage - 1 + pageCount) % pageCount
                                     )
                                 }
                             },
@@ -195,7 +212,7 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                             onClick = {
                                 scope.launch {
                                     pagerState.animateScrollToPage(
-                                        pagerState.currentPage + 1
+                                        (pagerState.currentPage + 1) % pageCount
                                     )
                                 }
                             },
