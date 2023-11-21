@@ -18,7 +18,6 @@ interface TMDBApi {
         @Query("language") language: String
         ) : Call<TMDBMovieResponse>
 
-
     //https://api.themoviedb.org/3/search/movie?query=Barbie&api_key=4d8b26c7e474409c5926dca8433a8262
     @GET("search/movie?api_key=4d8b26c7e474409c5926dca8433a8262")
     fun searchForMovie(@Query("query") search: String) : Call<TMDBMovieResponse>
@@ -82,11 +81,4 @@ interface TMDBApi {
         @Query("language") language: String,
         @Query("page") page: Int
     ) : Call<TMDBUpcomingMovies>
-
-
-    /*
-    // https://api.themoviedb.org/3/movie/9445/watch/providers?api_key=4d8b26c7e474409c5926dca8433a8262
-    @GET("movie/{id}/watch/providers?api_key=4d8b26c7e474409c5926dca8433a8262")
-    fun getWhereToWatchMovie(@Path("id") id: String) : Call<TMDBWhereToWatchMovie>
-     */
 }

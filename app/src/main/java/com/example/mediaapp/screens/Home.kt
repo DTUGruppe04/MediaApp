@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,14 +19,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,13 +33,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -59,35 +54,14 @@ import coil.compose.AsyncImage
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
 import com.example.mediaapp.apirequests.APIHandler
-import com.example.mediaapp.apirequests.TMDBMovieResponse
 import com.example.mediaapp.ui.theme.MediaAppTheme
+import com.example.mediaapp.viewmodels.PagerViewModel
 import kotlinx.coroutines.launch
-import com.example.mediaapp.viewmodels.ViewModelPager
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
+fun MainPageLayout(navController: NavController, drawerState: DrawerState, viewModel: PagerViewModel = viewModel()) {
     val scope = rememberCoroutineScope()
-
-    /*
-    val mainPageTopPicture = listOf(
-        R.drawable.barbie,
-        R.drawable.oppenheimer
-    )
-    val mainPageTopString1 = listOf(
-        R.string.main_page_text1_1,
-        R.string.main_page_text1_2
-    )
-    val mainPageTopString2 = listOf(
-        R.string.main_page_text2_1,
-        R.string.main_page_text2_2
-    )
-    val mainPageTopPoster = listOf(
-        R.drawable.barbie_icon,
-        R.drawable.oppenheimerposter
-    )
-     */
-
     MediaAppTheme {
         LazyColumn(
             modifier = Modifier
@@ -96,19 +70,14 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
         ) {
             item {
                 //This is the uppermost part of the main page
-                val initPagerViewModel = viewModel<ViewModelPager>()
-                val movies = remember { mutableStateOf<TMDBMovieResponse?>(null) }
-                val baseURL = "https://image.tmdb.org/t/p/original"
-                val failURL = "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
+                val popularMovies by viewModel.popularMovies.collectAsState()
 
-                LaunchedEffect(initPagerViewModel.movies) {
-                    initPagerViewModel.movies.observeForever { movieResponse ->
-                        movies.value = movieResponse
-                    }
+                LaunchedEffect("week") {
+                    viewModel.fetchPopularMovies()
                 }
+                val baseURL = "https://image.tmdb.org/t/p/original"
 
-                //val pagerState = rememberPagerState(pageCount = {mainPageTopPicture.size})
-                val pagerState = rememberPagerState(pageCount = { movies.value?.results?.size ?: 0})
+                val pagerState = rememberPagerState(pageCount = {popularMovies.size})
                 //The sliding horizontal pager
                 Box(modifier = Modifier
                     .height(280.dp)
@@ -116,7 +85,6 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                 ) {
                     HorizontalPager(
                         state = pagerState,
-                        //key = { mainPageTopPicture[it] },
                         key = {it},
                         pageSize = PageSize.Fill
                     ) { index ->
@@ -125,7 +93,7 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                             .fillMaxWidth()
                         ) {
                             AsyncImage(
-                                model = baseURL + (movies.value?.results?.get(index)?.backdrop_path ?: failURL),
+                                model = baseURL + popularMovies[index].backdrop_path,
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -137,22 +105,6 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                         }
                                     }
                             )
-                            /*
-                            Image(
-                                painter = painterResource(id = mainPageTopPicture[index]),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(220.dp)
-                                    .clickable {
-                                        scope.launch {
-                                            navController.navigate(Screen.MoviePage.route)
-                                        }
-                                    }
-                            )
-
-                             */
                             Row(
                                 verticalAlignment = Alignment.Bottom,
                                 horizontalArrangement = Arrangement.Center,
@@ -162,7 +114,7 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                     .align(Alignment.BottomStart)
                             ) {
                                 AsyncImage(
-                                    model = baseURL + (movies.value?.results?.get(index)?.poster_path ?: failURL),
+                                    model = baseURL + popularMovies[index].poster_path,
                                     contentDescription = null,
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier
@@ -177,66 +129,25 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                             }
                                         }
                                 )
-                                /*
-                                Image(
-                                    painter = painterResource(id = mainPageTopPoster[index]),
-                                    contentDescription = "poster",
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier
-                                        .offset(x = -(18).dp)
-                                        .padding(bottom = 5.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .height(121.dp)
-                                        .width(72.dp)
-                                        .clickable {
-                                            scope.launch {
-                                                navController.navigate(Screen.MoviePage.route)
-                                            }
-                                        }
-                                )
-
-                                 */
                                 Column(
                                     verticalArrangement = Arrangement.Bottom
                                 ) {
-                                    movies.value?.results?.get(index)?.let {
-                                        Text(
-                                            //stringResource(id = mainPageTopString1[index]),
-                                            //stringResource(id = movies.value.results[index].title)
-                                            text = it.title,
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                            style = MaterialTheme.typography.titleMedium,
-                                            textAlign = TextAlign.Center,
-                                            modifier = Modifier
-                                                .offset(x = -(18).dp)
-                                                .padding(start = 10.dp)
-                                                .clickable {
-                                                    scope.launch {
-                                                        navController.navigate(Screen.MoviePage.route)
-                                                    }
-                                                }
-                                        )
-                                    }
-                                    movies.value?.results?.get(index)?.let {
-                                        Text(
-                                            //stringResource(id = mainPageTopString2[index])
-                                            text = "Genre: " + APIHandler().getGenrebyID(it.genre_ids),
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                            style = MaterialTheme.typography.labelMedium,
-                                            fontSize = 10.sp,
-                                            modifier = Modifier
-                                                .offset(x = -(18).dp)
-                                                .padding(start = 10.dp, bottom = 5.dp)
-                                                .clickable {
-                                                    scope.launch {
-                                                        navController.navigate(Screen.MoviePage.route)
-                                                    }
-                                                }
-                                        )
-                                    }
-                                    /*
                                     Text(
-                                        //stringResource(id = mainPageTopString2[index])
+                                        text = popularMovies[index].title,
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier
+                                            .offset(x = -(18).dp)
+                                            .padding(start = 10.dp)
+                                            .clickable {
+                                                scope.launch {
+                                                    navController.navigate(Screen.MoviePage.route)
+                                                }
+                                            }
+                                    )
+                                    Text(
+                                        text = "Genre: " + APIHandler().getGenrebyID(popularMovies[index].genre_ids),
                                         color = MaterialTheme.colorScheme.onSurface,
                                         style = MaterialTheme.typography.labelMedium,
                                         fontSize = 10.sp,
@@ -249,8 +160,6 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState) {
                                                 }
                                             }
                                     )
-
-                                     */
                                 }
                             }
                         }

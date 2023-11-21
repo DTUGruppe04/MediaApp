@@ -32,7 +32,7 @@ class APIHandler {
      * If return is null something went wrong.
      *
      */
-    suspend fun getPopularMovie(timeWindow: String, language: String = "en-US") : TMDBMovieResponse? {
+    suspend fun getPopularMovies(timeWindow: String, language: String = "en-US") : TMDBMovieResponse? {
         try {
             val response = api.getPopularMovie(timeWindow, language).awaitResponse()
             if (response.isSuccessful) {
@@ -343,24 +343,4 @@ class APIHandler {
         }
         return tempList.joinToString()
     }
-
-    /*
-    //Function isnt done yet
-    suspend fun getWhereToWatchMovie(id: String) : TMDBWhereToWatchMovie? {
-        try {
-            val response = api.getWhereToWatchMovie(id).awaitResponse()
-            if (response.isSuccessful) {
-                var data = response.body()
-                if (data != null) {
-                    return data
-                }
-            }
-            return null
-        } catch (e: Exception) {
-            Log.e("APIError", e.toString())
-            return null
-        }
-    }
-     */
-
 }

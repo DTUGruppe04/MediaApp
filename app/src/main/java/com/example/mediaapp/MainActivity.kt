@@ -32,7 +32,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val scope = rememberCoroutineScope()
                     val navController = rememberNavController()
                     NavigationGraphLogin(navController = navController)
                 }
