@@ -1,5 +1,10 @@
 package com.example.mediaapp.apirequests
 
+import com.example.mediaapp.models.TMDBMovieCredits
+import com.example.mediaapp.models.TMDBMovieDetail
+import com.example.mediaapp.models.TMDBMovieResponse
+import com.example.mediaapp.models.TMDBMovieReview
+import com.example.mediaapp.models.TMDBUpcomingMovies
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

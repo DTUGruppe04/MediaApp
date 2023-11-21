@@ -1,6 +1,5 @@
 package com.example.mediaapp.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,26 +22,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.mediaapp.Screen
+import com.example.mediaapp.models.TMDBMovie
 
-class SearchQueryLayout(private val movies: List<Movie>) {
+object SearchQueryLayout {
+    private const val baseURL = "https://image.tmdb.org/t/p/original"
+    private const val failURL = "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
 
     @Composable
-    private fun Modifier.composeImageModifier(): Modifier {
-        return this
-            .shadow(elevation = 4.dp, spotColor = MaterialTheme.colorScheme.background)
-            .border(1.dp, Color(0xFF000000), RoundedCornerShape(10.dp))
-            .padding(0.5.dp)
-            .width(96.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .height(142.dp)
-    }
-    @Composable
-    fun SearchQueryList(navController: NavController){
+    fun SearchQueryList(movies: List<TMDBMovie>, navController: NavController) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -50,10 +42,8 @@ class SearchQueryLayout(private val movies: List<Movie>) {
         ) {
             items(movies) { movie ->
                 SearchQueryListItem(
-                    title = movie.title,
-                    actor = movie.actors.get(0),
-                    description = movie.description,
-                    poster = movie.poster,
+                    movie = movie,
+                    movieId = movie.id,
                     navController = navController
                 )
                 Divider(
@@ -64,34 +54,44 @@ class SearchQueryLayout(private val movies: List<Movie>) {
             }
         }
     }
+
     @Composable
-    fun SearchQueryListItem(title: String, actor: String, description: String, poster: Painter, navController: NavController) {
+    fun SearchQueryListItem(movie: TMDBMovie,movieId: Int, navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 24.dp, top = 8.dp, bottom = 8.dp)
                 .clickable {
-                    navController.navigate(Screen.MoviePage.route)
+                    navController.navigate("${Screen.MoviePage.route}/$movieId")
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = poster,
+            AsyncImage(
+                model = baseURL + (movie.poster_path ?: failURL),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .composeImageModifier()
+                modifier = Modifier.composeImageModifier()
             )
             Column (
                 modifier = Modifier.padding(start = 16.dp)
             ){
                 Text(
-                    text = title,
+                    text = movie.title,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Text(text = actor, style = MaterialTheme.typography.titleSmall)
-                Text(text = description, style = MaterialTheme.typography.titleSmall)
+                Text(text = movie.overview, style = MaterialTheme.typography.titleSmall)
             }
         }
+    }
+
+    @Composable
+    private fun Modifier.composeImageModifier(): Modifier {
+        return this
+            .shadow(elevation = 4.dp, spotColor = MaterialTheme.colorScheme.background)
+            .border(1.dp, Color(0xFF000000), RoundedCornerShape(10.dp))
+            .padding(0.5.dp)
+            .width(96.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .height(142.dp)
     }
 }
