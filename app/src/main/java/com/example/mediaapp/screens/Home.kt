@@ -109,7 +109,7 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState, viewM
                                 verticalAlignment = Alignment.Bottom,
                                 horizontalArrangement = Arrangement.Center,
                                 modifier = Modifier
-                                    .fillMaxWidth()
+                                    .width(260.dp)
                                     .padding(bottom = 18.dp)
                                     .align(Alignment.BottomStart)
                             ) {
@@ -137,6 +137,9 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState, viewM
                                         color = MaterialTheme.colorScheme.onSurface,
                                         style = MaterialTheme.typography.titleMedium,
                                         textAlign = TextAlign.Center,
+                                        softWrap = true,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
                                         modifier = Modifier
                                             .offset(x = -(18).dp)
                                             .padding(start = 10.dp)
@@ -151,6 +154,9 @@ fun MainPageLayout(navController: NavController, drawerState: DrawerState, viewM
                                         color = MaterialTheme.colorScheme.onSurface,
                                         style = MaterialTheme.typography.labelMedium,
                                         fontSize = 10.sp,
+                                        softWrap = true,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
                                         modifier = Modifier
                                             .offset(x = -(18).dp)
                                             .padding(start = 10.dp, bottom = 5.dp)
