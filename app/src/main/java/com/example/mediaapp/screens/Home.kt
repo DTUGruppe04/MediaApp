@@ -1,5 +1,6 @@
 package com.example.mediaapp.screens
 
+import PagerViewModel
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -55,12 +56,11 @@ import com.example.mediaapp.R
 import com.example.mediaapp.Screen
 import com.example.mediaapp.apirequests.APIHandler
 import com.example.mediaapp.ui.theme.MediaAppTheme
-import com.example.mediaapp.viewmodels.PagerViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun MainPageLayout(navController: NavController, drawerState: DrawerState, viewModel: PagerViewModel = viewModel()) {
+fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavController, drawerState: DrawerState) {
     val scope = rememberCoroutineScope()
     MediaAppTheme {
         LazyColumn(
