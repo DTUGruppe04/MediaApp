@@ -1,6 +1,5 @@
 package com.example.mediaapp.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,11 +25,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.AsyncImage
 import com.example.mediaapp.Screen
 import com.example.mediaapp.models.TMDBMovie
 
 object SearchQueryLayout {
+    private const val baseURL = "https://image.tmdb.org/t/p/original"
+    private const val failURL = "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
+
     @Composable
     fun SearchQueryList(movies: List<TMDBMovie>, navController: NavController) {
         LazyColumn(
@@ -40,9 +42,8 @@ object SearchQueryLayout {
         ) {
             items(movies) { movie ->
                 SearchQueryListItem(
-                    title = movie.title,
-                    genre = movie.overview,
-                    posterURL = movie.poster_path,
+                    movie = movie,
+                    movieId = movie.id,
                     navController = navController
                 )
                 Divider(
@@ -53,35 +54,36 @@ object SearchQueryLayout {
             }
         }
     }
+
     @Composable
-    fun SearchQueryListItem(title: String, genre: String, posterURL: String, navController: NavController) {
+    fun SearchQueryListItem(movie: TMDBMovie,movieId: Int, navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 24.dp, top = 8.dp, bottom = 8.dp)
                 .clickable {
-                    navController.navigate(Screen.MoviePage.route)
+                    navController.navigate("${Screen.MoviePage.route}/$movieId")
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = rememberAsyncImagePainter(model = posterURL),
+            AsyncImage(
+                model = baseURL + (movie.poster_path ?: failURL),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .composeImageModifier()
+                modifier = Modifier.composeImageModifier()
             )
             Column (
                 modifier = Modifier.padding(start = 16.dp)
             ){
                 Text(
-                    text = title,
+                    text = movie.title,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Text(text = genre, style = MaterialTheme.typography.titleSmall)
+                Text(text = movie.overview, style = MaterialTheme.typography.titleSmall)
             }
         }
     }
+
     @Composable
     private fun Modifier.composeImageModifier(): Modifier {
         return this

@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.mediaapp.MainScreen
 import com.example.mediaapp.Screen
 import com.example.mediaapp.screens.CreateAccountPageLayout
@@ -22,7 +21,6 @@ import com.example.mediaapp.screens.SearchPage
 import com.example.mediaapp.screens.SettingpageLayout
 import com.example.mediaapp.screens.YoufollowPageLayout
 import com.example.mediaapp.screens.YourfollowersPageLayout
-import com.example.mediaapp.ui.Movie
 
 //Main NavigationGraph for the APP
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,8 +51,11 @@ fun NavigationGraph(navController: NavHostController, loginNavController: NavCon
         composable(route = Screen.Settings.route) {
             SettingpageLayout(navController = navController, drawerState = drawerState)
         }
-        composable(route = Screen.MoviePage.route) {
-            MovieDetailPage(navController = navController, drawerState = drawerState)
+        composable("${Screen.MoviePage.route}/{movieId}") { backStackEntry ->
+            val movieId = backStackEntry.arguments?.getString("movieId")
+            if (movieId != null) {
+                MovieDetailPage(navController = navController, drawerState = drawerState, movieId = movieId)
+            }
         }
         composable(route = Screen.Login.route) {
             loginNavController.navigate("navigationGraphLogin")

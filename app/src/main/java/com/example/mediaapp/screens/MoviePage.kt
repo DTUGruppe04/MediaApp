@@ -1,7 +1,7 @@
 package com.example.mediaapp.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,45 +27,48 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.mediaapp.R
-import com.example.mediaapp.ui.Movie
+import com.example.mediaapp.models.TMDBMovieDetail
 import com.example.mediaapp.ui.nav.TopNavBarD
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import com.example.mediaapp.ui.theme.md_theme_dark_background
+import com.example.mediaapp.viewModels.MovieDetailViewModel
 
-
+private const val baseURL = "https://image.tmdb.org/t/p/original"
+private const val failURL = "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
-    val movie = Movie(
-        stringResource(R.string.oppenheimer),
-        listOf(stringResource(R.string.drama,
-            R.string.bibliography,
-            R.string.historical)),
-        stringResource(R.string.oppenheimer_description),
-        painterResource(R.drawable.oppenheimerposter),
-        listOf(stringResource(R.string.cillian_murphy), stringResource(R.string.florence_pugh), stringResource(R.string.robert_downey_jr)),
-        stringResource(R.string.christopher_nolan),
-        stringResource(R.string.year_2023),
-        painterResource(R.drawable.oppenheimer2)
-    )
+fun MovieDetailPage(
+    movieId: String,
+    viewModel: MovieDetailViewModel = viewModel(),
+    navController: NavController,
+    drawerState: DrawerState) {
+    val movieDetails by viewModel.movieDetails.collectAsState()
 
+    LaunchedEffect(movieId) {
+        viewModel.fetchMovieDetails(movieId)
+    }
+    val movie = movieDetails ?: return
     MediaAppTheme {
         LazyColumn(
             modifier = Modifier
@@ -73,6 +76,7 @@ fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
                 .padding(bottom = 80.dp)
                 .background(md_theme_dark_background)
         ) {
+
             item {
                 TopNavBarD(navController = navController, drawerState = drawerState)
                 Box(
@@ -80,11 +84,11 @@ fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
                         .fillMaxWidth()
                         .height(200.dp)
                 ) {
-                    Image(
-                        painter = painterResource(R.drawable.oppenheimer2),
-                        contentDescription = "Oppenheimer",
+                    AsyncImage(
+                        model = baseURL + (movie.poster_path ?: failURL),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
                     )
                     Row(
                         modifier = Modifier
@@ -168,23 +172,15 @@ fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
             }
             item {
                 //Top part
-                MovieDescription(
-                    movie.description,
-                    movie.title,
-                    "8,7/10",
-                    movie.releaseDate,
-                    movie.poster
-                )
+                MovieDescription(movie)
             }
+            /* TODO: Add director and actors
             item {
-                Detail(detail = "Director", infoList = listOf(movie.director))
+                Detail(detail = movie., infoList = listOf(movie.director))
             }
             item {
                 Detail(detail = "Actors", infoList = movie.actors)
-            }
-            item {
-                Detail(detail = "Director", infoList = listOf(movie.director))
-            }
+            }*/
 
         }
     }
@@ -192,21 +188,22 @@ fun MovieDetailPage(navController: NavController, drawerState: DrawerState) {
 
 //060404
 @Composable
-fun MovieDescription(description: String, title: String, rating : String, year : String, poster: Painter) {
+fun MovieDescription(movie: TMDBMovieDetail) {
+
     Box(modifier = Modifier
         .fillMaxWidth()
         .background(color = Color(0xFF3F3F3F))
-        .height(250.dp)) {
-        Image(painter = poster,
-            contentDescription = "Oppenheimer poster",
-            contentScale = ContentScale.FillHeight,
+        .padding(5.dp)
+        .fillMaxHeight()) {
+
+        AsyncImage(
+            model = baseURL + (movie.poster_path ?: failURL),
+            contentDescription = null,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.composeImageModifier())
+        Text(text = movie.title,
             modifier = Modifier
-                .padding(top = 10.dp)
-                .padding(bottom = 50.dp))
-        Text(text = title,
-            modifier = Modifier
-                .padding(start = 130.dp)
-                .padding(top = 10.dp),
+                .padding(start = 130.dp, bottom = 130.dp),
             color = Color.White,
             fontSize = 30.sp)
         LazyRow(modifier = Modifier
@@ -227,12 +224,11 @@ fun MovieDescription(description: String, title: String, rating : String, year :
             }
         }
         Box(modifier = Modifier
-            .padding(start = 130.dp)
-            .padding(top = 90.dp)
-            .height(100.dp)
+            .padding(start = 130.dp, top = 90.dp)
+            .fillMaxHeight()
             .fillMaxWidth()) {
             Text(
-                text = description,
+                text = movie.overview,
                 color = Color.White,
                 fontSize = 14.sp,
                 lineHeight = 14.sp
@@ -266,7 +262,7 @@ fun MovieDescription(description: String, title: String, rating : String, year :
             Box(modifier = Modifier
                 .padding(10.dp)
                 .fillMaxHeight()) {
-                Text(text = rating,
+                Text(text = movie.vote_count.toString(),
                     color = Color.White,
                     modifier = Modifier
                         .fillMaxHeight())
@@ -281,14 +277,20 @@ fun MovieDescription(description: String, title: String, rating : String, year :
             }
         }
         Box(modifier = Modifier
-            .padding(top = 210.dp)
-            .padding(start = 45.dp)
+            .padding(top = 160.dp)
         ) {
-            Text(text = year, color = Color.White)
+            Text(text = movie.release_date, color = Color.White)
         }
     }
 }
-
+@Composable
+private fun Modifier.composeImageModifier(): Modifier {
+    return this
+        .shadow(elevation = 4.dp, spotColor = MaterialTheme.colorScheme.background)
+        .border(1.dp, Color(0xFF000000), RoundedCornerShape(10.dp))
+        .height(150.dp)
+        .clip(RoundedCornerShape(10.dp))
+}
 //can be made more customizable by making the textlength decide the length of the box
 @Composable
 fun TagBox(shape : Shape, tag : String) {
