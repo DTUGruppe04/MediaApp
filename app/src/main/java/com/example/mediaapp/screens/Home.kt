@@ -109,8 +109,8 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                                 verticalAlignment = Alignment.Bottom,
                                 horizontalArrangement = Arrangement.Start,
                                 modifier = Modifier
-                                    .width(260.dp)
                                     .padding(bottom = 18.dp, end = 52.dp)
+                                    .fillMaxWidth()
                                     .align(Alignment.BottomStart)
                             ) {
                                 AsyncImage(
@@ -118,8 +118,7 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                                     contentDescription = null,
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier
-                                        .offset(x = 52.dp)
-                                        .padding(bottom = 5.dp)
+                                        .padding(start = 52.dp, bottom = 5.dp)
                                         .clip(RoundedCornerShape(10.dp))
                                         .height(121.dp)
                                         .width(72.dp)
@@ -141,7 +140,6 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis,
                                         modifier = Modifier
-                                            .offset(x = 52.dp)
                                             .padding(start = 10.dp)
                                             .clickable {
                                                 scope.launch {
@@ -158,7 +156,6 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis,
                                         modifier = Modifier
-                                            .offset(x = 52.dp)
                                             .padding(start = 10.dp, bottom = 5.dp)
                                             .clickable {
                                                 scope.launch {
