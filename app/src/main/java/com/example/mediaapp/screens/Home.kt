@@ -74,24 +74,11 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                 //This is the uppermost part of the main page
                 val popularMovies by viewModel.popularMovies.collectAsState()
                 val pageCount = popularMovies.size
-                val pagerState = rememberPagerState(pageCount = {pageCount})
-                val intervalMillis: Long = 5000
+                val pagerState = rememberPagerState(pageCount = {popularMovies.size})
 
                 LaunchedEffect("week") {
                     viewModel.fetchPopularMovies()
-                    /*
-                    Log.d("Inside Launch", pageCount.toString())
-                    while (true) {
-                        delay(intervalMillis)
-                        scope.launch {
-                            val nextPage = (pagerState.currentPage + 1) % pageCount
-                            pagerState.animateScrollToPage(nextPage)
-                        }
-                    }
-
-                     */
                 }
-                // Log.d("Outside Launch", pageCount.toString())
 
                 val baseURL = "https://image.tmdb.org/t/p/original"
 
@@ -109,6 +96,18 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                             .height(280.dp)
                             .fillMaxWidth()
                         ) {
+                            /* Have some problems with sometimes skipping two pages
+                            LaunchedEffect("autoscroll") {
+                                while(pageCount > 0) {
+                                    delay(8000)
+                                    scope.launch {
+                                        val nextPage = (pagerState.currentPage + 1) % pageCount
+                                        pagerState.animateScrollToPage(nextPage)
+                                    }
+                                }
+                            }
+
+                             */
                             AsyncImage(
                                 model = baseURL + popularMovies[index].backdrop_path,
                                 contentDescription = null,
