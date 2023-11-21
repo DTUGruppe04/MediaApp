@@ -30,7 +30,7 @@ class SearchViewModel() : ViewModel() {
                 searchRepository.searchMovies(query).also { result ->
                     result.onSuccess { movies ->
                         _searchResults.value = movies
-                        _isSearchActive.value = false
+                        _isSearchActive.value = true
                     }.onFailure { throwable ->
                         _error.value = throwable.localizedMessage ?: "Unknown Error"
                     }
