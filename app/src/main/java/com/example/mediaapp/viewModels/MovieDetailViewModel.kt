@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.apirequests.APIHandler
 import com.example.mediaapp.models.TMDBMovieDetail
-import com.example.mediaapp.repos.SearchRepository
+import com.example.mediaapp.repos.MovieDetailRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 class MovieDetailViewModel() : ViewModel() {
 
     private val apiHandler = APIHandler()
+    private val movieDetailRepo = MovieDetailRepo(apiHandler)
 
     private val _movieDetails = MutableStateFlow<TMDBMovieDetail?>(null)
     val movieDetails: StateFlow<TMDBMovieDetail?> = _movieDetails.asStateFlow()
@@ -23,10 +24,8 @@ class MovieDetailViewModel() : ViewModel() {
         _isLoading.value = true
         viewModelScope.launch {
             try {
-                val details = apiHandler.getMovieDetail(movieId)
+                val details = movieDetailRepo.getMovieDetails(movieId)
                 _movieDetails.value = details
-            } catch (e: Exception) {
-                _movieDetails.value = null
             } finally {
                 _isLoading.value = false
             }
