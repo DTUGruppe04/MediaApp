@@ -2,6 +2,7 @@ package com.example.mediaapp.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,6 +55,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mediaapp.R
 import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.models.Genre
 import com.example.mediaapp.models.TMDBMovieDetail
 import com.example.mediaapp.ui.nav.TopNavBarD
 import com.example.mediaapp.ui.theme.MediaAppTheme
@@ -192,7 +197,8 @@ fun MovieDetailPage(
 //060404
 @Composable
 fun MovieDescription(movie: TMDBMovieDetail) {
-    val genreIds = movie.genres
+    val genreGenre = movie.genres
+    val genreIds = convertGenresToIntList(genreGenre)
     Box(modifier = Modifier
         .fillMaxWidth()
         .background(color = Color(0xFF3F3F3F))
@@ -222,12 +228,7 @@ fun MovieDescription(movie: TMDBMovieDetail) {
             .padding(start = 130.dp, top = 90.dp)
             .fillMaxHeight()
             .fillMaxWidth()) {
-            Text(
-                text = movie.overview,
-                color = Color.White,
-                fontSize = 14.sp,
-                lineHeight = 14.sp
-            )
+            ExpandableText(movie.overview)
         }
         Row(modifier = Modifier
             .padding(start = 130.dp)
@@ -298,6 +299,40 @@ fun GenreTags(genreIds: List<Int>) {
         }
     }
 }
+fun convertGenresToIntList(genres: List<Genre>): List<Int> {
+    return genres.map { it.id }
+}
+@Composable
+fun ExpandableText(text: String, maxLength: Int = 150) {
+    var isExpanded by remember { mutableStateOf(false) }
+
+    val displayText = if (isExpanded || text.length <= maxLength) {
+        text
+    } else {
+        text.take(maxLength) + "..."
+    }
+
+    Column {
+        Text(
+            text = displayText,
+            color = Color.White,
+            fontSize = 14.sp,
+            lineHeight = 14.sp,
+            modifier = Modifier.clickable { isExpanded = !isExpanded }
+        )
+
+        if (text.length > maxLength && !isExpanded) {
+            Text(
+                text = "View More",
+                color = Color.White,
+                fontSize = 14.sp,
+                modifier = Modifier.clickable { isExpanded = true }
+            )
+        }
+    }
+}
+
+
 @Composable
 fun TagBox(shape : Shape, tag : String) {
     Column(modifier = Modifier
