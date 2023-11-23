@@ -55,7 +55,6 @@ import coil.compose.AsyncImage
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
 import com.example.mediaapp.apirequests.APIHandler
-import com.example.mediaapp.models.TMDBMovie
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

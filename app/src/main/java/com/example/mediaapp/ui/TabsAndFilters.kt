@@ -32,27 +32,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.ContentAlpha
 import com.example.mediaapp.R
+import com.example.mediaapp.ui.theme.MediaAppTheme
 
 
 class TabsAndFilters(
     private val tabs: List<String>,
     private val filters: List<FilterOption>
 ) {
+
     data class FilterOption(val label: String, val options: List<String>)
     @Composable
     fun Render() {
-        var selectedTab by remember { mutableStateOf("All") }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFF141218)),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            TabsRow(tabs, selectedTab) { tab ->
-                selectedTab = tab
+        MediaAppTheme{
+            var selectedTab by remember { mutableStateOf("All") }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                TabsRow(tabs, selectedTab) { tab ->
+                    selectedTab = tab
+                }
+                Divider(color = MaterialTheme.colorScheme.outline, thickness = 0.5.dp,)
+                FiltersRow(filters)
             }
-            Divider(color = Color.Gray, thickness = 0.5.dp,)
-            FiltersRow(filters)
         }
     }
     @Composable
@@ -60,7 +64,7 @@ class TabsAndFilters(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp),
+                .padding(top = 16.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             tabs.forEach { tab ->
@@ -96,24 +100,9 @@ class TabsAndFilters(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.clickable { if (!isSelected) onClick() }
         ) {
-            TabIcon(isSelected = isSelected)
             TabText(label = label, isSelected = isSelected)
             TabIndicator(isSelected = isSelected)
         }
-    }
-    @Composable
-    fun TabIcon(isSelected: Boolean) {
-        val imageAlpha = if (isSelected) 1f else ContentAlpha.medium
-        Image(
-            painter = painterResource(id = R.drawable.icon),
-            contentDescription = "Tab icon",
-            modifier = Modifier
-                .padding(1.dp)
-                .width(24.dp)
-                .height(24.dp)
-                .alpha(imageAlpha),
-            contentScale = ContentScale.Fit
-        )
     }
     @Composable
     fun TabText(label: String, isSelected: Boolean) {
@@ -122,14 +111,8 @@ class TabsAndFilters(
             modifier = Modifier
                 .width(96.dp)
                 .height(20.dp),
-            style = TextStyle(
-                fontSize = 14.sp,
-                lineHeight = 20.sp,
-                fontWeight = FontWeight(500),
-                color = Color(0xFFF5F5F5),
-                textAlign = TextAlign.Center,
-                letterSpacing = 0.1.sp,
-            )
+            style = MaterialTheme.typography.titleSmall.copy(textAlign = TextAlign.Center)
+
         )
     }
     @Composable
@@ -141,7 +124,7 @@ class TabsAndFilters(
                     .width(92.dp)
                     .height(3.dp)
                     .background(
-                        color = Color(0xFFF5F5F5),
+                        color = MaterialTheme.colorScheme.onSurface,
                         shape = RoundedCornerShape(
                             topStart = 100.dp,
                             topEnd = 100.dp,
@@ -162,6 +145,8 @@ class TabsAndFilters(
         var expanded by remember { mutableStateOf(false)}
         var clicked by remember { mutableStateOf(false)}
         val (backgroundColor, textColor) = getDropdownColors(expanded)
+        val itemHeight = 48.dp
+        val dropdownHeight = itemHeight * (if (options.size < 8) options.size else 8)
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
@@ -177,7 +162,8 @@ class TabsAndFilters(
             )
             DropdownMenu(
                 expanded = expanded,
-                onDismissRequest = {expanded = false}
+                onDismissRequest = {expanded = false},
+                modifier = Modifier.heightIn(max = dropdownHeight)
             ) {
                 options.forEach{
                         option -> DropdownMenuItem(text = { Text(text = option) }, onClick = {
