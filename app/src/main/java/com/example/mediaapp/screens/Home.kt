@@ -182,7 +182,7 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                                                 .padding(start = 10.dp, bottom = 5.dp)
                                                 .clickable {
                                                     scope.launch {
-                                                        navController.navigate(Screen.MoviePage.route)
+                                                        navController.navigate("${Screen.MoviePage.route}/$movieId")
                                                     }
                                                 }
                                         )

@@ -2,6 +2,7 @@ package com.example.mediaapp.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -48,6 +50,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mediaapp.R
+import com.example.mediaapp.apirequests.APIHandler
 import com.example.mediaapp.models.TMDBMovieDetail
 import com.example.mediaapp.ui.nav.TopNavBarD
 import com.example.mediaapp.ui.theme.MediaAppTheme
@@ -64,6 +67,7 @@ fun MovieDetailPage(
     navController: NavController,
     drawerState: DrawerState) {
     val movieDetails by viewModel.movieDetails.collectAsState()
+    val genreIds = movieDetails?.genres
 
     LaunchedEffect(movieId) {
         viewModel.fetchMovieDetails(movieId)
@@ -188,7 +192,7 @@ fun MovieDetailPage(
 //060404
 @Composable
 fun MovieDescription(movie: TMDBMovieDetail) {
-
+    val genreIds = movie.genres
     Box(modifier = Modifier
         .fillMaxWidth()
         .background(color = Color(0xFF3F3F3F))
@@ -205,23 +209,15 @@ fun MovieDescription(movie: TMDBMovieDetail) {
                 .padding(start = 130.dp, bottom = 130.dp),
             color = Color.White,
             fontSize = 30.sp)
-        LazyRow(modifier = Modifier
+        Row(modifier = Modifier
             .padding(start = 130.dp)
             .padding(top = 60.dp)
             .height(20.dp)
             .fillMaxWidth()) {
-            item {
-                TagBox(shape = RoundedCornerShape(10.dp), "Drama")
-                Spacer(modifier = Modifier.padding(3.dp))
-            }
-            item {
-                TagBox(shape = RoundedCornerShape(10.dp), "Bibliography")
-                Spacer(modifier = Modifier.padding(3.dp))
-            }
-            item {
-                TagBox(shape = RoundedCornerShape(10.dp), "History")
-            }
+            GenreTags(genreIds)
         }
+
+
         Box(modifier = Modifier
             .padding(start = 130.dp, top = 90.dp)
             .fillMaxHeight()
@@ -291,6 +287,17 @@ private fun Modifier.composeImageModifier(): Modifier {
         .clip(RoundedCornerShape(10.dp))
 }
 //can be made more customizable by making the textlength decide the length of the box
+@Composable
+fun GenreTags(genreIds: List<Int>) {
+    val genres = APIHandler().getGenrebyID(genreIds)
+    Row(modifier = Modifier.
+    horizontalScroll(rememberScrollState())) {
+        for (genre in genres) {
+            TagBox(shape = RoundedCornerShape(4.dp), tag = genre)
+            Spacer(modifier = Modifier.width(8.dp)) // Add space between tags
+        }
+    }
+}
 @Composable
 fun TagBox(shape : Shape, tag : String) {
     Column(modifier = Modifier

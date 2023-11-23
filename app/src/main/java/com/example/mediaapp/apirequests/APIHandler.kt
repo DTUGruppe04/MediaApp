@@ -313,7 +313,7 @@ class APIHandler {
         }
     }
 
-    fun getGenrebyID(ids: List<Int>) : String {
+    fun getGenrebyID(ids: List<Int>) : List<String> {
         val tempList = mutableListOf<String>()
         for (item in ids) {
             when(item) {
@@ -336,11 +336,11 @@ class APIHandler {
                 53 -> tempList.add("Thriller")
                 10752 -> tempList.add("War")
                 37 -> tempList.add("Western")
-                else -> {
-                    return "No Genre"
-                }
             }
         }
-        return tempList.joinToString()
+        if (tempList.isEmpty()) {
+            tempList.add("No Genre")
+        }
+        return tempList
     }
 }

@@ -6,7 +6,7 @@ data class TMDBMovieDetail(
     val backdrop_path: String,
     val belongs_to_collection: Any,
     val budget: Int,
-    val genres: List<Genre>,
+    val genres: List<Int>,
     val homepage: String,
     val id: Int,
     val imdb_id: String,
