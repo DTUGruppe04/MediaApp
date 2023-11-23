@@ -85,7 +85,7 @@ fun MovieDetailPage(
                         .height(200.dp)
                 ) {
                     AsyncImage(
-                        model = baseURL + (movie.poster_path ?: failURL),
+                        model = baseURL + (movie.backdrop_path ?: failURL),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),

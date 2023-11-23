@@ -116,8 +116,9 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                                     .fillMaxWidth()
                                     .height(220.dp)
                                     .clickable {
+                                        val movieId = popularMovies[index].id.toString()
                                         scope.launch {
-                                            navController.navigate(Screen.MoviePage.route)
+                                            navController.navigate("${Screen.MoviePage.route}/$movieId")
                                         }
                                     }
                             )
