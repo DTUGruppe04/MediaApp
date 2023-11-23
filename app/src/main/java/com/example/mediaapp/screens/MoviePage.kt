@@ -303,7 +303,7 @@ fun convertGenresToIntList(genres: List<Genre>): List<Int> {
     return genres.map { it.id }
 }
 @Composable
-fun ExpandableText(text: String, maxLength: Int = 150) {
+fun ExpandableText(text: String, maxLength: Int = 130) {
     var isExpanded by remember { mutableStateOf(false) }
 
     val displayText = if (isExpanded || text.length <= maxLength) {
