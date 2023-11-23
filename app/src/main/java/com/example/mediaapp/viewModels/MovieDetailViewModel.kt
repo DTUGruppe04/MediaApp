@@ -3,6 +3,7 @@ package com.example.mediaapp.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.models.TMDBMovieCredits
 import com.example.mediaapp.models.TMDBMovieDetail
 import com.example.mediaapp.repos.MovieDetailRepo
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,9 @@ class MovieDetailViewModel() : ViewModel() {
     private val _movieDetails = MutableStateFlow<TMDBMovieDetail?>(null)
     val movieDetails: StateFlow<TMDBMovieDetail?> = _movieDetails.asStateFlow()
 
+    private val _movieCredits = MutableStateFlow<TMDBMovieCredits?>(null)
+    val movieCredits: StateFlow<TMDBMovieCredits?> = _movieCredits.asStateFlow()
+
     private val _isLoading = MutableStateFlow(false)
 
     fun fetchMovieDetails(movieId: String) {
@@ -26,6 +30,17 @@ class MovieDetailViewModel() : ViewModel() {
             try {
                 val details = movieDetailRepo.getMovieDetails(movieId)
                 _movieDetails.value = details
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+    fun fetchMovieCredits(movieId: String) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val credits = movieDetailRepo.getMovieCredits(movieId)
+                _movieCredits.value = credits
             } finally {
                 _isLoading.value = false
             }
