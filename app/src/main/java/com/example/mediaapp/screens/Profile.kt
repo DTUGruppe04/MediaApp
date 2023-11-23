@@ -17,10 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -78,19 +76,19 @@ fun ProfilePageLayout(navController: NavController, drawerState: DrawerState) {
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 item {
-                                    StandardBoxInRow(navController, R.drawable.thegodfather, R.string.thegodfather)
+                                    StandardBoxInRowOld(navController, R.drawable.thegodfather, R.string.thegodfather)
                                 }
                                 item {
-                                    StandardBoxInRow(navController, R.drawable.parasite, R.string.parasite)
+                                    StandardBoxInRowOld(navController, R.drawable.parasite, R.string.parasite)
                                 }
                                 item {
-                                    StandardBoxInRow(navController, R.drawable.thematrix, R.string.thematrix)
+                                    StandardBoxInRowOld(navController, R.drawable.thematrix, R.string.thematrix)
                                 }
                                 item {
-                                    StandardBoxInRow(navController, R.drawable.casablanca, R.string.casablanca)
+                                    StandardBoxInRowOld(navController, R.drawable.casablanca, R.string.casablanca)
                                 }
                                 item {
-                                    StandardBoxInRow(navController, R.drawable.indianajones, R.string.indianajones)
+                                    StandardBoxInRowOld(navController, R.drawable.indianajones, R.string.indianajones)
                                 }
                             }
                         }
@@ -127,19 +125,19 @@ fun ProfilePageLayout(navController: NavController, drawerState: DrawerState) {
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 item {
-                                    StandardBoxInRow(navController, R.drawable.oppenheimerposter, R.string.oppenheimer)
+                                    StandardBoxInRowOld(navController, R.drawable.oppenheimerposter, R.string.oppenheimer)
                                 }
                                 item {
-                                    StandardBoxInRow(navController, R.drawable.thedayaftertomorrow, R.string.thedayaftertomorrow)
+                                    StandardBoxInRowOld(navController, R.drawable.thedayaftertomorrow, R.string.thedayaftertomorrow)
                                 }
                                 item {
-                                    StandardBoxInRow(navController, R.drawable.avatarthewayofwater, R.string.avatarthewayofwater)
+                                    StandardBoxInRowOld(navController, R.drawable.avatarthewayofwater, R.string.avatarthewayofwater)
                                 }
                                 item {
-                                    StandardBoxInRow(navController, R.drawable.freeguy, R.string.freeguy)
+                                    StandardBoxInRowOld(navController, R.drawable.freeguy, R.string.freeguy)
                                 }
                                 item {
-                                    StandardBoxInRow(navController, R.drawable.readyplayerone, R.string.readyplayerone)
+                                    StandardBoxInRowOld(navController, R.drawable.readyplayerone, R.string.readyplayerone)
                                 }
                             }
                         }

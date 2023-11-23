@@ -181,7 +181,6 @@ fun MovieDetailPage(
             item {
                 Detail(detail = "Actors", infoList = movie.actors)
             }*/
-
         }
     }
 }

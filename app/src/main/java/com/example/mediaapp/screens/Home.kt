@@ -1,7 +1,6 @@
 package com.example.mediaapp.screens
 
 import PagerViewModel
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -56,14 +55,19 @@ import coil.compose.AsyncImage
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
 import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.models.TMDBMovie
 import com.example.mediaapp.ui.theme.MediaAppTheme
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavController, drawerState: DrawerState) {
     val scope = rememberCoroutineScope()
+    val popularMovies by viewModel.popularMovies.collectAsState()
+    val firstFiveMovies = popularMovies.take(5)
+    val remainingMovies = popularMovies.drop(5)
+    val baseURL = "https://image.tmdb.org/t/p/original"
     MediaAppTheme {
         LazyColumn(
             modifier = Modifier
@@ -72,15 +76,13 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
         ) {
             item {
                 //This is the uppermost part of the main page
-                val popularMovies by viewModel.popularMovies.collectAsState()
-                val pageCount = popularMovies.size
+                val pageCount = firstFiveMovies.size
                 val pagerState = rememberPagerState(pageCount = {popularMovies.size})
+
 
                 LaunchedEffect("week") {
                     viewModel.fetchPopularMovies()
                 }
-
-                val baseURL = "https://image.tmdb.org/t/p/original"
 
                 //The sliding horizontal pager
                 Box(modifier = Modifier
@@ -92,94 +94,100 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                         key = {it},
                         pageSize = PageSize.Fill
                     ) { index ->
-                        Box(modifier = Modifier
-                            .height(280.dp)
-                            .fillMaxWidth()
+                        val movieId = popularMovies[index].id.toString()
+                        val movie = firstFiveMovies.getOrNull(index)
+                        movie?.let { safeMovie ->
+                        Box(
+                            modifier = Modifier
+                                .height(280.dp)
+                                .fillMaxWidth()
                         ) {
                             /* Have some problems with sometimes skipping two pages
-                            LaunchedEffect("autoscroll") {
-                                while(pageCount > 0) {
-                                    delay(8000)
-                                    scope.launch {
-                                        val nextPage = (pagerState.currentPage + 1) % pageCount
-                                        pagerState.animateScrollToPage(nextPage)
-                                    }
+                        LaunchedEffect("autoscroll") {
+                            while(pageCount > 0) {
+                                delay(8000)
+                                scope.launch {
+                                    val nextPage = (pagerState.currentPage + 1) % pageCount
+                                    pagerState.animateScrollToPage(nextPage)
                                 }
                             }
+                        }
 
-                             */
+                         */
                             AsyncImage(
-                                model = baseURL + popularMovies[index].backdrop_path,
+                                model = baseURL + movie.backdrop_path,
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(220.dp)
                                     .clickable {
-                                        val movieId = popularMovies[index].id.toString()
                                         scope.launch {
                                             navController.navigate("${Screen.MoviePage.route}/$movieId")
                                         }
                                     }
-                            )
-                            Row(
-                                verticalAlignment = Alignment.Bottom,
-                                horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .padding(bottom = 18.dp, end = 52.dp)
-                                    .fillMaxWidth()
-                                    .align(Alignment.BottomStart)
-                            ) {
-                                AsyncImage(
-                                    model = baseURL + popularMovies[index].poster_path,
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier
-                                        .padding(start = 52.dp, bottom = 5.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .height(121.dp)
-                                        .width(72.dp)
-                                        .clickable {
-                                            scope.launch {
-                                                navController.navigate(Screen.MoviePage.route)
-                                            }
-                                        }
                                 )
-                                Column(
-                                    verticalArrangement = Arrangement.Bottom
+                                Row(
+                                    verticalAlignment = Alignment.Bottom,
+                                    horizontalArrangement = Arrangement.Start,
+                                    modifier = Modifier
+                                        .padding(bottom = 18.dp, end = 52.dp)
+                                        .fillMaxWidth()
+                                        .align(Alignment.BottomStart)
                                 ) {
-                                    Text(
-                                        text = popularMovies[index].title,
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        textAlign = TextAlign.Center,
-                                        softWrap = true,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
+                                    AsyncImage(
+                                        model = baseURL + movie.poster_path,
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop,
                                         modifier = Modifier
-                                            .padding(start = 10.dp)
+                                            .padding(start = 52.dp, bottom = 5.dp)
+                                            .clip(RoundedCornerShape(10.dp))
+                                            .height(121.dp)
+                                            .width(72.dp)
                                             .clickable {
                                                 scope.launch {
-                                                    navController.navigate(Screen.MoviePage.route)
+                                                    navController.navigate("${Screen.MoviePage.route}/$movieId")
                                                 }
                                             }
                                     )
-                                    Text(
-                                        text = "Genre: " + APIHandler().getGenrebyID(popularMovies[index].genre_ids),
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                        style = MaterialTheme.typography.labelMedium,
-                                        fontSize = 10.sp,
-                                        softWrap = true,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                        modifier = Modifier
-                                            .padding(start = 10.dp, bottom = 5.dp)
-                                            .clickable {
-                                                scope.launch {
-                                                    navController.navigate(Screen.MoviePage.route)
+                                    Column(
+                                        verticalArrangement = Arrangement.Bottom
+                                    ) {
+                                        Text(
+                                            text = popularMovies[index].title,
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            style = MaterialTheme.typography.titleMedium,
+                                            textAlign = TextAlign.Center,
+                                            softWrap = true,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,
+                                            modifier = Modifier
+                                                .padding(start = 10.dp)
+                                                .clickable {
+                                                    scope.launch {
+                                                        navController.navigate("${Screen.MoviePage.route}/$movieId")
+                                                    }
                                                 }
-                                            }
-                                    )
+                                        )
+                                        Text(
+                                            text = "Genre: " + APIHandler().getGenrebyID(
+                                                popularMovies[index].genre_ids
+                                            ),
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            style = MaterialTheme.typography.labelMedium,
+                                            fontSize = 10.sp,
+                                            softWrap = true,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,
+                                            modifier = Modifier
+                                                .padding(start = 10.dp, bottom = 5.dp)
+                                                .clickable {
+                                                    scope.launch {
+                                                        navController.navigate(Screen.MoviePage.route)
+                                                    }
+                                                }
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -194,9 +202,11 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                         IconButton(
                             onClick = {
                                 scope.launch {
-                                    pagerState.animateScrollToPage(
-                                        (pagerState.currentPage - 1 + pageCount) % pageCount
-                                    )
+                                    if (pageCount > 1) {
+                                        pagerState.animateScrollToPage(
+                                            (pagerState.currentPage - 1 + pageCount) % pageCount
+                                        )
+                                    }
                                 }
                             },
                             modifier = Modifier.align(Alignment.CenterStart)
@@ -260,7 +270,7 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                     }
                 }
             }
-            item {
+            item {//TODO
                 //This is for the first horizontal list
                 Box(
                     modifier = Modifier
@@ -280,39 +290,16 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                         LazyRow(
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            item {
+                            items(remainingMovies.size) { index ->
+                                val movie = remainingMovies[index]
+                                val movieId = remainingMovies[index].id.toString()
+
                                 StandardBoxInRow(
-                                    navController,
-                                    R.drawable.first_movie,
-                                    R.string.main_page_first_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRow(
-                                    navController,
-                                    R.drawable.second_movie,
-                                    R.string.main_page_second_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRow(
-                                    navController,
-                                    R.drawable.third_movie,
-                                    R.string.main_page_third_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRow(
-                                    navController,
-                                    R.drawable.fourth_movie,
-                                    R.string.main_page_fourth_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRow(
-                                    navController,
-                                    R.drawable.fifth_movie,
-                                    R.string.main_page_fourth_movie
+                                    navController = navController,
+                                    baseURL + movie.poster_path,
+                                    movie.title,
+                                    scope,
+                                    movieId
                                 )
                             }
                         }
@@ -343,35 +330,35 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                             modifier = Modifier.fillMaxSize()
                         ) {
                             item {
-                                StandardBoxInRow(
+                                StandardBoxInRowOld(
                                     navController,
                                     R.drawable.second_row_first_movie,
                                     R.string.main_page_first_row_first_movie
                                 )
                             }
                             item {
-                                StandardBoxInRow(
+                                StandardBoxInRowOld(
                                     navController,
                                     R.drawable.second_row_second_movie,
                                     R.string.main_page_first_row_second_movie
                                 )
                             }
                             item {
-                                StandardBoxInRow(
+                                StandardBoxInRowOld(
                                     navController,
                                     R.drawable.second_row_third_movie,
                                     R.string.main_page_first_row_third_movie
                                 )
                             }
                             item {
-                                StandardBoxInRow(
+                                StandardBoxInRowOld(
                                     navController,
                                     R.drawable.second_row_fourth_movie,
                                     R.string.main_page_first_row_fourth_movie
                                 )
                             }
                             item {
-                                StandardBoxInRow(
+                                StandardBoxInRowOld(
                                     navController,
                                     R.drawable.second_row_fifth_movie,
                                     R.string.main_page_first_row_fifth_movie
@@ -405,35 +392,35 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                             modifier = Modifier.fillMaxSize()
                         ) {
                             item {
-                                StandardBoxInRow(
+                                StandardBoxInRowOld(
                                     navController,
                                     R.drawable.third_row_first_movie,
                                     R.string.main_page_third_row_first_movie
                                 )
                             }
                             item {
-                                StandardBoxInRow(
+                                StandardBoxInRowOld(
                                     navController,
                                     R.drawable.third_row_second_movie,
                                     R.string.main_page_third_row_second_movie
                                 )
                             }
                             item {
-                                StandardBoxInRow(
+                                StandardBoxInRowOld(
                                     navController,
                                     R.drawable.third_row_third_movie,
                                     R.string.main_page_third_row_third_movie
                                 )
                             }
                             item {
-                                StandardBoxInRow(
+                                StandardBoxInRowOld(
                                     navController,
                                     R.drawable.third_row_fourth_movie,
                                     R.string.main_page_third_row_fourth_movie
                                 )
                             }
                             item {
-                                StandardBoxInRow(
+                                StandardBoxInRowOld(
                                     navController,
                                     R.drawable.third_row_fifth_movie,
                                     R.string.main_page_third_row_fifth_movie
@@ -448,7 +435,7 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
 }
 
 @Composable
-fun StandardBoxInRow(navController: NavController, image: Int, string: Int) {
+fun StandardBoxInRowOld(navController: NavController, image: Int, string: Int) {
     Box(modifier = Modifier
         .width(90.dp)
         .height(180.dp)
@@ -480,6 +467,53 @@ fun StandardBoxInRow(navController: NavController, image: Int, string: Int) {
                 lineHeight = 1.em,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+@Composable
+fun StandardBoxInRow(navController: NavController, movie_poster_path: String, movieTitle: String,scope: CoroutineScope,movieId: String) {
+    Box(
+        modifier = Modifier
+            .width(90.dp)
+            .height(180.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AsyncImage(
+                model = movie_poster_path,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 5.dp)
+                    .width(90.dp)
+                    .height(139.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .clickable {
+                        scope.launch {
+                            navController.navigate("${Screen.MoviePage.route}/$movieId")
+                        }
+                    }
+            )
+            Text(
+                text = movieTitle,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelMedium,
+                fontSize = 12.sp,
+                softWrap = true,
+                maxLines = 2,
+                lineHeight = 1.em,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 5.dp)
+                    .clickable {
+                        scope.launch {
+                            navController.navigate("${Screen.MoviePage.route}/$movieId")
+                        }
+                    }
             )
         }
     }
