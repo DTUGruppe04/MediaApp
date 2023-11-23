@@ -29,6 +29,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
 
     val searchResults by viewModel.searchResults.collectAsState()
     val isSearchActive by viewModel.isSearchActive.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
 
     MediaAppTheme {
         Column(
@@ -37,7 +38,12 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
                 .background(MaterialTheme.colorScheme.surface)
         ) {
             TopNavBarA(navController = navController, drawerState = drawerState)
-            SearchBar(onSearch = { query -> viewModel.performSearch(query) })
+            SearchBar(
+                query = searchQuery,
+                onSearch = { query ->
+                    viewModel.setSearchQuery(query)
+                    viewModel.performSearch(query) }
+            )
 
             if (isSearchActive) {
                 SearchQueryLayout.SearchQueryList(movies = searchResults, navController = navController)

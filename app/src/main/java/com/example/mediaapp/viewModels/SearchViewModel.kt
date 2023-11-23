@@ -13,6 +13,7 @@ class SearchViewModel() : ViewModel() {
     private val searchRepository = SearchRepository(apiHandler)
 
     private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String?> = _searchQuery
 
     private val _searchResults = MutableStateFlow<List<TMDBMovie>>(emptyList())
     val searchResults: StateFlow<List<TMDBMovie>> = _searchResults
@@ -22,6 +23,9 @@ class SearchViewModel() : ViewModel() {
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query // Method to update search query
+    }
 
     fun performSearch(query: String) {
         if (query.isNotEmpty()) {

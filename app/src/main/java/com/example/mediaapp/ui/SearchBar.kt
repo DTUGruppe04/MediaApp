@@ -34,12 +34,14 @@ import com.example.mediaapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(onSearch: (String) -> Unit) {
+fun SearchBar(
+    query: String?,
+    onSearch: (String) -> Unit)
+{
 
-    var text by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf(query) }
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -64,7 +66,7 @@ fun SearchBar(onSearch: (String) -> Unit) {
             )
         }
         TextField(
-            value = text,
+            value = text.toString(),
             onValueChange = {
                 text = it
                 onSearch(it)
