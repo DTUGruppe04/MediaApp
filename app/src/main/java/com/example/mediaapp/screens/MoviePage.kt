@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.BookmarkAdd
+import androidx.compose.material.icons.outlined.BookmarkRemove
 import androidx.compose.material.icons.outlined.Recommend
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.DrawerState
@@ -156,6 +157,7 @@ fun MovieDetailPage(
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
+
                                     Icon(
                                         imageVector = Icons.Outlined.Recommend,
                                         contentDescription = "N/A",
@@ -180,7 +182,7 @@ fun MovieDetailPage(
             }
             item {
                 //Top part
-                MovieDescription(movie)
+                MovieDescription(movie, true)
             }/* TODO Add Director and Actors
             item {
                 Detail(detail = "Crew", infoList = convertCrewToStringList(movieCredits?.crew))
@@ -195,8 +197,9 @@ fun MovieDetailPage(
 
 
 @Composable
-fun MovieDescription(movie: TMDBMovieDetail) {
+fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean) {
     val genreIds = convertGenresToIntList(movie.genres)
+    var isBookmarked by remember { mutableStateOf(bookmarkStatus) }
 
     Column(
         modifier = Modifier
@@ -270,10 +273,10 @@ fun MovieDescription(movie: TMDBMovieDetail) {
             }
             // Bookmark Icon
             Icon(
-                imageVector = Icons.Outlined.BookmarkAdd,
+                imageVector = if (isBookmarked) Icons.Outlined.BookmarkAdd else Icons.Outlined.BookmarkRemove,
                 contentDescription = "Bookmark",
                 tint = Color.White,
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp).clickable { isBookmarked = !isBookmarked },
             )
         }
         Text(
