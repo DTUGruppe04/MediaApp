@@ -313,6 +313,20 @@ class APIHandler {
         }
     }
 
+    /**
+     * getGenrebyID
+     *
+     * This function retrieves movies currently playing in theatres as JSON and serialize
+     * the JSON into usable Data Objects.
+     *
+     * @param language (Optional) Specifies the language for the movie data. If not provided,
+     * the default language is 'en-US'.
+     * @param page (Optional) Looking for new data of increase int page. If not provided,
+     * the default int page is 1
+     *
+     * @return Returns a Data Objects containing movies currently playing in theatres.
+     * If return is null something went wrong
+     */
     fun getGenrebyID(ids: List<Int>) : List<String> {
         val tempList = mutableListOf<String>()
         for (item in ids) {

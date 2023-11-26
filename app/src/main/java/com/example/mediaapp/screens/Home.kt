@@ -305,6 +305,7 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                     }
                 }
             }
+            /*
             item {
                 SeparationBox()
             }
@@ -429,6 +430,7 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                     }
                 }
             }
+            */
         }
     }
 }
