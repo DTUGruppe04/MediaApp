@@ -20,7 +20,6 @@ android {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -94,6 +93,10 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("io.cucumber:cucumber-android:7.14.0")
+    testImplementation("io.cucumber:cucumber-core:7.14.1")
+    testImplementation("io.cucumber:cucumber-junit:7.14.1")
+    testImplementation("java:io.cucumber:cucumber-java")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
