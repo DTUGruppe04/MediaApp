@@ -2,6 +2,8 @@
 
 package com.example.mediaapp
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -38,4 +40,13 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    companion object {
+        fun createIntent(targetContext: Context?, search: Screen.Search): Intent {
+            return Intent(targetContext, MainActivity::class.java).apply {
+                putExtra("screen", search)
+            }
+        }
+    }
+
 }
