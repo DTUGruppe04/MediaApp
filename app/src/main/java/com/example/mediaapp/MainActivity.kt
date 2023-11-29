@@ -24,6 +24,13 @@ import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        private val key = "text"
+        fun create(context: Context, text: String? = null): Intent =
+            Intent(context, MainActivity::class.java).putExtra(
+                key, text
+            )
+    }
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +44,6 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavigationGraphLogin(navController = navController)
                 }
-            }
-        }
-    }
-
-    companion object {
-        fun createIntent(targetContext: Context?, search: Screen.Search): Intent {
-            return Intent(targetContext, MainActivity::class.java).apply {
-                putExtra("screen", search)
             }
         }
     }

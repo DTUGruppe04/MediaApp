@@ -20,6 +20,7 @@ android {
             useSupportLibrary = true
         }
     }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -46,6 +47,12 @@ android {
         }
     }
     buildToolsVersion = "34.0.0"
+}
+
+android {
+    defaultConfig {
+        testInstrumentationRunner = "com.dtu.uemad.cucumbertest.test.CucumberTestOptions"
+    }
 }
 
 dependencies {
@@ -93,18 +100,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation ("androidx.compose.ui:ui-tooling")
-    debugImplementation ("androidx.compose.ui:ui-test-manifest")
     androidTestImplementation("io.cucumber:cucumber-android:7.14.0")
     androidTestImplementation("io.cucumber:cucumber-picocontainer:7.14.1")
-    testImplementation("io.cucumber:cucumber-core:7.14.1")
-    testImplementation("io.cucumber:cucumber-junit:7.14.1")
-    testImplementation("io.cucumber:cucumber-java:7.14.1")
-
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
-    androidTestImplementation("androidx.test:core:1.5.0")
-    androidTestImplementation ("com.google.dagger:hilt-android-testing:2.48")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

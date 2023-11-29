@@ -1,4 +1,4 @@
-package com.example.mediaapp.java.com.dtu.uemad.cucumbertest
+package com.dtu.uemad.cucumbertest
 
 import io.cucumber.android.runner.CucumberAndroidJUnitRunner
 

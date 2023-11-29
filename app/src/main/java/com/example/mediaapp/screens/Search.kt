@@ -22,7 +22,6 @@ import com.example.mediaapp.ui.theme.MediaAppTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mediaapp.ui.SearchQueryLayout
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavController, drawerState: DrawerState) {
