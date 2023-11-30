@@ -51,13 +51,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
+import com.example.mediaapp.viewModels.LoginPageViewModel
+import com.example.mediaapp.viewModels.MovieDetailViewModel
 
 
 @Composable
-fun LoginPageLayout(navController: NavController) {
+fun LoginPageLayout(
+    navController: NavController,
+    viewModel: LoginPageViewModel = viewModel(),
+    ) {
+    data class LoginUiState(
+        val email: String = "",
+        val password: String = ""
+    )
     MediaAppTheme {
         Column(
             modifier = Modifier
@@ -76,8 +86,8 @@ fun LoginPageLayout(navController: NavController) {
             }
             MainTitleText(R.string.login)
             SubTitleText(R.string.login_please)
-            TextfieldForEmail()
-            TextfieldForPassword()
+            TextfieldForEmail(viewModel)
+            TextfieldForPassword(viewModel)
             Text(stringResource(R.string.login_forgot_password),
                 modifier = Modifier
                     .padding(start = 250.dp, top = 11.dp, end = 29.dp)
@@ -90,7 +100,13 @@ fun LoginPageLayout(navController: NavController) {
                 textDecoration = TextDecoration.Underline
             )
             Button(onClick = {
-                navController.navigate(Screen.MainScreen.route)
+                if(viewModel.email.isNotEmpty() && viewModel.password.isNotEmpty() ) {
+                    viewModel.authenticate(viewModel.email, viewModel.password) {
+                        if (it == null) {
+                            navController.navigate(Screen.MainScreen.route)
+                        }
+                    }
+                }
             },
                 modifier = Modifier
                     .width(152.dp)
@@ -222,13 +238,12 @@ fun TextfieldForUsername() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextfieldForEmail() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+fun TextfieldForEmail(viewModel: LoginPageViewModel) {
 
     TextField(
         modifier = textFieldModifier(),
-        value = text,
-        onValueChange = { text = it },
+        value = viewModel.email,
+        onValueChange = { email -> viewModel.updateEmail(email)},
         label = {labelStyle("Email")},
         placeholder = {placeholderStyle("Enter your email")},
         colors = textFieldColors(),
@@ -251,14 +266,13 @@ fun PasswordVisibilityToggle(passwordVisible: Boolean, onToggle: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextfieldForPassword() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+fun TextfieldForPassword(viewModel: LoginPageViewModel) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     TextField(
         modifier = textFieldModifier(),
-        value = text,
-        onValueChange = { text = it },
+        value = viewModel.password,
+        onValueChange = { password -> viewModel.updatePassword(password) },
         label = { labelStyle("Password") },
         placeholder = { placeholderStyle("Enter your password") },
         colors = textFieldColors(),

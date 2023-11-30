@@ -21,13 +21,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
 import com.example.mediaapp.ui.theme.MediaAppTheme
+import com.example.mediaapp.viewModels.LoginPageViewModel
 
 @Composable
-fun CreateAccountPageLayout(navController: NavController) {
+fun CreateAccountPageLayout(navController: NavController,
+                            viewModel: LoginPageViewModel = viewModel()
+) {
     MediaAppTheme {
         Column(
             modifier = Modifier
@@ -48,8 +52,8 @@ fun CreateAccountPageLayout(navController: NavController) {
             MainTitleText(R.string.login_create_account)
             SubTitleText(R.string.login_create_account_please)
             TextfieldForUsername()
-            TextfieldForEmail()
-            TextfieldForPassword()
+            TextfieldForEmail(viewModel)
+            TextfieldForPassword(viewModel)
             TextfieldForConfirmPassword()
             Button(
                 onClick = {
