@@ -1,4 +1,4 @@
-package com.dtu.uemad.cucumbertest
+package com.example.mediaapp
 
 import android.app.Activity
 import android.content.Intent

@@ -1,4 +1,4 @@
-package com.dtu.uemad.cucumbertest.test
+package com.example.mediaapp.test
 
 import io.cucumber.android.runner.CucumberAndroidJUnitRunner
 import io.cucumber.junit.Cucumber
@@ -7,7 +7,7 @@ import org.junit.runner.RunWith
 
 @RunWith(Cucumber::class)
 @CucumberOptions(features = ["features"],
-    glue = ["java.com.dtu.uemad.cucumbertest"])
-class CucumberTestOptions : CucumberAndroidJUnitRunner() {
+    glue = ["com.example.mediaapp.test"])
+class CucumberTestOptions{
 
 }

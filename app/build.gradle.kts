@@ -15,7 +15,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.mediaapp.CucumberTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -47,12 +47,6 @@ android {
         }
     }
     buildToolsVersion = "34.0.0"
-}
-
-android {
-    defaultConfig {
-        testInstrumentationRunner = "com.dtu.uemad.cucumbertest.test.CucumberTestOptions"
-    }
 }
 
 dependencies {

@@ -1,4 +1,4 @@
-package com.dtu.uemad.cucumbertest
+package com.example.mediaapp
 
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import io.cucumber.junit.WithJunitRule
