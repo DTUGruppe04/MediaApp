@@ -186,6 +186,7 @@
     <string name="login_create_account_please">Please sign up to continue</string>
     <string name="login_forgot_password_please">You can reset your password here</string>
     <string name="login_forgot_password_reset">RESET PASSWORD</string>
+    <string name="login_wrong_password_or_email">Wrong password or email</string>
 
     //Search Page
     <string name="all_movies">All Movies</string>

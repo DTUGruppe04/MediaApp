@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1093147461625",
+    "project_id": "mediaapp-b4649",
+    "storage_bucket": "mediaapp-b4649.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093147461625:android:b415574377a9bdcb4f1f28",
+        "android_client_info": {
+          "package_name": "com.example.mediaapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNrB4Svq55AcakQcAEYJzYxWq6_tEj-kk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

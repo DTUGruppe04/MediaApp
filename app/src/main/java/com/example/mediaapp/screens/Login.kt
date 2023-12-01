@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -35,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -47,7 +45,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,7 +53,8 @@ import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
 import com.example.mediaapp.viewModels.LoginPageViewModel
-import com.example.mediaapp.viewModels.MovieDetailViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 
 @Composable
@@ -64,65 +62,91 @@ fun LoginPageLayout(
     navController: NavController,
     viewModel: LoginPageViewModel = viewModel(),
     ) {
-    data class LoginUiState(
-        val email: String = "",
-        val password: String = ""
-    )
-    MediaAppTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
-        ) {
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-                contentAlignment = Alignment.Center) {
-                Text(stringResource(R.string.login_top_name),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center
-                )
-            }
-            MainTitleText(R.string.login)
-            SubTitleText(R.string.login_please)
-            TextfieldForEmail(viewModel)
-            TextfieldForPassword(viewModel)
-            Text(stringResource(R.string.login_forgot_password),
+    if(Firebase.auth.currentUser != null) {
+        navController.navigate(Screen.MainScreen.route)
+    } else {
+        MediaAppTheme {
+            Column(
                 modifier = Modifier
-                    .padding(start = 250.dp, top = 11.dp, end = 29.dp)
-                    .clickable {
-                        navController.navigate(Screen.ForgotPassword.route)
-                    }
-                    .fillMaxWidth(),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-                textDecoration = TextDecoration.Underline
-            )
-            Button(onClick = {
-                if(viewModel.email.isNotEmpty() && viewModel.password.isNotEmpty() ) {
-                    viewModel.authenticate(viewModel.email, viewModel.password) {
-                        if (it == null) {
-                            navController.navigate(Screen.MainScreen.route)
-                        }
-                    }
-                }
-            },
-                modifier = Modifier
-                    .width(152.dp)
-                    .height(76.dp)
-                    .padding(top = 36.dp, end = 29.dp)
-                    .align(Alignment.End),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                )
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
             ) {
-                Text(stringResource(R.string.login_big),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                    contentAlignment = Alignment.Center) {
+                    Text(stringResource(R.string.login_top_name),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Center
+                    )
+                }
+                MainTitleText(R.string.login)
+                SubTitleText(R.string.login_please)
+                TextfieldForEmail(viewModel)
+                TextfieldForPassword(viewModel)
+                Text(stringResource(R.string.login_forgot_password),
+                    modifier = Modifier
+                        .padding(start = 250.dp, top = 11.dp, end = 29.dp)
+                        .clickable {
+                            navController.navigate(Screen.ForgotPassword.route)
+                        }
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textDecoration = TextDecoration.Underline
                 )
+
+                Button(onClick = {
+                    if(viewModel.email.isNotEmpty() && viewModel.password.isNotEmpty() ) {
+                        viewModel.authenticate(viewModel.email, viewModel.password) {
+                            if (it == null) {
+                                viewModel.setErrorMessage("")
+                                navController.navigate(Screen.MainScreen.route)
+                            } else if (it.toString().contains("email address is badly formatted")) {
+                                viewModel.setErrorMessage("Please enter a valid email address")
+                            } else if (it.toString().contains("supplied auth credential is incorrect")) {
+                                viewModel.setErrorMessage("Incorrect email or password")
+                            } else if (it.toString().contains("Access to this account has been temporarily disabled due to many failed login attempts")) {
+                                viewModel.setErrorMessage("Too many failed login attempts. Please try again later")
+                            }
+                        }
+                    } else if (viewModel.email.isEmpty() && viewModel.password.isEmpty()) {
+                        viewModel.setErrorMessage("Please enter your email and password")
+                    } else if (viewModel.email.isEmpty()) {
+                        viewModel.setErrorMessage("Please enter your email")
+                    } else if (viewModel.password.isEmpty()) {
+                        viewModel.setErrorMessage("Please enter your password")
+                    }
+
+                },
+                    modifier = Modifier
+                        .width(152.dp)
+                        .height(76.dp)
+                        .padding(top = 36.dp, end = 29.dp)
+                        .align(Alignment.End),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
+                ) {
+                    Text(stringResource(R.string.login_big),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+                if (viewModel.errorText.isNotEmpty()) {
+                    Text(text = viewModel.errorText,
+                        modifier = Modifier
+                            .padding(top = 11.dp, end = 29.dp)
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.End,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+                BottomSignText(R.string.login_missing_account, R.string.login_missing_account_sign, navController)
             }
-            BottomSignText(R.string.login_missing_account, R.string.login_missing_account_sign, navController)
         }
+
     }
 
 }
@@ -222,13 +246,12 @@ private fun textFieldColors() = TextFieldDefaults.textFieldColors(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextfieldForUsername() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+fun TextfieldForUsername(viewModel: LoginPageViewModel) {
 
     TextField(
         modifier = textFieldModifier(),
-        value = text,
-        onValueChange = { text = it },
+        value = viewModel.username,
+        onValueChange = { username -> viewModel.updateUsername(username) },
         label = {labelStyle("Username")},
         placeholder = {placeholderStyle("Enter your username")},
         colors = textFieldColors(),
@@ -288,14 +311,13 @@ fun TextfieldForPassword(viewModel: LoginPageViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextfieldForConfirmPassword() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+fun TextfieldForConfirmPassword(viewModel: LoginPageViewModel) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     TextField(
         modifier = textFieldModifier(),
-        value = text,
-        onValueChange = { text = it },
+        value = viewModel.confirmPassword,
+        onValueChange = { confirmPassword -> viewModel.updateConfirmPassword(confirmPassword) },
         label = { labelStyle("Confirm Password") },
         placeholder = { placeholderStyle("Confirm your password") },
         colors = textFieldColors(),

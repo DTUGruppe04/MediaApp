@@ -15,12 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
@@ -51,13 +48,39 @@ fun CreateAccountPageLayout(navController: NavController,
             }
             MainTitleText(R.string.login_create_account)
             SubTitleText(R.string.login_create_account_please)
-            TextfieldForUsername()
+            TextfieldForUsername(viewModel)
             TextfieldForEmail(viewModel)
             TextfieldForPassword(viewModel)
-            TextfieldForConfirmPassword()
+            TextfieldForConfirmPassword(viewModel)
             Button(
                 onClick = {
-                    navController.navigate(Screen.Login.route)
+                    if (viewModel.email.isEmpty() || viewModel.password.isEmpty() || viewModel.username.isEmpty() || viewModel.confirmPassword.isEmpty()) {
+                        viewModel.setErrorMessage("Please fill in all fields")
+                    } else if (viewModel.password != viewModel.confirmPassword) {
+                        viewModel.setErrorMessage("Password does not match")
+                    } else if (viewModel.password.length < 8) {
+                        viewModel.setErrorMessage("Password must be at least 8 characters")
+                    } else if (viewModel.validateUsername(viewModel.username).isNotEmpty()) {
+                        viewModel.setErrorMessage(viewModel.validateUsername(viewModel.username))
+                    } else {
+                        viewModel.register(
+                            viewModel.email,
+                            viewModel.password,
+                            viewModel.username
+                        ) {
+                            if (it == null) {
+                                viewModel.updateUser(viewModel.username) {
+                                    if (it == null) {
+                                        navController.navigate(Screen.Login.route)
+                                    }
+                                }
+                            } else if (it.toString().contains("email address is badly formatted")) {
+                                viewModel.setErrorMessage("Please enter a valid email address")
+                            } else if (it.toString().contains("The email address is already in use by another account")) {
+                                viewModel.setErrorMessage("This email address is already in use by another account")
+                            }
+                        }
+                    }
                 },
                 modifier = Modifier
                     .width(152.dp)
@@ -71,6 +94,16 @@ fun CreateAccountPageLayout(navController: NavController,
                 Text(
                     stringResource(R.string.login_create_account_sign_up),
                     color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+            if (viewModel.errorText.isNotEmpty()) {
+                Text(text = viewModel.errorText,
+                    modifier = Modifier
+                        .padding(top = 11.dp, end = 29.dp)
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.error
                 )
             }
             BottomSignText(R.string.login_already_account, R.string.login_already_account_sign, navController)
