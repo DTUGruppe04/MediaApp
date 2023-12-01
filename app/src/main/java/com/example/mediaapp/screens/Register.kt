@@ -54,32 +54,9 @@ fun CreateAccountPageLayout(navController: NavController,
             TextfieldForConfirmPassword(viewModel)
             Button(
                 onClick = {
-                    if (viewModel.email.isEmpty() || viewModel.password.isEmpty() || viewModel.username.isEmpty() || viewModel.confirmPassword.isEmpty()) {
-                        viewModel.setErrorMessage("Please fill in all fields")
-                    } else if (viewModel.password != viewModel.confirmPassword) {
-                        viewModel.setErrorMessage("Password does not match")
-                    } else if (viewModel.password.length < 8) {
-                        viewModel.setErrorMessage("Password must be at least 8 characters")
-                    } else if (viewModel.validateUsername(viewModel.username).isNotEmpty()) {
-                        viewModel.setErrorMessage(viewModel.validateUsername(viewModel.username))
-                    } else {
-                        viewModel.register(
-                            viewModel.email,
-                            viewModel.password,
-                            viewModel.username
-                        ) {
-                            if (it == null) {
-                                viewModel.updateUser(viewModel.username) {
-                                    if (it == null) {
-                                        navController.navigate(Screen.Login.route)
-                                    }
-                                }
-                            } else if (it.toString().contains("email address is badly formatted")) {
-                                viewModel.setErrorMessage("Please enter a valid email address")
-                            } else if (it.toString().contains("The email address is already in use by another account")) {
-                                viewModel.setErrorMessage("This email address is already in use by another account")
-                            }
-                        }
+                    viewModel.registerFlow()
+                    if (viewModel.errorText.isEmpty()) {
+                        navController.navigate(Screen.Login.route)
                     }
                 },
                 modifier = Modifier

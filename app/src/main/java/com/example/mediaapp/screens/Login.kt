@@ -98,27 +98,10 @@ fun LoginPageLayout(
                 )
 
                 Button(onClick = {
-                    if(viewModel.email.isNotEmpty() && viewModel.password.isNotEmpty() ) {
-                        viewModel.authenticate(viewModel.email, viewModel.password) {
-                            if (it == null) {
-                                viewModel.setErrorMessage("")
-                                navController.navigate(Screen.MainScreen.route)
-                            } else if (it.toString().contains("email address is badly formatted")) {
-                                viewModel.setErrorMessage("Please enter a valid email address")
-                            } else if (it.toString().contains("supplied auth credential is incorrect")) {
-                                viewModel.setErrorMessage("Incorrect email or password")
-                            } else if (it.toString().contains("Access to this account has been temporarily disabled due to many failed login attempts")) {
-                                viewModel.setErrorMessage("Too many failed login attempts. Please try again later")
-                            }
-                        }
-                    } else if (viewModel.email.isEmpty() && viewModel.password.isEmpty()) {
-                        viewModel.setErrorMessage("Please enter your email and password")
-                    } else if (viewModel.email.isEmpty()) {
-                        viewModel.setErrorMessage("Please enter your email")
-                    } else if (viewModel.password.isEmpty()) {
-                        viewModel.setErrorMessage("Please enter your password")
+                    viewModel.loginFlow()
+                    if (viewModel.errorText.isEmpty()) {
+                        navController.navigate(Screen.MainScreen.route)
                     }
-
                 },
                     modifier = Modifier
                         .width(152.dp)
