@@ -13,6 +13,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -24,14 +27,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.ui.nav.TopNavBarC
 import com.example.mediaapp.ui.theme.MediaAppTheme
+import com.example.mediaapp.viewModels.currentUserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfilePageLayout(navController: NavController, drawerState: DrawerState) {
+fun ProfilePageLayout(
+    navController: NavController,
+    drawerState: DrawerState,
+    viewModel: currentUserViewModel = viewModel()) {
+
+    val currentUser = viewModel.currentUser.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.updateCurrentUser()
+    }
+
+    val user = currentUser ?: return
     MediaAppTheme {
         Column {
             TopNavBarC(navController = navController, drawerState = drawerState)
@@ -44,16 +60,18 @@ fun ProfilePageLayout(navController: NavController, drawerState: DrawerState) {
                     Box(modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
-                        ProfileDescription(
-                            profilePicture = R.drawable.profilepicture,
-                            description = R.string.description,
-                            countryFlag = R.drawable.dk,
-                            countryName = R.string.country,
-                            followers = R.string.followers_number,
-                            following = R.string.follows_number,
-                            username = R.string.username,
-                            nameOfUser = R.string.name_of_user
-                        )
+                        user.value?.user?.username?.let {
+                            ProfileDescription(
+                                profilePicture = R.drawable.profilepicture,
+                                description = R.string.description,
+                                countryFlag = R.drawable.dk,
+                                countryName = R.string.country,
+                                followers = R.string.followers_number,
+                                following = R.string.follows_number,
+                                username = it,
+                                nameOfUser = R.string.name_of_user
+                            )
+                        }
                     }
                 }
                 item {
@@ -148,7 +166,6 @@ fun ProfilePageLayout(navController: NavController, drawerState: DrawerState) {
     }
 }
 
-
 @Composable
 fun ProfileStatistics(
     watched: Int,
@@ -222,7 +239,7 @@ fun ProfileDescription(
     countryName: Int,
     followers: Int,
     following: Int,
-    username: Int,
+    username: String,
     nameOfUser: Int) {
     Box(modifier = Modifier
         .clip(RoundedCornerShape(10.dp))
@@ -250,7 +267,7 @@ fun ProfileDescription(
             }
             Column {
                 Text (
-                    stringResource(username),
+                    text = username,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,

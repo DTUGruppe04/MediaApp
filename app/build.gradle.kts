@@ -77,6 +77,7 @@ dependencies {
     implementation("androidx.wear.compose:compose-material3:1.0.0-alpha15")
     implementation ("io.coil-kt:coil-compose:2.1.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
+    implementation("com.google.firebase:firebase-firestore:24.9.1")
     val nav_version = "2.7.5"
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.activity:activity-compose:1.8.1")

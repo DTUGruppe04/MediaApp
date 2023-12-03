@@ -10,11 +10,13 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
 import java.io.FileInputStream
 
 class LoginPageViewModel : ViewModel(){
 
+    val database = Firebase.firestore
     var errorText by mutableStateOf("")
         private set
 
@@ -96,7 +98,25 @@ class LoginPageViewModel : ViewModel(){
                     updateUsersUsername(username) {
                         if (it == null) {
                             setErrorMessage("")
-
+                            database.collection("users").document(Firebase.auth.currentUser!!.uid).set(
+                                hashMapOf(
+                                    "username" to username,
+                                    "name" to "",
+                                    "location" to "",
+                                    "followers" to listOf<String>(),
+                                    "following" to listOf<String>(),
+                                    "description" to "",
+                                    "profilePicture" to "",
+                                    "stats" to hashMapOf(
+                                        "watched" to 0,
+                                        "reviews" to 0,
+                                        "rated" to 0,
+                                        "recommends" to 0,
+                                        "saved" to 0
+                                    ),
+                                    "watchlist" to listOf<String>()
+                                )
+                            )
                         }
                     }
                 } else if (createAccountThrow.toString().contains("email address is badly formatted")) {
