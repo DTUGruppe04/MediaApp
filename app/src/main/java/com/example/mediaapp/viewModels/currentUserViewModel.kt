@@ -30,8 +30,8 @@ class currentUserViewModel : ViewModel(){
         val username = userFromDatabase.getString("username")!!
         val name = userFromDatabase.getString("name")!!
         val location = userFromDatabase.getString("location")!!
-        val followers = userFromDatabase.get("followers") as List<String>
-        val following = userFromDatabase.get("following") as List<String>
+        val followers = userFromDatabase.get("followers") as? List<String> ?: listOf()
+        val following = userFromDatabase.get("following") as? List<String> ?: listOf()
         val description = userFromDatabase.getString("description")!!
         val profilePicture = userFromDatabase.getString("profilePicture")!!
         val stats = Stats(
@@ -41,9 +41,9 @@ class currentUserViewModel : ViewModel(){
             userFromDatabase.getLong("stats.recommends")!!,
             userFromDatabase.getLong("stats.saved")!!
         )
-        val favorites = userFromDatabase.get("favorites") as List<String>
-        val recentlyWatched = userFromDatabase.get("recentlyWatched") as List<String>
-        val watchlist = userFromDatabase.get("watchlist") as List<String>
+        val favorites = userFromDatabase.get("favorites") as? List<String> ?: listOf()
+        val recentlyWatched = userFromDatabase.get("recentlyWatched") as? List<String> ?: listOf()
+        val watchlist = userFromDatabase.get("watchlist") as? List<String> ?: listOf()
         val userObject = User(
             username,
             name,
@@ -71,5 +71,5 @@ class currentUserViewModel : ViewModel(){
 
     }
 
-    }
+}
 

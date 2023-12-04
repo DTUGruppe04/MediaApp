@@ -131,6 +131,8 @@
     <string name="recommends_number">5</string>
     <string name="saved">Saved</string>
     <string name="saved_number">7</string>
+    <string name="profile_page_no_description">This user haven\'t made a description yet</string>
+    <string name="profile_page_unknown">Unknown</string>
 
     //Settings Page Strings
     <string name="settingnodesc"></string>

@@ -41,10 +41,10 @@ fun ProfilePageLayout(
     drawerState: DrawerState,
     viewModel: currentUserViewModel = viewModel()) {
 
-    val currentUser = viewModel.currentUser.collectAsState()
+    val currentUser by viewModel.currentUser.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.updateCurrentUser()
+        viewModel.getCurrentUser()
     }
 
     val user = currentUser ?: return
@@ -60,20 +60,18 @@ fun ProfilePageLayout(
                     Box(modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
-                        user.value?.user?.username?.let {
                             ProfileDescription(
                                 profilePicture = R.drawable.profilepicture,
-                                description = R.string.description,
+                                description = if(user.user.description != "") user.user.description else stringResource(R.string.profile_page_no_description),
                                 countryFlag = R.drawable.dk,
-                                countryName = R.string.country,
-                                followers = R.string.followers_number,
-                                following = R.string.follows_number,
-                                username = it,
-                                nameOfUser = R.string.name_of_user
+                                countryName = if(user.user.location != "") user.user.location else stringResource(R.string.profile_page_unknown),
+                                followers = user.user.followers.size,
+                                following = user.user.following.size,
+                                username = user.user.username,
+                                nameOfUser = if(user.user.name != "") user.user.name else stringResource(R.string.profile_page_unknown)
                             )
                         }
                     }
-                }
                 item {
                     Box(
                         modifier = Modifier
@@ -234,13 +232,13 @@ private fun StatisticsText(number: Int, text: Int) {
 @Composable
 fun ProfileDescription(
     profilePicture: Int,
-    description: Int,
+    description: String,
     countryFlag: Int,
-    countryName: Int,
+    countryName: String,
     followers: Int,
     following: Int,
     username: String,
-    nameOfUser: Int) {
+    nameOfUser: String) {
     Box(modifier = Modifier
         .clip(RoundedCornerShape(10.dp))
         .background(MaterialTheme.colorScheme.surfaceVariant)
@@ -258,11 +256,34 @@ fun ProfileDescription(
                         .height(119.dp)
                         .clip(RoundedCornerShape(25.dp))
                 )
-                Row {
-                    FollowText(followers, paddingValue = 9.dp, color = MaterialTheme.colorScheme.onSurface)
-                    FollowText(R.string.followers, paddingValue = 3.dp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    FollowText(following, paddingValue = 10.dp, color = MaterialTheme.colorScheme.onSurface)
-                    FollowText(R.string.follows, paddingValue = 3.dp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    FollowText(
+                        stringResource(R.string.followers),
+                        paddingValue = 9.dp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.End
+                    )
+                    FollowText(
+                        followers.toString(),
+                        paddingValue = 0.dp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Start
+                    )
+
+                }
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    FollowText(
+                        stringResource(R.string.following),
+                        paddingValue = 9.dp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.End
+                    )
+                    FollowText(
+                        following.toString(),
+                        paddingValue = 0.dp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.End
+                    )
                 }
             }
             Column {
@@ -273,13 +294,12 @@ fun ProfileDescription(
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(start = 8.dp, top = 8.dp)
-                        .width(105.dp)
                         .height(32.dp)
                 )
-                Row(modifier = Modifier.size(115.dp, 13.dp),
+                Row(modifier = Modifier.height(13.dp).fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically) {
                     Text (
-                        stringResource(nameOfUser),
+                        text = nameOfUser,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 10.sp,
                         modifier = Modifier.padding(start = 10.dp, end = 8.dp)
@@ -289,14 +309,14 @@ fun ProfileDescription(
                         .padding(start = 0.dp, top = 0.dp), painter = painterResource(id = countryFlag),
                         contentDescription = "country_flag")
                     Text (
-                        stringResource(countryName),
+                        text = countryName,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 10.sp,
                         modifier = Modifier.padding(start = 2.dp)
                     )
                 }
                 Text (
-                    stringResource(description),
+                    text = description,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 10.sp,
                     lineHeight = 16.sp,
@@ -310,16 +330,14 @@ fun ProfileDescription(
 }
 
 @Composable
-private fun FollowText(text: Int, paddingValue: Dp, color: Color) {
+private fun FollowText(text: String, paddingValue: Dp, color: Color, textAlign: TextAlign) {
     Text(
-        stringResource(text),
-        fontSize = 10.sp,
-        lineHeight = 28.sp,
+        text = text,
+        fontSize = 12.sp,
         fontWeight = FontWeight(400),
         color = color,
-        textAlign = TextAlign.Center,
+        textAlign = textAlign,
         modifier = Modifier
             .padding(start = paddingValue)
-            .height(28.dp)
     )
 }
