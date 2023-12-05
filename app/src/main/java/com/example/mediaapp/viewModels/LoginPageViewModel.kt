@@ -1,153 +1,142 @@
 package com.example.mediaapp.viewModels
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.mediaapp.Screen
+import com.example.mediaapp.models.DatabaseHandler
 import com.google.firebase.Firebase
-import com.google.firebase.FirebaseOptions
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
-import java.io.FileInputStream
 
-class LoginPageViewModel : ViewModel(){
+/**
+ * ViewModel for the login page.
+ * Handles user registration and input validation.
+ */
+class LoginPageViewModel : ViewModel() {
 
-    val database = Firebase.firestore
-    var errorText by mutableStateOf("")
-        private set
+    // Instance of DatabaseHandler for database operations
+    private val databaseHandler = DatabaseHandler()
 
-    var email by mutableStateOf("")
-        private set
-    var password by mutableStateOf("")
-        private set
+    // Variables to hold user input
+    var errorText = mutableStateOf("")
+    var email = ""
+    var password = ""
+    var confirmPassword = ""
+    var username = ""
 
-    var confirmPassword by mutableStateOf("")
-        private set
-    var username by mutableStateOf("")
-        private set
-    fun updateEmail(input: String) {
-        email = input
-    }
-    fun updatePassword(input: String) {
-        password = input
-    }
-    fun updateUsername(input: String) {
-        username = input
-    }
-    fun updateConfirmPassword(input: String) {
-        confirmPassword = input
-    }
-
-    fun authenticate(email: String, password: String, onResult: (Throwable?) -> Unit) {
-        Firebase.auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { onResult(it.exception) }
-    }
-
-    fun register(email: String, password: String, username: String, onResult: (Throwable?) -> Unit) {
-        Firebase.auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { onResult(it.exception) }
-    }
-
-    fun updateUsersUsername(username: String, onResult: (Throwable?) -> Unit) {
-        val user = Firebase.auth.currentUser
-        val profileUpdates = com.google.firebase.auth.UserProfileChangeRequest.Builder()
-            .setDisplayName(username)
-            .build()
-        user!!.updateProfile(profileUpdates)
-            .addOnCompleteListener { onResult(it.exception) }
-    }
-
-    fun setErrorMessage(error: String) {
-        errorText = error
-    }
-
-    fun validateUsername(username: String): String {
-        if (username.length < 4) {
-            return "Username must be at least 4 characters"
-        } else if (username.length > 20) {
-            return "Username must be less than 20 characters"
-        } else if (username.contains(" ")) {
-            return "Username cannot contain spaces"
-        } else if (username.contains("@") || username.contains(".") || username.contains("#") || username.contains("$") || username.contains("[") || username.contains("]") || username.contains("/") || username.contains("\\") || username.contains("%") || username.contains("^") || username.contains("&") || username.contains("*") || username.contains("(") || username.contains(")") || username.contains("+") || username.contains("=") || username.contains("?") || username.contains("!") || username.contains("<") || username.contains(">") || username.contains(",") || username.contains(";") || username.contains(":") || username.contains("\"") || username.contains("{") || username.contains("}") || username.contains("|") || username.contains("~") || username.contains("`") || username.contains("'")) {
-            return "Username cannot contain special characters"
-        } else {
-            return ""
-        }
-    }
-
+    /**
+     * Handles the registration flow.
+     * Validates user input and registers the user if the input is valid.
+     */
     fun registerFlow() {
-        if (email.isEmpty() || password.isEmpty() || username.isEmpty() || confirmPassword.isEmpty()) {
-            setErrorMessage("Please fill in all fields")
-        } else if (password != confirmPassword) {
-            setErrorMessage("Password does not match")
-        } else if (password.length < 8) {
-            setErrorMessage("Password must be at least 8 characters")
-        } else if (validateUsername(username).isNotEmpty()) {
-            setErrorMessage(validateUsername(username))
-        } else {
-            register(
-                email,
-                password,
-                username
-            ) { createAccountThrow ->
-                if (createAccountThrow == null) {
-                    updateUsersUsername(username) {
-                        if (it == null) {
-                            setErrorMessage("")
-                            database.collection("users").document(Firebase.auth.currentUser!!.uid).set(
-                                hashMapOf(
-                                    "username" to username,
-                                    "name" to "",
-                                    "location" to "",
-                                    "followers" to listOf<String>(),
-                                    "following" to listOf<String>(),
-                                    "description" to "",
-                                    "profilePicture" to "",
-                                    "stats" to hashMapOf(
-                                        "watched" to 0,
-                                        "reviews" to 0,
-                                        "rated" to 0,
-                                        "recommends" to 0,
-                                        "saved" to 0
-                                    ),
-                                    "watchlist" to listOf<String>()
-                                )
-                            )
-                        }
-                    }
-                } else if (createAccountThrow.toString().contains("email address is badly formatted")) {
-                    setErrorMessage("Please enter a valid email address")
-                } else if (createAccountThrow.toString().contains("The email address is already in use by another account")) {
-                    setErrorMessage("This email address is already in use by another account")
+        when {
+            // Check if any field is empty
+            listOf(email, password, username, confirmPassword).any { it.isEmpty() } -> errorText.value = "Please fill in all fields"
+            // Check if password and confirm password match
+            password != confirmPassword -> errorText.value = "Password does not match"
+            // Check if email is valid
+            !email.contains("@") || !email.contains(".") -> errorText.value = "Please enter a valid email address"
+            // Check if password is at least 8 characters long
+            password.length < 8 -> errorText.value = "Password must be at least 8 characters"
+            // Check if username is valid
+            validateUsername(username).isNotEmpty() -> errorText.value = validateUsername(username)
+            // If all checks pass, register the user
+            else -> registerUser()
+        }
+    }
+
+    /**
+     * Registers the user with Firebase Authentication.
+     * If registration is successful, updates the user's profile and adds the user to the database.
+     */
+    private fun registerUser() {
+        Firebase.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Firebase.auth.currentUser?.let { user ->
+                    // Update the user's display name
+                    user.updateProfile(com.google.firebase.auth.UserProfileChangeRequest.Builder().setDisplayName(username).build())
+                    // Add the user to the database
+                    databaseHandler.updateUserInDatabase(user.uid, createUserMap())
+                }
+                errorText.value = ""
+            } else {
+                // Handle registration errors
+                errorText.value = when {
+                    task.exception.toString().contains("email address is badly formatted") -> "Please enter a valid email address"
+                    task.exception.toString().contains("The email address is already in use by another account") -> "This email address is already in use by another account"
+                    else -> "Registration failed"
                 }
             }
         }
     }
 
+    /**
+     * Handles the login flow.
+     * Validates user input and logs in the user if the input is valid.
+     */
     fun loginFlow() {
-        if(email.isNotEmpty() && password.isNotEmpty() ) {
-            authenticate(email, password) {
-                if (it == null) {
-                    setErrorMessage("")
-                } else if (it.toString().contains("email address is badly formatted")) {
-                    setErrorMessage("Please enter a valid email address")
-                } else if (it.toString().contains("supplied auth credential is incorrect")) {
-                    setErrorMessage("Incorrect email or password")
-                } else if (it.toString().contains("Access to this account has been temporarily disabled due to many failed login attempts")) {
-                    setErrorMessage("Too many failed login attempts. Please try again later")
-                }
-            }
-        } else if (email.isEmpty() && password.isEmpty()) {
-            setErrorMessage("Please enter your email and password")
-        } else if (email.isEmpty()) {
-            setErrorMessage("Please enter your email")
-        } else if (password.isEmpty()) {
-            setErrorMessage("Please enter your password")
+        when {
+            // Check if any field is empty
+            listOf(email, password).any { it.isEmpty() } -> errorText.value = "Please fill in all fields"
+            // Check if email is valid
+            !email.contains("@") || !email.contains(".") -> errorText.value = "Please enter a valid email address"
+            // If all checks pass, log in the user
+            else -> loginUser()
         }
     }
 
+    /**
+     * Logs in the user with Firebase Authentication.
+     * If login is successful, clears the error text. Otherwise, sets the error text to an appropriate error message.
+     */
+    private fun loginUser() {
+        Firebase.auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                errorText.value = ""
+            } else {
+                // Handle login errors
+                errorText.value = when {
+                    task.exception.toString().contains("email address is badly formatted") -> "Please enter a valid email address"
+                    task.exception.toString().contains("supplied auth credential is incorrect") -> "The email ore password is incorrect"
+                    task.exception.toString().contains("Access to this account has been temporarily disabled due to many failed login attempts") -> "Too many failed login attempts. Please try again later"
+                    else -> "Login failed"
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates a map of user data to be stored in the database.
+     * @return A map of user data.
+     */
+    private fun createUserMap() = hashMapOf(
+        "username" to username,
+        "name" to "",
+        "location" to "",
+        "followers" to listOf<String>(),
+        "following" to listOf<String>(),
+        "description" to "",
+        "profilePicture" to "",
+        "stats" to hashMapOf(
+            "watched" to 0,
+            "reviews" to 0,
+            "rated" to 0,
+            "recommends" to 0,
+            "saved" to 0
+        ),
+        "watchlist" to listOf<String>()
+    )
+
+    /**
+     * Validates the username.
+     * Checks if the username is at least 4 characters long, less than 20 characters long, does not contain spaces, and does not contain special characters.
+     * @param username The username to validate.
+     * @return An error message if the username is invalid, or an empty string if the username is valid.
+     */
+    private fun validateUsername(username: String) = when {
+        username.length < 4 -> "Username must be at least 4 characters"
+        username.length > 20 -> "Username must be less than 20 characters"
+        username.contains(" ") -> "Username cannot contain spaces"
+        username.any { it in "@.#\$[]/\\%^&*()+=?!<>,;:\"{}|~`'" } -> "Username cannot contain special characters"
+        else -> ""
+    }
 }

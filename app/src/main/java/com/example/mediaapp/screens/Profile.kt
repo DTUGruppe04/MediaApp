@@ -32,14 +32,14 @@ import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.ui.nav.TopNavBarC
 import com.example.mediaapp.ui.theme.MediaAppTheme
-import com.example.mediaapp.viewModels.currentUserViewModel
+import com.example.mediaapp.viewModels.CurrentUserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfilePageLayout(
     navController: NavController,
     drawerState: DrawerState,
-    viewModel: currentUserViewModel = viewModel()) {
+    viewModel: CurrentUserViewModel = viewModel()) {
 
     val currentUser by viewModel.currentUser.collectAsState()
 

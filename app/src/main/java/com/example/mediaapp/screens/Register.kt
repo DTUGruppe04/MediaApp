@@ -55,7 +55,7 @@ fun CreateAccountPageLayout(navController: NavController,
             Button(
                 onClick = {
                     viewModel.registerFlow()
-                    if (viewModel.errorText.isEmpty()) {
+                    if (viewModel.errorText.value.isEmpty()) {
                         navController.navigate(Screen.Login.route)
                     }
                 },
@@ -73,8 +73,8 @@ fun CreateAccountPageLayout(navController: NavController,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
-            if (viewModel.errorText.isNotEmpty()) {
-                Text(text = viewModel.errorText,
+            if (viewModel.errorText.value.isNotEmpty()) {
+                Text(text = if (viewModel.errorText.value.isNotEmpty()) viewModel.errorText.value else "",
                     modifier = Modifier
                         .padding(top = 11.dp, end = 29.dp)
                         .fillMaxWidth(),

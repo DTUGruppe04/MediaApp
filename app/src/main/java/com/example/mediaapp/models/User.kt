@@ -11,4 +11,23 @@ data class User(
     val stats: Stats,
     val favorites: List<String>,
     val recentlyWatched: List<String>,
-)
+) {
+    companion object {
+        fun fromMap(map: Map<String, Any?>): User {
+            return User(
+                map["username"] as? String ?: "",
+                map["name"] as? String ?: "",
+                map["location"] as? String ?: "",
+                map["followers"] as? List<String> ?: listOf(),
+                map["following"] as? List<String> ?: listOf(),
+                map["description"] as? String ?: "",
+                map["profilePicture"] as? String ?: "",
+                Stats.fromMap(map["stats"] as? Map<String, Any?> ?: mapOf()),
+                map["favorites"] as? List<String> ?: listOf(),
+                map["recentlyWatched"] as? List<String> ?: listOf()
+            )
+        }
+    }
+}
+
+

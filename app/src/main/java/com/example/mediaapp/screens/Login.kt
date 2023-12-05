@@ -99,7 +99,7 @@ fun LoginPageLayout(
 
                 Button(onClick = {
                     viewModel.loginFlow()
-                    if (viewModel.errorText.isEmpty()) {
+                    if (viewModel.errorText.value.isEmpty()) {
                         navController.navigate(Screen.MainScreen.route)
                     }
                 },
@@ -116,8 +116,8 @@ fun LoginPageLayout(
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
-                if (viewModel.errorText.isNotEmpty()) {
-                    Text(text = viewModel.errorText,
+                if (viewModel.errorText.value.isNotEmpty()) {
+                    Text(text = if (viewModel.errorText.value.isNotEmpty()) viewModel.errorText.value else "",
                         modifier = Modifier
                             .padding(top = 11.dp, end = 29.dp)
                             .fillMaxWidth(),
@@ -230,11 +230,14 @@ private fun textFieldColors() = TextFieldDefaults.textFieldColors(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextfieldForUsername(viewModel: LoginPageViewModel) {
+    var username by remember { mutableStateOf(TextFieldValue()) }
 
     TextField(
         modifier = textFieldModifier(),
-        value = viewModel.username,
-        onValueChange = { username -> viewModel.updateUsername(username) },
+        value = username,
+        onValueChange = { newValue ->
+            username = newValue
+            viewModel.username = newValue.text},
         label = {labelStyle("Username")},
         placeholder = {placeholderStyle("Enter your username")},
         colors = textFieldColors(),
@@ -245,11 +248,14 @@ fun TextfieldForUsername(viewModel: LoginPageViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextfieldForEmail(viewModel: LoginPageViewModel) {
+    var email by remember { mutableStateOf(TextFieldValue()) }
 
     TextField(
         modifier = textFieldModifier(),
-        value = viewModel.email,
-        onValueChange = { email -> viewModel.updateEmail(email)},
+        value = email,
+        onValueChange = { newValue ->
+            email = newValue
+            viewModel.email = newValue.text},
         label = {labelStyle("Email")},
         placeholder = {placeholderStyle("Enter your email")},
         colors = textFieldColors(),
@@ -274,11 +280,15 @@ fun PasswordVisibilityToggle(passwordVisible: Boolean, onToggle: () -> Unit) {
 @Composable
 fun TextfieldForPassword(viewModel: LoginPageViewModel) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    var password by remember { mutableStateOf(TextFieldValue()) }
 
     TextField(
         modifier = textFieldModifier(),
-        value = viewModel.password,
-        onValueChange = { password -> viewModel.updatePassword(password) },
+        value = password,
+        onValueChange = { newValue ->
+            password = newValue
+            viewModel.password = newValue.text
+        },
         label = { labelStyle("Password") },
         placeholder = { placeholderStyle("Enter your password") },
         colors = textFieldColors(),
@@ -296,11 +306,15 @@ fun TextfieldForPassword(viewModel: LoginPageViewModel) {
 @Composable
 fun TextfieldForConfirmPassword(viewModel: LoginPageViewModel) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    var confirmPassword by remember { mutableStateOf(TextFieldValue()) }
 
     TextField(
         modifier = textFieldModifier(),
-        value = viewModel.confirmPassword,
-        onValueChange = { confirmPassword -> viewModel.updateConfirmPassword(confirmPassword) },
+        value = confirmPassword,
+        onValueChange = { newValue ->
+            confirmPassword = newValue
+            viewModel.confirmPassword = newValue.text
+        },
         label = { labelStyle("Confirm Password") },
         placeholder = { placeholderStyle("Confirm your password") },
         colors = textFieldColors(),
