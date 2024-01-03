@@ -31,4 +31,17 @@ class DatabaseHandler {
         // Also update the user data in the cache
         userCache[userId] = userMap
     }
+
+    fun getCurrentUserID(): String? {
+        return Firebase.auth.currentUser?.uid
+    }
+
+    fun updateWatchlistMovie(watchlistMovieMap: Map<String, Any?>) {
+        getCurrentUserID()?.let { database.collection("users")
+            .document(it)
+            .collection("watchlist")
+            .document(watchlistMovieMap["movieID"]
+                .toString())
+            .set(watchlistMovieMap) }
+    }
 }
