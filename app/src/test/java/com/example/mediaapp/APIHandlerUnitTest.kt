@@ -58,6 +58,15 @@ class APIHandlerUnitTest {
         }
     }
 
-
-
+    @Test
+    fun testGetMovieSuggestions() {
+        runBlocking {
+            delay(1000)
+            val response = api.getMovieSuggestions("872585")
+            if(response != null && response.total_results > 0) {
+                assertEquals(2, response.total_pages)
+                assertEquals(40, response.total_results)
+            }
+        }
+    }
 }
