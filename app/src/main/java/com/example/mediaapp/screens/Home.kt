@@ -53,8 +53,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mediaapp.R
+import com.example.mediaapp.RecommendationEngine
 import com.example.mediaapp.Screen
 import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.models.DatabaseHandler
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -533,6 +535,8 @@ fun SeparationBox() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, drawerState: DrawerState) {
+    //val engine = RecommendationEngine()
+    //engine.generateMovieSuggestions("872585")
     MainPageLayout(navController = navController, drawerState = drawerState)
 }
 

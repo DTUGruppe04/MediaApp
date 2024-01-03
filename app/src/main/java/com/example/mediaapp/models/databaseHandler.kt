@@ -66,4 +66,13 @@ class DatabaseHandler {
         Log.d(TAG, "getWatchlistMovies: $watchlistMovies")
         return@withContext watchlistMovies
     }
+
+    fun updateRecommendDatabase(watchlistMovieMap: Map<String, Any?>) {
+        getCurrentUserID()?.let { database.collection("users")
+            .document(it)
+            .collection("recommend")
+            .document(watchlistMovieMap["movieID"]
+                .toString())
+            .set(watchlistMovieMap) }
+    }
 }
