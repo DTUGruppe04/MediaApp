@@ -1,6 +1,5 @@
 package com.example.mediaapp.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mediaapp.Screen
+import com.example.mediaapp.models.Genre
 import com.example.mediaapp.models.WatchlistMovie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -71,28 +71,49 @@ class MovieListLayout(private val movies: List<WatchlistMovie>, private val navC
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                        .shadow(
+                    .shadow(
                         elevation = 4.dp,
-                spotColor = Color(0x40000000),
-                ambientColor = Color(0x40000000)
-            )
-                .border(1.dp, color = MaterialTheme.colorScheme.surface, RoundedCornerShape(10.dp))
-                .padding(0.5.dp)
-                .width(96.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .height(142.dp)
+                        spotColor = Color(0x40000000),
+                        ambientColor = Color(0x40000000)
+                    )
+                    .border(
+                        1.dp,
+                        color = MaterialTheme.colorScheme.surface,
+                        RoundedCornerShape(10.dp)
+                    )
+                    .padding(0.5.dp)
+                    .width(96.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .height(142.dp)
                     .padding(start = 10.dp, top = 5.dp)
                     .width(90.dp)
                     .height(139.dp)
                     .clip(RoundedCornerShape(10.dp))
 
             )
+            /*val genreNames: MutableList<Genre>
+            for (genre in watchlistMovie.genres) {
+                genreNames += Genre.fromMap(genre as HashMap<String,Any?>)
+            }*/
+
             Column(modifier = Modifier.padding(start = 16.dp)) {
                 Text(text = watchlistMovie.title, style = MaterialTheme.typography.titleMedium)
-                //Text(text = watchlistMovie.genres[0].name, style = MaterialTheme.typography.labelLarge)
+
+                /*LazyRow() {
+                    for (string in genreNames) {
+                        item {
+                            Text(text = string, style = MaterialTheme.typography.labelLarge)
+                        }
+                    }
+
+                }*/
+
                 Text(text = watchlistMovie.description, style = MaterialTheme.typography.labelLarge)
             }
         }
+    }
+    fun convertGenresToStringList(genres: List<Genre>): List<String> {
+        return genres.map { it.name }
     }
 }
 
