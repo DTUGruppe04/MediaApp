@@ -13,19 +13,17 @@ class RecommendationEngine {
     private val database = DatabaseHandler()
 
     suspend fun generateMovieSuggestions(movieID: String) {
-        runBlocking {
-            println("Before API call")
-            val response = api.getMovieSuggestions(movieID)
-            println("After API call")
-            if (response != null && response.total_results > 0) {
-                for (i in 0..2) {
-                    val hash = hashMapOf(
-                        "movieID" to response.results[i].id,
-                        "posterPath" to response.results[i].poster_path,
-                        "title" to response.results[i].title
-                    )
-                    database.updateRecommendDatabase(hash)
-                }
+        println("Before API call")
+        val response = api.getMovieSuggestions(movieID)
+        println("After API call")
+        if (response != null && response.total_results > 0) {
+            for (i in 0..2) {
+                val hash = hashMapOf(
+                    "movieID" to response.results[i].id,
+                    "posterPath" to response.results[i].poster_path,
+                    "title" to response.results[i].title
+                )
+                database.updateRecommendDatabase(hash)
             }
         }
     }
