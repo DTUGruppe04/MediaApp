@@ -69,6 +69,7 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
     val firstFiveMovies = popularMovies.take(5)
     val remainingMovies = popularMovies.drop(5)
     val baseURL = "https://image.tmdb.org/t/p/original"
+
     MediaAppTheme {
         LazyColumn(
             modifier = Modifier
@@ -435,6 +436,11 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
             */
         }
     }
+
+    scope.launch {
+        RecommendationEngine().generateMovieSuggestions("872585")
+    }
+
 }
 
 @Composable
@@ -535,8 +541,6 @@ fun SeparationBox() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, drawerState: DrawerState) {
-    //val engine = RecommendationEngine()
-    //engine.generateMovieSuggestions("872585")
     MainPageLayout(navController = navController, drawerState = drawerState)
 }
 
