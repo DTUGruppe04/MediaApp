@@ -96,7 +96,8 @@ class MovieListLayout(private val movies: List<WatchlistMovie>, private val navC
 
             val genreList = mutableListOf<String>()
 
-            for(i in 0..2) {
+            val maxIterations = minOf(3, watchlistMovie.genres.size)
+            for(i in 0 until maxIterations) {
                 val tempGenre = watchlistMovie.genres[i] as? HashMap<*, *>
                 val genreName = tempGenre?.get("name") as? String
                 genreList.add(genreName ?: "")
@@ -109,17 +110,11 @@ class MovieListLayout(private val movies: List<WatchlistMovie>, private val navC
                     items(genreList) { genre ->
                         Text(
                             text = genre,
-                            style = MaterialTheme.typography.labelSmall,
+                            style = MaterialTheme.typography.labelLarge,
                             modifier = Modifier.padding(top = 3.dp, bottom = 3.dp, end = 5.dp)
                         )
                     }
                 }
-
-                Text(
-                    text = watchlistMovie.description,
-                    style = MaterialTheme.typography.labelLarge,
-                    maxLines = 4,
-                    overflow = TextOverflow.Ellipsis,)
             }
         }
     }
