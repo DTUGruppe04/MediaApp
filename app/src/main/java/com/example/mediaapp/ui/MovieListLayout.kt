@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
@@ -23,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -91,29 +93,36 @@ class MovieListLayout(private val movies: List<WatchlistMovie>, private val navC
                     .clip(RoundedCornerShape(10.dp))
 
             )
-            /*val genreNames: MutableList<Genre>
-            for (genre in watchlistMovie.genres) {
-                genreNames += Genre.fromMap(genre as HashMap<String,Any?>)
-            }*/
+
+            val genreList = mutableListOf<String>()
+
+            for(i in 0..2) {
+                val tempGenre = watchlistMovie.genres[i] as? HashMap<*, *>
+                val genreName = tempGenre?.get("name") as? String
+                genreList.add(genreName ?: "")
+            }
 
             Column(modifier = Modifier.padding(start = 16.dp)) {
                 Text(text = watchlistMovie.title, style = MaterialTheme.typography.titleMedium)
 
-                /*LazyRow() {
-                    for (string in genreNames) {
-                        item {
-                            Text(text = string, style = MaterialTheme.typography.labelLarge)
-                        }
+                LazyRow() {
+                    items(genreList) { genre ->
+                        Text(
+                            text = genre,
+                            style = MaterialTheme.typography.labelSmall,
+                            modifier = Modifier.padding(top = 3.dp, bottom = 3.dp, end = 5.dp)
+                        )
                     }
+                }
 
-                }*/
-
-                Text(text = watchlistMovie.description, style = MaterialTheme.typography.labelLarge)
+                Text(
+                    text = watchlistMovie.description,
+                    style = MaterialTheme.typography.labelLarge,
+                    maxLines = 4,
+                    overflow = TextOverflow.Ellipsis,)
             }
         }
     }
-    fun convertGenresToStringList(genres: List<Genre>): List<String> {
-        return genres.map { it.name }
-    }
+
 }
 
