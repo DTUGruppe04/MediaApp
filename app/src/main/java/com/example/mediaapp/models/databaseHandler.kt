@@ -1,9 +1,13 @@
 package com.example.mediaapp.models
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class DatabaseHandler {
     private val database = Firebase.firestore
@@ -43,5 +47,23 @@ class DatabaseHandler {
             .document(watchlistMovieMap["movieID"]
                 .toString())
             .set(watchlistMovieMap) }
+    }
+
+    suspend fun getWatchlistMovies(): List<WatchlistMovie> = withContext(Dispatchers.IO) {
+        val watchlistMovies = mutableListOf<WatchlistMovie>()
+        getCurrentUserID()?.let { userID ->
+            val result = database.collection("users")
+                .document(userID)
+                .collection("watchlist")
+                .get()
+                .await()
+
+            for (document in result) {
+                Log.d(TAG, "${document.id} => ${document.data}")
+                watchlistMovies += WatchlistMovie.fromMap(document.data)
+            }
+        }
+        Log.d(TAG, "getWatchlistMovies: $watchlistMovies")
+        return@withContext watchlistMovies
     }
 }
