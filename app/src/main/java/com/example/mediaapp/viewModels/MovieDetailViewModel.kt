@@ -76,7 +76,7 @@ class MovieDetailViewModel() : ViewModel() {
     }
 
     private fun createWatchlistMap() = hashMapOf(
-        "movieID" to (movieDetails.value?.id ?: -1),
+        "movieID" to movieDetails.value?.id,
         "posterPath" to movieDetails.value?.poster_path,
         "title" to movieDetails.value?.title,
         "genres" to movieDetails.value?.genres,

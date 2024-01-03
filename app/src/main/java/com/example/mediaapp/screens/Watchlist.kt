@@ -1,6 +1,5 @@
 package com.example.mediaapp.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerState
@@ -10,29 +9,22 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
-import com.example.mediaapp.models.Genre
-import com.example.mediaapp.models.WatchlistMovie
-import com.example.mediaapp.ui.Movie
 import com.example.mediaapp.ui.MovieListLayout
 import com.example.mediaapp.ui.TabsAndFilters
 import com.example.mediaapp.ui.nav.TopNavBarA
-import com.example.mediaapp.viewModels.CurrentUserViewModel
-import com.example.mediaapp.viewModels.WhatchlistViewModel
-import kotlinx.coroutines.launch
+import com.example.mediaapp.viewModels.WatchlistViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WatchlistPage(
     navController: NavController,
     drawerState: DrawerState,
-    viewModel: WhatchlistViewModel = viewModel()) {
+    viewModel: WatchlistViewModel = viewModel()) {
 
     val watchlistMovies = viewModel.watchList.collectAsState()
 
