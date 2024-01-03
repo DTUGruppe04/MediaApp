@@ -182,7 +182,7 @@ fun MovieDetailPage(
             }
             item {
                 //Top part
-                MovieDescription(movie, true)
+                MovieDescription(movie, true, viewModel, movieId)
             }/* TODO Add Director and Actors
             item {
                 Detail(detail = "Crew", infoList = convertCrewToStringList(movieCredits?.crew))
@@ -197,7 +197,7 @@ fun MovieDetailPage(
 
 
 @Composable
-fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean) {
+fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel: MovieDetailViewModel, movieId: String) {
     val genreIds = convertGenresToIntList(movie.genres)
     var isBookmarked by remember { mutableStateOf(bookmarkStatus) }
 
@@ -276,7 +276,9 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean) {
                 imageVector = if (isBookmarked) Icons.Outlined.BookmarkAdd else Icons.Outlined.BookmarkRemove,
                 contentDescription = "Bookmark",
                 tint = Color.White,
-                modifier = Modifier.size(30.dp).clickable { isBookmarked = !isBookmarked },
+                modifier = Modifier.size(30.dp).clickable {
+                    viewModel.addToWatchlist(movieId)
+                    isBookmarked = !isBookmarked },
             )
         }
         Text(

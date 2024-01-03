@@ -3,6 +3,7 @@ package com.example.mediaapp.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.models.DatabaseHandler
 import com.example.mediaapp.models.TMDBMovieCredits
 import com.example.mediaapp.models.TMDBMovieDetail
 import com.example.mediaapp.repos.MovieDetailRepo
@@ -23,6 +24,8 @@ class MovieDetailViewModel() : ViewModel() {
     val movieCredits: StateFlow<TMDBMovieCredits?> = _movieCredits.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
+
+    private val databaseHandler = DatabaseHandler()
 
     fun fetchMovieDetails(movieId: String) {
         _isLoading.value = true
@@ -47,16 +50,15 @@ class MovieDetailViewModel() : ViewModel() {
         }
     }
 
-    /*
-    Implement later when watchlist is functional
-
     private val _isInWatchlist = MutableStateFlow(false)
     val isInWatchlist: StateFlow<Boolean> = _isInWatchlist.asStateFlow()
 
     fun addToWatchlist(movieId: String) {
         viewModelScope.launch {
             try {
+                databaseHandler.updateWatchlistMovie(createWatchlistMap())
                 _isInWatchlist.value = true
+
             } catch (e: Exception) {
                 // Handle errors
             }
@@ -72,5 +74,12 @@ class MovieDetailViewModel() : ViewModel() {
             }
         }
     }
-    */
+
+    private fun createWatchlistMap() = hashMapOf(
+        "movieID" to (movieDetails.value?.id ?: -1),
+        "posterPath" to movieDetails.value?.poster_path,
+        "title" to movieDetails.value?.title,
+        "genres" to movieDetails.value?.genres,
+        "description" to movieDetails.value?.overview
+    )
 }
