@@ -68,7 +68,7 @@ fun WatchlistPage(
             )
         )
         customUITabs.Render()
-        val movieLayout = watchlistMovies.value?.let { MovieListLayout(it, navController, scope) }
+        val movieLayout = watchlistMovies.value?.let { MovieListLayout(it, navController, scope, viewModel) }
         movieLayout?.MovieList()
 
     }

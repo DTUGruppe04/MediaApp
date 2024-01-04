@@ -13,9 +13,22 @@ class WatchlistViewModel : ViewModel(){
     private val databaseHandler = DatabaseHandler()
     private val _watchList = MutableStateFlow<List<WatchlistMovie>?>(null)
     val watchList: StateFlow<List<WatchlistMovie>?> = _watchList.asStateFlow()
+    private val _deleteview = MutableStateFlow<Boolean>(false)
+    val deleteview: StateFlow<Boolean> = _deleteview.asStateFlow()
 
     fun getWatchlistMovies() {
         viewModelScope.launch {
+            _watchList.value = databaseHandler.getWatchlistMovies()
+        }
+    }
+
+    fun openDeleteView() {
+        _deleteview.value = !_deleteview.value
+    }
+
+    fun removeMovieFromWatchlist(movieID: Long) {
+        viewModelScope.launch {
+            databaseHandler.removeMovieFromWatchlist(movieID)
             _watchList.value = databaseHandler.getWatchlistMovies()
         }
     }

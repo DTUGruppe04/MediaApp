@@ -66,4 +66,15 @@ class DatabaseHandler {
         Log.d(TAG, "getWatchlistMovies: $watchlistMovies")
         return@withContext watchlistMovies
     }
+
+    suspend fun removeMovieFromWatchlist(movieID: Long) = withContext(Dispatchers.IO) {
+        getCurrentUserID()?.let { userID ->
+            database.collection("users")
+                .document(userID)
+                .collection("watchlist")
+                .document(movieID.toString())
+                .delete()
+                .await()
+        }
+    }
 }
