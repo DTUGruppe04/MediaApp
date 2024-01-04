@@ -1,6 +1,5 @@
 package com.example.mediaapp.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
@@ -24,10 +24,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mediaapp.Screen
+import com.example.mediaapp.models.Genre
 import com.example.mediaapp.models.WatchlistMovie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -71,28 +73,51 @@ class MovieListLayout(private val movies: List<WatchlistMovie>, private val navC
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                        .shadow(
+                    .shadow(
                         elevation = 4.dp,
-                spotColor = Color(0x40000000),
-                ambientColor = Color(0x40000000)
-            )
-                .border(1.dp, color = MaterialTheme.colorScheme.surface, RoundedCornerShape(10.dp))
-                .padding(0.5.dp)
-                .width(96.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .height(142.dp)
+                        spotColor = Color(0x40000000),
+                        ambientColor = Color(0x40000000)
+                    )
+                    .border(
+                        1.dp,
+                        color = MaterialTheme.colorScheme.surface,
+                        RoundedCornerShape(10.dp)
+                    )
+                    .padding(0.5.dp)
+                    .width(96.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .height(142.dp)
                     .padding(start = 10.dp, top = 5.dp)
                     .width(90.dp)
                     .height(139.dp)
                     .clip(RoundedCornerShape(10.dp))
 
             )
+
+            val genreList = mutableListOf<String>()
+
+            val maxIterations = minOf(3, watchlistMovie.genres.size)
+            for(i in 0 until maxIterations) {
+                val tempGenre = watchlistMovie.genres[i] as? HashMap<*, *>
+                val genreName = tempGenre?.get("name") as? String
+                genreList.add(genreName ?: "")
+            }
+
             Column(modifier = Modifier.padding(start = 16.dp)) {
                 Text(text = watchlistMovie.title, style = MaterialTheme.typography.titleMedium)
-                //Text(text = watchlistMovie.genres[0].name, style = MaterialTheme.typography.labelLarge)
-                Text(text = watchlistMovie.description, style = MaterialTheme.typography.labelLarge)
+
+                LazyRow() {
+                    items(genreList) { genre ->
+                        Text(
+                            text = genre,
+                            style = MaterialTheme.typography.labelLarge,
+                            modifier = Modifier.padding(top = 3.dp, bottom = 3.dp, end = 5.dp)
+                        )
+                    }
+                }
             }
         }
     }
+
 }
 
