@@ -1,6 +1,6 @@
 package com.example.mediaapp.screens
 
-import PagerViewModel
+import HomeViewModel
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -56,16 +56,17 @@ import com.example.mediaapp.R
 import com.example.mediaapp.RecommendationEngine
 import com.example.mediaapp.Screen
 import com.example.mediaapp.apirequests.APIHandler
-import com.example.mediaapp.models.DatabaseHandler
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavController, drawerState: DrawerState) {
+fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavController, drawerState: DrawerState) {
     val scope = rememberCoroutineScope()
     val popularMovies by viewModel.popularMovies.collectAsState()
+    val recommendedMovies by viewModel.recommendedMovies.collectAsState()
+    val recommendedState by viewModel.recommendedState.collectAsState()
     val firstFiveMovies = popularMovies.take(5)
     val remainingMovies = popularMovies.drop(5)
     val baseURL = "https://image.tmdb.org/t/p/original"
@@ -73,7 +74,7 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
     MediaAppTheme {
         /*
         scope.launch {
-            RecommendationEngine().generateMovieSuggestions("872585")
+            RecommendationEngine().generateMovieSuggestions("438631")
         }
          */
         LazyColumn(
@@ -91,6 +92,13 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                     viewModel.fetchPopularMovies()
                 }
 
+                LaunchedEffect("recommended") {
+                    viewModel.fetchRecommendedMovies()
+                }
+
+                LaunchedEffect("recommended") {
+                    viewModel.fetchRecommendedState()
+                }
                 //The sliding horizontal pager
                 Box(modifier = Modifier
                     .height(280.dp)
@@ -313,69 +321,47 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
                     }
                 }
             }
-            /*
             item {
                 SeparationBox()
             }
-            item {
-                //This is for the second horizontal list
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(220.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                ) {
-                    Column {
-                        Text(
-                            stringResource(R.string.main_page_top_picks),
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.labelMedium,
-                            fontSize = 20.sp,
-                            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
-                        )
-                        LazyRow(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            item {
-                                StandardBoxInRowOld(
-                                    navController,
-                                    R.drawable.second_row_first_movie,
-                                    R.string.main_page_first_row_first_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRowOld(
-                                    navController,
-                                    R.drawable.second_row_second_movie,
-                                    R.string.main_page_first_row_second_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRowOld(
-                                    navController,
-                                    R.drawable.second_row_third_movie,
-                                    R.string.main_page_first_row_third_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRowOld(
-                                    navController,
-                                    R.drawable.second_row_fourth_movie,
-                                    R.string.main_page_first_row_fourth_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRowOld(
-                                    navController,
-                                    R.drawable.second_row_fifth_movie,
-                                    R.string.main_page_first_row_fifth_movie
-                                )
+            if (recommendedState == true) {
+                item {
+                    //This is for the second horizontal list (RECOMMENDED BASED ON ALGORITHM)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(220.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                    ) {
+                        Column {
+                            Text(
+                                stringResource(R.string.main_page_top_picks),
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.labelMedium,
+                                fontSize = 20.sp,
+                                modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                            )
+                            LazyRow(
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                //Add personal recommendation here based on the algorithm
+                                items(recommendedMovies.size) {
+                                    StandardBoxInRow(
+                                        navController = navController,
+                                        movie_poster_path = baseURL + recommendedMovies[it].posterPath,
+                                        movieTitle = recommendedMovies[it].title,
+                                        scope = scope,
+                                        movieId = recommendedMovies[it].movieID.toString()
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
+
+            /*
             item {
                 SeparationBox()
             }
@@ -481,7 +467,7 @@ fun StandardBoxInRowOld(navController: NavController, image: Int, string: Int) {
     }
 }
 @Composable
-fun StandardBoxInRow(navController: NavController, movie_poster_path: String, movieTitle: String,scope: CoroutineScope,movieId: String) {
+fun StandardBoxInRow(navController: NavController, movie_poster_path: String, movieTitle: String, scope: CoroutineScope, movieId: String) {
     Box(
         modifier = Modifier
             .width(90.dp)
