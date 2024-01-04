@@ -75,4 +75,21 @@ class DatabaseHandler {
                 .toString())
             .set(watchlistMovieMap) }
     }
+
+    suspend fun getRecommenedMovies(): List<Recommend> = withContext(Dispatchers.IO) {
+        val recommenedMovies = mutableListOf<Recommend>()
+        getCurrentUserID()?.let { userID ->
+            val result = database.collection("users")
+                .document(userID)
+                .collection("recommend")
+                .get()
+                .await()
+
+            for (document in result) {
+                Log.d(TAG, "${document.id} => ${document.data}")
+                recommenedMovies += Recommend.fromMap(document.data)
+            }
+        }
+        return@withContext recommenedMovies
+    }
 }

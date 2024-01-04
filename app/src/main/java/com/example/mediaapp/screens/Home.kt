@@ -71,9 +71,11 @@ fun MainPageLayout(viewModel: PagerViewModel = viewModel(), navController: NavCo
     val baseURL = "https://image.tmdb.org/t/p/original"
 
     MediaAppTheme {
+        /*
         scope.launch {
             RecommendationEngine().generateMovieSuggestions("872585")
         }
+         */
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
