@@ -345,7 +345,7 @@ class APIHandler {
                 10402 -> tempList.add("Music")
                 9648 -> tempList.add("Mystery")
                 10749 -> tempList.add("Romance")
-                878 -> tempList.add("Science Fiction")
+                878 -> tempList.add("Sci-fi")
                 10770 -> tempList.add("TV Movie")
                 53 -> tempList.add("Thriller")
                 10752 -> tempList.add("War")

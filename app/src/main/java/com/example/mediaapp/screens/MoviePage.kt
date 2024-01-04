@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +25,9 @@ import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.outlined.BookmarkRemove
 import androidx.compose.material.icons.outlined.Recommend
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,12 +47,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -208,6 +217,16 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel:
             .padding(10.dp)
     ) {
         Row(
+            modifier = Modifier
+                .padding(bottom = 10.dp)
+        ) {
+            Text(
+                text = movie.title,
+                color = Color.White,
+                style = MaterialTheme.typography.titleLarge
+            )
+        }
+        Row(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.Start
         ) {
@@ -217,18 +236,13 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel:
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.composeImageModifier()
             )
-
             Column(
                 modifier = Modifier
                     .padding(start = 10.dp)
             ) {
-                Text(
-                    text = movie.title,
-                    color = Color.White,
-                    style = MaterialTheme.typography.titleLarge
-                )
                 GenreTags(genreIds)
-                ExpandableText(movie.overview)
+                //ExpandableText(movie.overview)
+                ExpandableTextDescription(movie.overview)
 
             }
         }
@@ -276,9 +290,12 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel:
                 imageVector = if (isBookmarked) Icons.Outlined.BookmarkAdd else Icons.Outlined.BookmarkRemove,
                 contentDescription = "Bookmark",
                 tint = Color.White,
-                modifier = Modifier.size(30.dp).clickable {
-                    viewModel.addToWatchlist(movieId)
-                    isBookmarked = !isBookmarked },
+                modifier = Modifier
+                    .size(30.dp)
+                    .clickable {
+                        viewModel.addToWatchlist(movieId)
+                        isBookmarked = !isBookmarked
+                    },
             )
         }
         Text(
@@ -301,7 +318,7 @@ private fun Modifier.composeImageModifier(): Modifier {
 @Composable
 fun GenreTags(genreIds: List<Int>) {
     val genres = APIHandler().getGenrebyID(genreIds)
-    Row (modifier = Modifier.padding(top = 10.dp)){
+    Row (){
         for (genre in genres) {
             TagBox(shape = RoundedCornerShape(4.dp), tag = genre)
             Spacer(modifier = Modifier.width(8.dp)) // Add space between tags
@@ -317,6 +334,7 @@ fun convertCrewToStringList(crew: List<Crew>?): List<String> {
     return crew?.map { it.toString() } ?: emptyList()
 }
 
+/*
 @Composable
 fun ExpandableText(text: String, maxLength: Int = 180) {
     var isExpanded by remember { mutableStateOf(false) }
@@ -334,15 +352,100 @@ fun ExpandableText(text: String, maxLength: Int = 180) {
             style = MaterialTheme.typography.labelMedium,
             modifier = Modifier
                 .padding(top = 10.dp)
-                .clickable { isExpanded = !isExpanded },
+                .clickable { isExpanded = false },
         )
-
         if (text.length > maxLength && !isExpanded) {
             Text(
                 text = stringResource(R.string.view_more),
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 14.sp,
-                modifier = Modifier.clickable { isExpanded = true }
+                modifier = Modifier
+                    .clickable { isExpanded = true }
+                    .padding(top = 5.dp)
+            )
+        }
+    }
+}
+
+ */
+
+@Composable
+fun DescriptionDialog(onDismissRequest: () -> Unit, text: String) {
+    Dialog(
+        onDismissRequest = { onDismissRequest() },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(450.dp)
+                .padding(4.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.inverseOnSurface
+            )
+        ) {
+            LazyColumn {
+                item{
+                    Text(
+                        text = "Description",
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxSize()
+                    )
+                }
+                item{
+                    Divider(modifier = Modifier
+                        .padding(start = 10.dp, end = 10.dp),
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+                item{
+                    Text(
+                        text = text,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxSize()
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ExpandableTextDescription(text: String, maxLength: Int = 180) {
+    var isExpanded by remember { mutableStateOf(false) }
+
+    val displayText = if (text.length <= maxLength) {
+        text
+    } else {
+        text.take(maxLength)
+    }
+
+    if (isExpanded) {
+        DescriptionDialog(onDismissRequest = { isExpanded = false }, text)
+    }
+
+    Column {
+        Text(
+            text = displayText,
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.labelMedium,
+            modifier = Modifier
+                .padding(top = 10.dp)
+                .clickable { isExpanded = true }
+        )
+        if (text.length > maxLength && !isExpanded) {
+            Text(
+                text = stringResource(R.string.view_more),
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .clickable { isExpanded = true }
+                    .padding(top = 5.dp)
             )
         }
     }
