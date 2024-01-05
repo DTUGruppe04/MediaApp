@@ -41,6 +41,10 @@ class RecommendationEngine {
         return database.getRecommenedMovies()
     }
 
+    suspend fun removeRecommendMovie(movieID: Long) {
+        database.removeMovieRecommend(movieID)
+    }
+
     private fun containMovieId(list: List<WatchlistMovie>, movieID: Long) : Boolean {
         list.forEach {item ->
             println("WatchID: ${item.movieID}")
