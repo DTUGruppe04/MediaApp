@@ -20,11 +20,14 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.outlined.BookmarkRemove
 import androidx.compose.material.icons.outlined.Recommend
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -243,60 +246,92 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel:
                 GenreTags(genreIds)
                 //ExpandableText(movie.overview)
                 ExpandableTextDescription(movie.overview)
+                Row(
+                    modifier = Modifier
+                        .padding(top = 10.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    // "Rate this" Box
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 10.dp, vertical = 6.dp)
+                            .weight(2f),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        Button(
+                            onClick = { /*TODO*/ },
+                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surfaceVariant)
+                        ) {
+                            Text(
+                                "Rate",
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
 
-            }
-        }
-        Row(
-            modifier = Modifier
-                .padding(top = 10.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            // "Rate this" Box
-            Box(
-                modifier = Modifier
-                    .padding(end = 10.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(Color(0xff4a4458))
-                    .padding(horizontal = 10.dp, vertical = 6.dp)
-            ) {
-                Text(
-                    text = "Rate this",
-                    color = Color.White,
-                    fontSize = 12.sp
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                // Star Icon
-                Icon(
-                    imageVector = Icons.Filled.Star,
-                    contentDescription = "star",
-                    tint = Color.Yellow
-                )
+                        /*
+                        Box(
+                            modifier = Modifier
+                                .height(24.dp)
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(Color(0xff4a4458))
+                                .clickable { /*TODO*/ }
+                                .background(color = MaterialTheme.colorScheme.surfaceVariant),
+                        ) {
+                            Text(
+                                text = "Rate",
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
 
-                // Vote Count
-                Text(
-                    text = movie.vote_count.toString(),
-                    color = Color.White,
-                    modifier = Modifier.padding(start = 5.dp, end = 15.dp),
-                    fontSize = 14.sp
-                )
+                         */
+                    }
+                    Row(
+                        modifier = Modifier.weight(2f),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        // Star Icon
+                        Icon(
+                            imageVector = Icons.Filled.Star,
+                            contentDescription = "star",
+                            tint = Color.Yellow
+                        )
+
+                        // Vote Count
+                        Text(
+                            text = movie.vote_count.toString(),
+                            color = Color.White,
+                            modifier = Modifier.padding(start = 5.dp, end = 15.dp),
+                            fontSize = 14.sp
+                        )
+                    }
+                    // Bookmark Icon
+                    Row(
+                        modifier = Modifier.weight(1f),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Icon(
+                            imageVector = if (isBookmarked) Icons.Outlined.BookmarkAdd else Icons.Outlined.BookmarkRemove,
+                            contentDescription = "Bookmark",
+                            tint = Color.White,
+                            modifier = Modifier
+                                .size(30.dp)
+                                .clickable {
+                                    viewModel.addToWatchlist(movieId)
+                                    isBookmarked = !isBookmarked
+                                },
+                        )
+                    }
+                }
             }
-            // Bookmark Icon
-            Icon(
-                imageVector = if (isBookmarked) Icons.Outlined.BookmarkAdd else Icons.Outlined.BookmarkRemove,
-                contentDescription = "Bookmark",
-                tint = Color.White,
-                modifier = Modifier
-                    .size(30.dp)
-                    .clickable {
-                        viewModel.addToWatchlist(movieId)
-                        isBookmarked = !isBookmarked
-                    },
-            )
         }
         Text(
             text = "Release Date: ${movie.release_date}",
@@ -369,6 +404,8 @@ fun ExpandableText(text: String, maxLength: Int = 180) {
 
  */
 
+
+//The design of the description pop-up
 @Composable
 fun DescriptionDialog(onDismissRequest: () -> Unit, text: String) {
     Dialog(
@@ -387,13 +424,19 @@ fun DescriptionDialog(onDismissRequest: () -> Unit, text: String) {
         ) {
             LazyColumn {
                 item{
-                    Text(
-                        text = "Description",
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxSize()
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Description",
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(10.dp)
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        IconButton(onClick = { onDismissRequest() }) {
+                            Icon(Icons.Filled.Close, "Exit")
+                        }
+                    }
                 }
                 item{
                     Divider(modifier = Modifier
@@ -405,6 +448,7 @@ fun DescriptionDialog(onDismissRequest: () -> Unit, text: String) {
                 item{
                     Text(
                         text = text,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier
                             .padding(10.dp)
                             .fillMaxSize()
