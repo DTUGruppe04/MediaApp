@@ -98,10 +98,7 @@ fun LoginPageLayout(
                 )
 
                 Button(onClick = {
-                    viewModel.loginFlow()
-                    if (viewModel.errorText.value.isEmpty()) {
-                        navController.navigate(Screen.MainScreen.route)
-                    }
+                    viewModel.loginFlow(navController)
                 },
                     modifier = Modifier
                         .width(152.dp)
