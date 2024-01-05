@@ -105,4 +105,16 @@ class DatabaseHandler {
         }
         return@withContext recommenedMovies
     }
+
+    suspend fun removeMovieRecommend(movieID: Long) = withContext(Dispatchers.IO) {
+        getCurrentUserID()?.let { userID ->
+            database.collection("users")
+                .document(userID)
+                .collection("recommend")
+                .document(movieID.toString())
+                .delete()
+                .await()
+        }
+    }
+
 }
