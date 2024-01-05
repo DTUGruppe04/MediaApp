@@ -3,7 +3,7 @@ package com.example.mediaapp.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.apirequests.APIHandler
-import com.example.mediaapp.models.DatabaseHandler
+import com.example.mediaapp.database.DatabaseHandler
 import com.example.mediaapp.models.TMDBMovieCredits
 import com.example.mediaapp.models.TMDBMovieDetail
 import com.example.mediaapp.repos.MovieDetailRepo

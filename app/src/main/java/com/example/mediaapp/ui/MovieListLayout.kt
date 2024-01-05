@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -39,8 +40,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mediaapp.Screen
@@ -50,7 +54,12 @@ import com.example.mediaapp.viewModels.WatchlistViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class MovieListLayout(private val movies: List<WatchlistMovie>, private val navController: NavController, private val scope: CoroutineScope, private val viewmodel: WatchlistViewModel) {
+class MovieListLayout(
+    private val movies: List<WatchlistMovie>,
+    private val navController: NavController,
+    private val scope: CoroutineScope,
+    private val viewmodel: WatchlistViewModel
+) {
     private val baseURL = "https://image.tmdb.org/t/p/original"
     
     @OptIn(ExperimentalFoundationApi::class)
@@ -178,9 +187,53 @@ class MovieListLayout(private val movies: List<WatchlistMovie>, private val navC
                         }
                 )
             }
-
         }
     }
-
 }
-
+@Composable
+fun StandardBoxInRow(navController: NavController, movie_poster_path: String, movieTitle: String, scope: CoroutineScope, movieId: String) {
+    Box(
+        modifier = Modifier
+            .width(90.dp)
+            .height(180.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AsyncImage(
+                model = movie_poster_path,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 5.dp)
+                    .width(90.dp)
+                    .height(139.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .clickable {
+                        scope.launch {
+                            navController.navigate("${Screen.MoviePage.route}/$movieId")
+                        }
+                    }
+            )
+            Text(
+                text = movieTitle,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelMedium,
+                fontSize = 12.sp,
+                softWrap = true,
+                maxLines = 2,
+                lineHeight = 1.em,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 5.dp)
+                    .clickable {
+                        scope.launch {
+                            navController.navigate("${Screen.MoviePage.route}/$movieId")
+                        }
+                    }
+            )
+        }
+    }
+}

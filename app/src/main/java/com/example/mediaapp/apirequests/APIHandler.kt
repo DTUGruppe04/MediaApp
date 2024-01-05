@@ -267,9 +267,9 @@ class APIHandler {
      * @return Returns a Data Objects containing upcoming movies.
      * If return is null something went wrong
      */
-    suspend fun getUpcomingMovies(language: String = "en-US", page: Int = 1) : TMDBUpcomingMovies? {
+    suspend fun getUpcomingMovies(language: String = "en-US", page: Int = 1, region: String = "US") : TMDBUpcomingMovies? {
         try {
-            val response = api.getUpcomingMovies(language, page).awaitResponse()
+            val response = api.getUpcomingMovies(language, page, region).awaitResponse()
             if (response.isSuccessful) {
                 var data = response.body()
                 if (data != null && data.total_results != 0) {
@@ -297,9 +297,9 @@ class APIHandler {
      * @return Returns a Data Objects containing movies currently playing in theatres.
      * If return is null something went wrong
      */
-    suspend fun getNowPlayingMovies(language: String = "en-US", page: Int = 1) : TMDBUpcomingMovies? {
+    suspend fun getNowPlayingMovies(language: String = "en-US", page: Int = 1, region: String = "US") : TMDBUpcomingMovies? {
         try {
-            val response = api.getNowPlayingMovies(language, page).awaitResponse()
+            val response = api.getNowPlayingMovies(language, page, region).awaitResponse()
             if (response.isSuccessful) {
                 var data = response.body()
                 if (data != null && data.total_results != 0) {

@@ -1,7 +1,7 @@
 package com.example.mediaapp
 
 import com.example.mediaapp.apirequests.APIHandler
-import com.example.mediaapp.models.DatabaseHandler
+import com.example.mediaapp.database.DatabaseHandler
 import com.example.mediaapp.models.Recommend
 import com.example.mediaapp.models.WatchlistMovie
 
@@ -36,17 +36,11 @@ class RecommendationEngine {
      *
      * @return Returns a shuffle list of 15 recommended movies
      */
+
     suspend fun getRecommendMovies() : List<Recommend> {
-        val allMovies = database.getRecommenedMovies()
-        return allMovies.shuffled().take(15)
+        return database.getRecommenedMovies()
     }
 
-    /**
-     * containMovieId
-     *
-     *
-     *
-     */
     private fun containMovieId(list: List<WatchlistMovie>, movieID: Long) : Boolean {
         list.forEach {item ->
             println("WatchID: ${item.movieID}")

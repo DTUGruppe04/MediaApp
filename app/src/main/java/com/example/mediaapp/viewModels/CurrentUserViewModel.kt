@@ -3,7 +3,7 @@ package com.example.mediaapp.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.models.CurrentUser
-import com.example.mediaapp.models.DatabaseHandler
+import com.example.mediaapp.database.DatabaseHandler
 import com.example.mediaapp.models.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth

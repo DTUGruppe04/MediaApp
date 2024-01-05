@@ -59,6 +59,7 @@ import com.example.mediaapp.apirequests.APIHandler
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import com.example.mediaapp.ui.StandardBoxInRow
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -67,9 +68,20 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
     val popularMovies by viewModel.popularMovies.collectAsState()
     val recommendedMovies by viewModel.recommendedMovies.collectAsState()
     val recommendedState by viewModel.recommendedState.collectAsState()
+    val moviesInTheatre by viewModel.inTheatres.collectAsState()
+    val upComingMovies by viewModel.upComingMovies.collectAsState()
     val firstFiveMovies = popularMovies.take(5)
     val remainingMovies = popularMovies.drop(5)
     val baseURL = "https://image.tmdb.org/t/p/original"
+
+
+    LaunchedEffect("Homepage") {
+        viewModel.fetchPopularMovies()
+        viewModel.fetchRecommendedMovies()
+        viewModel.fetchRecommendedState()
+        viewModel.fetchMoviesInTheatre()
+        viewModel.fetchUpcomingMovies()
+    }
 
     MediaAppTheme {
         /*
@@ -87,18 +99,6 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                 val pageCount = firstFiveMovies.size
                 val pagerState = rememberPagerState(pageCount = {popularMovies.size})
 
-
-                LaunchedEffect("week") {
-                    viewModel.fetchPopularMovies()
-                }
-
-                LaunchedEffect("recommended") {
-                    viewModel.fetchRecommendedMovies()
-                }
-
-                LaunchedEffect("recommended") {
-                    viewModel.fetchRecommendedState()
-                }
                 //The sliding horizontal pager
                 Box(modifier = Modifier
                     .height(280.dp)
@@ -360,13 +360,11 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                     }
                 }
             }
-
-            /*
             item {
                 SeparationBox()
             }
             item {
-                //This is for the third horizontal list
+                //This is for the third horizontal list (UpcomingMovies)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -385,50 +383,60 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                         LazyRow(
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            item {
-                                StandardBoxInRowOld(
-                                    navController,
-                                    R.drawable.third_row_first_movie,
-                                    R.string.main_page_third_row_first_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRowOld(
-                                    navController,
-                                    R.drawable.third_row_second_movie,
-                                    R.string.main_page_third_row_second_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRowOld(
-                                    navController,
-                                    R.drawable.third_row_third_movie,
-                                    R.string.main_page_third_row_third_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRowOld(
-                                    navController,
-                                    R.drawable.third_row_fourth_movie,
-                                    R.string.main_page_third_row_fourth_movie
-                                )
-                            }
-                            item {
-                                StandardBoxInRowOld(
-                                    navController,
-                                    R.drawable.third_row_fifth_movie,
-                                    R.string.main_page_third_row_fifth_movie
+                            items(upComingMovies.size) {
+                                StandardBoxInRow(
+                                    navController = navController,
+                                    movie_poster_path = baseURL + upComingMovies[it].poster_path,
+                                    movieTitle = upComingMovies[it].title,
+                                    scope = scope,
+                                    movieId = upComingMovies[it].id.toString()
                                 )
                             }
                         }
                     }
                 }
             }
-            */
+            item {
+                SeparationBox()
+            }
+            item {
+                //This is for the 4 horizontal list (In Theatres)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(220.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Column {
+                        Text(
+                            stringResource(R.string.main_page_4_row),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 20.sp,
+                            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                        )
+                        LazyRow(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            items(moviesInTheatre.size) {
+                                StandardBoxInRow(
+                                    navController = navController,
+                                    movie_poster_path = baseURL + moviesInTheatre[it].poster_path,
+                                    movieTitle = moviesInTheatre[it].title,
+                                    scope = scope,
+                                    movieId = moviesInTheatre[it].id.toString()
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
+//Is still being used in Profile
 @Composable
 fun StandardBoxInRowOld(navController: NavController, image: Int, string: Int) {
     Box(modifier = Modifier
@@ -462,53 +470,6 @@ fun StandardBoxInRowOld(navController: NavController, image: Int, string: Int) {
                 lineHeight = 1.em,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center
-            )
-        }
-    }
-}
-@Composable
-fun StandardBoxInRow(navController: NavController, movie_poster_path: String, movieTitle: String, scope: CoroutineScope, movieId: String) {
-    Box(
-        modifier = Modifier
-            .width(90.dp)
-            .height(180.dp)
-    ) {
-        Column(modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            AsyncImage(
-                model = movie_poster_path,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(start = 10.dp, top = 5.dp)
-                    .width(90.dp)
-                    .height(139.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .clickable {
-                        scope.launch {
-                            navController.navigate("${Screen.MoviePage.route}/$movieId")
-                        }
-                    }
-            )
-            Text(
-                text = movieTitle,
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.labelMedium,
-                fontSize = 12.sp,
-                softWrap = true,
-                maxLines = 2,
-                lineHeight = 1.em,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(start = 10.dp, top = 5.dp)
-                    .clickable {
-                        scope.launch {
-                            navController.navigate("${Screen.MoviePage.route}/$movieId")
-                        }
-                    }
             )
         }
     }

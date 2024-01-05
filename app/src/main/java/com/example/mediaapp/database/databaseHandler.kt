@@ -1,7 +1,9 @@
-package com.example.mediaapp.models
+package com.example.mediaapp.database
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.example.mediaapp.models.Recommend
+import com.example.mediaapp.models.WatchlistMovie
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore

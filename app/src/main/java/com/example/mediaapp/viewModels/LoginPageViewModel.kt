@@ -4,10 +4,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.Screen
-import com.example.mediaapp.models.DatabaseHandler
+import com.example.mediaapp.database.DatabaseHandler
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import kotlinx.coroutines.tasks.await
 
 /**
  * ViewModel for the login page.

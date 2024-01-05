@@ -18,12 +18,13 @@
     <string name="main_page_first_row_third_movie">Kung Fu Panda</string>
     <string name="main_page_first_row_fourth_movie">Princess Mononoke</string>
     <string name="main_page_first_row_fifth_movie">Oppenheimer</string>
-    <string name="main_page_friends_recommend">Friends Recommend - WIP DONT CLICK ON MOVIES</string>
+    <string name="main_page_friends_recommend">Upcoming Movies</string>
     <string name="main_page_third_row_first_movie">Sound of Freedom</string>
     <string name="main_page_third_row_second_movie">365 DAYS</string>
     <string name="main_page_third_row_third_movie">Chained</string>
     <string name="main_page_third_row_fourth_movie">Savage Messiah</string>
     <string name="main_page_third_row_fifth_movie">Suitable Flesh</string>
+    <string name="main_page_4_row">In Theatres</string>
 
     //Tabs
     <string name="all">All</string>
