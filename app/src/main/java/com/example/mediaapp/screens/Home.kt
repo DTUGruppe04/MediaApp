@@ -54,7 +54,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
-import com.example.mediaapp.backend.RecommendationEngine
 import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import kotlinx.coroutines.launch
@@ -91,6 +90,7 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
             RecommendationEngine().removeRecommendMovie(11324)
         }
         */
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
