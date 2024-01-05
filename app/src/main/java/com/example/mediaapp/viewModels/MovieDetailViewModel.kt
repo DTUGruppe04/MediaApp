@@ -53,12 +53,22 @@ class MovieDetailViewModel() : ViewModel() {
     private val _isInWatchlist = MutableStateFlow(false)
     val isInWatchlist: StateFlow<Boolean> = _isInWatchlist.asStateFlow()
 
+    fun checkIfInWatchlist(movieId: String) {
+        viewModelScope.launch {
+            try {
+                val watchlistMovies = databaseHandler.getWatchlistMovies()
+                _isInWatchlist.value = watchlistMovies.any { it.movieID == movieId.toLong() }
+            } catch (e: Exception) {
+                // Handle errors
+            }
+        }
+    }
+
     fun addToWatchlist(movieId: String) {
         viewModelScope.launch {
             try {
                 databaseHandler.updateWatchlistMovie(createWatchlistMap())
                 _isInWatchlist.value = true
-
             } catch (e: Exception) {
                 // Handle errors
             }
@@ -68,6 +78,7 @@ class MovieDetailViewModel() : ViewModel() {
     fun removeFromWatchlist(movieId: String) {
         viewModelScope.launch {
             try {
+                databaseHandler.removeMovieFromWatchlist(movieId.toLong())
                 _isInWatchlist.value = false
             } catch (e: Exception) {
                 // Handle errors

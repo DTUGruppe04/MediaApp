@@ -67,6 +67,17 @@ class DatabaseHandler {
         return@withContext watchlistMovies
     }
 
+    suspend fun removeMovieFromWatchlist(movieID: Long) = withContext(Dispatchers.IO) {
+        getCurrentUserID()?.let { userID ->
+            database.collection("users")
+                .document(userID)
+                .collection("watchlist")
+                .document(movieID.toString())
+                .delete()
+                .await()
+        }
+    }
+
     fun updateRecommendDatabase(watchlistMovieMap: Map<String, Any?>) {
         getCurrentUserID()?.let { database.collection("users")
             .document(it)

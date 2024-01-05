@@ -76,6 +76,7 @@ fun MovieDetailPage(
     LaunchedEffect(movieId) {
         viewModel.fetchMovieDetails(movieId)
         viewModel.fetchMovieCredits(movieId)
+        viewModel.checkIfInWatchlist(movieId)
     }
     val movie = movieDetails ?: return
     MediaAppTheme {
@@ -182,7 +183,7 @@ fun MovieDetailPage(
             }
             item {
                 //Top part
-                MovieDescription(movie, true, viewModel, movieId)
+                MovieDescription(movie, viewModel, movieId)
             }/* TODO Add Director and Actors
             item {
                 Detail(detail = "Crew", infoList = convertCrewToStringList(movieCredits?.crew))
@@ -197,9 +198,9 @@ fun MovieDetailPage(
 
 
 @Composable
-fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel: MovieDetailViewModel, movieId: String) {
+fun MovieDescription(movie: TMDBMovieDetail, viewModel: MovieDetailViewModel, movieId: String) {
     val genreIds = convertGenresToIntList(movie.genres)
-    var isBookmarked by remember { mutableStateOf(bookmarkStatus) }
+    val inWatchlist by viewModel.isInWatchlist.collectAsState()
 
     Column(
         modifier = Modifier
@@ -273,12 +274,17 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel:
             }
             // Bookmark Icon
             Icon(
-                imageVector = if (isBookmarked) Icons.Outlined.BookmarkAdd else Icons.Outlined.BookmarkRemove,
+                imageVector = if (inWatchlist) Icons.Outlined.BookmarkRemove else Icons.Outlined.BookmarkAdd,
                 contentDescription = "Bookmark",
                 tint = Color.White,
                 modifier = Modifier.size(30.dp).clickable {
-                    viewModel.addToWatchlist(movieId)
-                    isBookmarked = !isBookmarked },
+                    if (inWatchlist) {
+                        viewModel.removeFromWatchlist(movieId)
+                        viewModel.checkIfInWatchlist(movieId)
+                    } else {
+                        viewModel.addToWatchlist(movieId)
+                        viewModel.checkIfInWatchlist(movieId)
+                    }},
             )
         }
         Text(

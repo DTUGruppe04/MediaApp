@@ -28,4 +28,8 @@ class CurrentUserViewModel : ViewModel(){
         val userFromDatabase = databaseHandler.getUserFromDatabase(user!!.uid)
         return CurrentUser(User.fromMap(userFromDatabase), userFromDatabase["watchlist"] as? List<String> ?: listOf())
     }
+
+    fun getCountryFlag(countryName: String): Int {
+        return 0
+    }
 }
