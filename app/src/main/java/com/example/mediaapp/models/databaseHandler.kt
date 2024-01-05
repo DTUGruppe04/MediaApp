@@ -77,4 +77,10 @@ class DatabaseHandler {
                 .await()
         }
     }
+
+    fun updateRatedMovies(movieID: String, ratedMovieMap: Map<String, Any?>) {
+        database.collection("ratedMovies").document(movieID).set(ratedMovieMap)
+
+    }
+
 }

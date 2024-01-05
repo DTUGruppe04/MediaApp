@@ -11,6 +11,7 @@ data class User(
     val stats: Stats,
     val favorites: List<String>,
     val recentlyWatched: List<String>,
+    val ratedMovies: List<String>
 ) {
     companion object {
         fun fromMap(map: Map<String, Any?>): User {
@@ -24,7 +25,8 @@ data class User(
                 map["profilePicture"] as? String ?: "",
                 Stats.fromMap(map["stats"] as? Map<String, Any?> ?: mapOf()),
                 map["favorites"] as? List<String> ?: listOf(),
-                map["recentlyWatched"] as? List<String> ?: listOf()
+                map["recentlyWatched"] as? List<String> ?: listOf(),
+                map["ratedMovies"] as? List<String> ?: listOf()
             )
         }
     }
