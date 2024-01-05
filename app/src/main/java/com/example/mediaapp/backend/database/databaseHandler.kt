@@ -1,4 +1,4 @@
-package com.example.mediaapp.database
+package com.example.mediaapp.backend.database
 
 import android.content.ContentValues.TAG
 import android.util.Log

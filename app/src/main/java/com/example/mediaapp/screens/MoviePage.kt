@@ -56,7 +56,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mediaapp.R
-import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.models.Crew
 import com.example.mediaapp.models.Genre
 import com.example.mediaapp.models.TMDBMovieDetail

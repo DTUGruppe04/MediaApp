@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.Screen
-import com.example.mediaapp.database.DatabaseHandler
+import com.example.mediaapp.backend.database.DatabaseHandler
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 

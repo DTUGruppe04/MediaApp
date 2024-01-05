@@ -1,11 +1,11 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mediaapp.RecommendationEngine
-import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.backend.RecommendationEngine
+import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.models.Recommend
 import com.example.mediaapp.models.Result2
 import com.example.mediaapp.models.TMDBMovie
-import com.example.mediaapp.repos.HomeRepo
+import com.example.mediaapp.backend.repos.HomeRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

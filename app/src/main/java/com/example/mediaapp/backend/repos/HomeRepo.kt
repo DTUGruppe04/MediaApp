@@ -1,8 +1,8 @@
-package com.example.mediaapp.repos
+package com.example.mediaapp.backend.repos
 
 import android.util.Log
-import com.example.mediaapp.RecommendationEngine
-import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.backend.RecommendationEngine
+import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.models.Recommend
 import com.example.mediaapp.models.Result2
 import com.example.mediaapp.models.TMDBMovie

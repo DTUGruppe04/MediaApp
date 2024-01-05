@@ -1,4 +1,4 @@
-package com.example.mediaapp.apirequests
+package com.example.mediaapp.backend.apirequests
 
 import android.util.Log
 import com.example.mediaapp.models.TMDBMovieCredits
