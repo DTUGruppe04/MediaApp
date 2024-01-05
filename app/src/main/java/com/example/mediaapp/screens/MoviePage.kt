@@ -231,7 +231,9 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel:
         }
         Row(
             verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier
+                .height(187.dp)
         ) {
             AsyncImage(
                 model = baseURL + (movie.poster_path ?: failURL),
@@ -242,93 +244,103 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel:
             Column(
                 modifier = Modifier
                     .padding(start = 10.dp)
+                    .fillMaxHeight(),
             ) {
                 GenreTags(genreIds)
                 //ExpandableText(movie.overview)
                 ExpandableTextDescription(movie.overview)
-                Row(
+                Column(
                     modifier = Modifier
-                        .padding(top = 10.dp)
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Bottom
                 ) {
-                    // "Rate this" Box
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp, vertical = 6.dp)
-                            .weight(2f),
+                            .padding(top = 10.dp)
+                            .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Start
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        Button(
-                            onClick = { /*TODO*/ },
-                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surfaceVariant)
-                        ) {
-                            Text(
-                                "Rate",
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-
-                        /*
-                        Box(
+                        // "Rate this" Box
+                        Row(
                             modifier = Modifier
-                                .height(24.dp)
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(Color(0xff4a4458))
-                                .clickable { /*TODO*/ }
-                                .background(color = MaterialTheme.colorScheme.surfaceVariant),
+                                .height(50.dp)
+                                .padding(vertical = 6.dp)
+                                .weight(2f),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
                         ) {
+                            Button(
+                                modifier = Modifier.height(30.dp),
+                                onClick = { /*TODO*/ },
+                                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surfaceVariant)
+                            ) {
+                                Text(
+                                    "Rate",
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
+
+                            /*
+                            Box(
+                                modifier = Modifier
+                                    .height(24.dp)
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .background(Color(0xff4a4458))
+                                    .clickable { /*TODO*/ }
+                                    .background(color = MaterialTheme.colorScheme.surfaceVariant),
+                            ) {
+                                Text(
+                                    text = "Rate",
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                            }
+
+                             */
+                        }
+                        Row(
+                            modifier = Modifier.weight(2f),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            // Star Icon
+                            Icon(
+                                imageVector = Icons.Filled.Star,
+                                contentDescription = "star",
+                                tint = Color.Yellow
+                            )
+
+                            // Vote Count
                             Text(
-                                text = "Rate",
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurface,
+                                text = movie.vote_count.toString(),
+                                color = Color.White,
+                                modifier = Modifier.padding(start = 5.dp, end = 15.dp),
+                                fontSize = 14.sp
                             )
                         }
-
-                         */
-                    }
-                    Row(
-                        modifier = Modifier.weight(2f),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ){
-                        // Star Icon
-                        Icon(
-                            imageVector = Icons.Filled.Star,
-                            contentDescription = "star",
-                            tint = Color.Yellow
-                        )
-
-                        // Vote Count
-                        Text(
-                            text = movie.vote_count.toString(),
-                            color = Color.White,
-                            modifier = Modifier.padding(start = 5.dp, end = 15.dp),
-                            fontSize = 14.sp
-                        )
-                    }
-                    // Bookmark Icon
-                    Row(
-                        modifier = Modifier.weight(1f),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Icon(
-                            imageVector = if (isBookmarked) Icons.Outlined.BookmarkAdd else Icons.Outlined.BookmarkRemove,
-                            contentDescription = "Bookmark",
-                            tint = Color.White,
-                            modifier = Modifier
-                                .size(30.dp)
-                                .clickable {
-                                    viewModel.addToWatchlist(movieId)
-                                    isBookmarked = !isBookmarked
-                                },
-                        )
+                        // Bookmark Icon
+                        Row(
+                            modifier = Modifier.weight(1f),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                imageVector = if (isBookmarked) Icons.Outlined.BookmarkAdd else Icons.Outlined.BookmarkRemove,
+                                contentDescription = "Bookmark",
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .size(30.dp)
+                                    .clickable {
+                                        viewModel.addToWatchlist(movieId)
+                                        isBookmarked = !isBookmarked
+                                    }
+                            )
+                        }
                     }
                 }
             }
