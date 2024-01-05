@@ -28,6 +28,26 @@ fun WatchlistPage(
 
     val watchlistMovies = viewModel.watchList.collectAsState()
 
+    val listOfGenres: List<String> = listOf<String>(
+        stringResource(R.string.action),
+        stringResource(R.string.adventure),
+        stringResource(R.string.animation),
+        stringResource(R.string.comedy),
+        stringResource(R.string.crime),
+        stringResource(R.string.documentary),
+        stringResource(R.string.drama),
+        stringResource(R.string.family),
+        stringResource(R.string.fantasy),
+        stringResource(R.string.horror),
+        stringResource(R.string.music),
+        stringResource(R.string.mystery),
+        stringResource(R.string.romance),
+        stringResource(R.string.tv_movie),
+        stringResource(R.string.thriller),
+        stringResource(R.string.war),
+        stringResource(R.string.western)
+    )
+
     LaunchedEffect(Unit) {
         viewModel.getWatchlistMovies()
     }
@@ -39,6 +59,7 @@ fun WatchlistPage(
     ) {
         TopNavBarA(navController = navController, drawerState = drawerState)
         // UI Tabs and Filters
+
         val customUITabs = TabsAndFilters(
             tabs = listOf(
                 stringResource(R.string.all),
@@ -47,11 +68,7 @@ fun WatchlistPage(
             filters = listOf(
                 TabsAndFilters.FilterOption(
                     stringResource(R.string.genre),
-                    listOf(
-                        stringResource(R.string.adventure),
-                        stringResource(R.string.comedy),
-                        stringResource(R.string.horror)
-                    )
+                    listOfGenres,
                 ),
                 TabsAndFilters.FilterOption(
                     stringResource(R.string.year_from),

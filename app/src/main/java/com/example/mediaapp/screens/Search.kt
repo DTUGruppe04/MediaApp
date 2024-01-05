@@ -13,14 +13,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.ui.SearchBar
+import com.example.mediaapp.ui.SearchQueryLayout
 import com.example.mediaapp.ui.TabsAndFilters
 import com.example.mediaapp.ui.nav.TopNavBarA
 import com.example.mediaapp.ui.theme.MediaAppTheme
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mediaapp.ui.SearchQueryLayout
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,9 +45,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
                     viewModel.performSearch(query) }
             )
 
-            if (isSearchActive) {
-                SearchQueryLayout.SearchQueryList(movies = searchResults, navController = navController)
-            }
+
             // UI Tabs and Filters
             val customUITabs = TabsAndFilters(
                 tabs = listOf(
@@ -79,6 +77,10 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
                 )
             )
             customUITabs.Render()
+
+            if (isSearchActive) {
+            SearchQueryLayout.SearchQueryList(movies = searchResults, navController = navController)
+            }
         }
     }
 }
