@@ -3,41 +3,40 @@ package com.example.mediaapp
 import androidx.annotation.DisplayContext
 import org.junit.Test
 import org.junit.Assert.*
-import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.backend.apirequests.APIHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
 class APIHandlerUnitTest {
     private val api = APIHandler()
+    private val oppenheimer = "872585"
     @Test
-    //Testing that the API Call GetPopularMovies does not return an empty result
-    fun testGetPopularMoviesIsNotEmpty() {
+    fun testGetPopularMovies() {
         runBlocking {
             delay(1000)
-            val popularMovies = api.getPopularMovies("week")
-            if(popularMovies != null) {
-                assertFalse(popularMovies.results.isEmpty())
-                assertEquals(1, popularMovies.page)
-                assertEquals(1000, popularMovies.total_pages)
-                assertEquals(20000, popularMovies.total_results)
+            val response = api.getPopularMovies("week")
+            if(response != null) {
+                assertFalse(response.results.isEmpty())
+                assertEquals(1, response.page)
+                assertEquals(1000, response.total_pages)
+                assertEquals(20000, response.total_results)
             }
         }
     }
 
     @Test
-    //Testing that we're getting the expected data from Search for Oppenheimer
-    fun testSearchForMovie() {
+    fun testSearchForMovies() {
         runBlocking {
             delay(1000)
-            val searchResults = api.searchForMovie("Oppenheimer")
-            if(searchResults != null) {
-                assertEquals("Oppenheimer", searchResults.results[0].title)
-                assertEquals("2023-07-19", searchResults.results[0].release_date)
-                assertEquals("en", searchResults.results[0].original_language)
-                assertEquals(872585, searchResults.results[0].id)
-                assertEquals(1, searchResults.page)
-                assertEquals(2, searchResults.total_pages)
-                assertEquals(22, searchResults.total_results)
+            val response = api.searchForMovie(oppenheimer)
+            if(response != null) {
+                assertEquals("Oppenheimer", response.results[0].title)
+                assertEquals("2023-07-19", response.results[0].release_date)
+                assertEquals("en", response.results[0].original_language)
+                assertEquals(872585, response.results[0].id)
+                assertEquals(1, response.page)
+                assertEquals(2, response.total_pages)
+                assertEquals(22, response.total_results)
             }
         }
     }
@@ -47,25 +46,50 @@ class APIHandlerUnitTest {
     fun testGetMovieDetail() {
         runBlocking {
             delay(1000)
-            val movieDetail = api.getMovieDetail("872585")
-            if(movieDetail != null) {
-                assertEquals(false, movieDetail.adult)
-                assertEquals(100000000, movieDetail.budget)
-                assertEquals("Released", movieDetail.status)
-                assertEquals("Oppenheimer", movieDetail.title)
-                assertEquals("tt15398776", movieDetail.imdb_id)
+            val response = api.getMovieDetail(oppenheimer)
+            if(response != null) {
+                assertEquals(false, response.adult)
+                assertEquals(100000000, response.budget)
+                assertEquals("Released", response.status)
+                assertEquals("Oppenheimer", response.title)
+                assertEquals("tt15398776", response.imdb_id)
+            }
+        }
+    }
+    @Test
+    fun testGetSimilarMovies() {
+        runBlocking {
+            delay(1000)
+            val response = api.getSimilarMovies(oppenheimer)
+            if(response != null) {
+                assertEquals(1, response.page)
+                assertEquals(11195, response.total_pages)
+                assertEquals(223891, response.total_results)
             }
         }
     }
 
     @Test
-    fun testGetMovieSuggestions() {
+    fun testGetMovieReviews() {
         runBlocking {
             delay(1000)
-            val response = api.getMovieSuggestions("872585")
-            if(response != null && response.total_results > 0) {
-                assertEquals(2, response.total_pages)
-                assertEquals(40, response.total_results)
+            val response = api.getMovieReviews(oppenheimer)
+            if(response != null) {
+                assertEquals(1, response.page)
+                assertEquals(1, response.total_pages)
+                assertEquals(16, response.total_results)
+            }
+        }
+    }
+
+    @Test
+    fun testGetMovieCredits() {
+        runBlocking {
+            delay(1000)
+            val response = api.getMovieCredits(oppenheimer)
+            if(response != null) {
+                assertEquals(oppenheimer, response.id)
+                assertEquals(1, response.cast.size)
             }
         }
     }
