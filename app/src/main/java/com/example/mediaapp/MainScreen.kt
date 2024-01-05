@@ -32,11 +32,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mediaapp.ui.nav.BottomNavBar
 import com.example.mediaapp.ui.nav.NavigationGraph
 import com.example.mediaapp.ui.nav.TopNavBarE
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -161,6 +164,7 @@ fun MainScreen(loginNavController: NavController) {
                 ) {
                     Button(
                         onClick = {
+                            Firebase.auth.signOut()
                             navController.navigate(Screen.Login.route)
                         },
                         colors = ButtonDefaults.buttonColors(

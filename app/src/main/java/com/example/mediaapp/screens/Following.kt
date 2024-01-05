@@ -55,7 +55,7 @@ fun FollowingListPage(navController: NavController, drawerState: DrawerState) {
         )
         customUITabs.Render()
         // Movie List
-        val movies = listOf(
+        /*val movies = listOf(
             Movie(
                 stringResource(R.string.grown_ups_2),
                 listOf(stringResource(R.string.action)),
@@ -90,6 +90,6 @@ fun FollowingListPage(navController: NavController, drawerState: DrawerState) {
                 painterResource(R.drawable.oppenheimer2))
         )
         val movieLayout = MovieListLayout(movies)
-        movieLayout.MovieList()
+        movieLayout.MovieList()*/
     }
 }

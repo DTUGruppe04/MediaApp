@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -35,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -47,66 +45,88 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
+import com.example.mediaapp.viewModels.LoginPageViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 
 @Composable
-fun LoginPageLayout(navController: NavController) {
-    MediaAppTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
-        ) {
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-                contentAlignment = Alignment.Center) {
-                Text(stringResource(R.string.login_top_name),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center
-                )
-            }
-            MainTitleText(R.string.login)
-            SubTitleText(R.string.login_please)
-            TextfieldForEmail()
-            TextfieldForPassword()
-            Text(stringResource(R.string.login_forgot_password),
+fun LoginPageLayout(
+    navController: NavController,
+    viewModel: LoginPageViewModel = viewModel(),
+    ) {
+    if(Firebase.auth.currentUser != null) {
+        navController.navigate(Screen.MainScreen.route)
+    } else {
+        MediaAppTheme {
+            Column(
                 modifier = Modifier
-                    .padding(start = 250.dp, top = 11.dp, end = 29.dp)
-                    .clickable {
-                        navController.navigate(Screen.ForgotPassword.route)
-                    }
-                    .fillMaxWidth(),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-                textDecoration = TextDecoration.Underline
-            )
-            Button(onClick = {
-                navController.navigate(Screen.MainScreen.route)
-            },
-                modifier = Modifier
-                    .width(152.dp)
-                    .height(76.dp)
-                    .padding(top = 36.dp, end = 29.dp)
-                    .align(Alignment.End),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                )
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
             ) {
-                Text(stringResource(R.string.login_big),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                    contentAlignment = Alignment.Center) {
+                    Text(stringResource(R.string.login_top_name),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Center
+                    )
+                }
+                MainTitleText(R.string.login)
+                SubTitleText(R.string.login_please)
+                TextfieldForEmail(viewModel)
+                TextfieldForPassword(viewModel)
+                Text(stringResource(R.string.login_forgot_password),
+                    modifier = Modifier
+                        .padding(start = 250.dp, top = 11.dp, end = 29.dp)
+                        .clickable {
+                            navController.navigate(Screen.ForgotPassword.route)
+                        }
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textDecoration = TextDecoration.Underline
                 )
+
+                Button(onClick = {
+                    viewModel.loginFlow(navController)
+                },
+                    modifier = Modifier
+                        .width(152.dp)
+                        .height(76.dp)
+                        .padding(top = 36.dp, end = 29.dp)
+                        .align(Alignment.End),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
+                ) {
+                    Text(stringResource(R.string.login_big),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+                if (viewModel.errorText.value.isNotEmpty()) {
+                    Text(text = if (viewModel.errorText.value.isNotEmpty()) viewModel.errorText.value else "",
+                        modifier = Modifier
+                            .padding(top = 11.dp, end = 29.dp)
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.End,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+                BottomSignText(R.string.login_missing_account, R.string.login_missing_account_sign, navController)
             }
-            BottomSignText(R.string.login_missing_account, R.string.login_missing_account_sign, navController)
         }
+
     }
 
 }
@@ -206,13 +226,15 @@ private fun textFieldColors() = TextFieldDefaults.textFieldColors(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextfieldForUsername() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+fun TextfieldForUsername(viewModel: LoginPageViewModel) {
+    var username by remember { mutableStateOf(TextFieldValue()) }
 
     TextField(
         modifier = textFieldModifier(),
-        value = text,
-        onValueChange = { text = it },
+        value = username,
+        onValueChange = { newValue ->
+            username = newValue
+            viewModel.username = newValue.text},
         label = {labelStyle("Username")},
         placeholder = {placeholderStyle("Enter your username")},
         colors = textFieldColors(),
@@ -222,13 +244,15 @@ fun TextfieldForUsername() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextfieldForEmail() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+fun TextfieldForEmail(viewModel: LoginPageViewModel) {
+    var email by remember { mutableStateOf(TextFieldValue()) }
 
     TextField(
         modifier = textFieldModifier(),
-        value = text,
-        onValueChange = { text = it },
+        value = email,
+        onValueChange = { newValue ->
+            email = newValue
+            viewModel.email = newValue.text},
         label = {labelStyle("Email")},
         placeholder = {placeholderStyle("Enter your email")},
         colors = textFieldColors(),
@@ -251,14 +275,17 @@ fun PasswordVisibilityToggle(passwordVisible: Boolean, onToggle: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextfieldForPassword() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+fun TextfieldForPassword(viewModel: LoginPageViewModel) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    var password by remember { mutableStateOf(TextFieldValue()) }
 
     TextField(
         modifier = textFieldModifier(),
-        value = text,
-        onValueChange = { text = it },
+        value = password,
+        onValueChange = { newValue ->
+            password = newValue
+            viewModel.password = newValue.text
+        },
         label = { labelStyle("Password") },
         placeholder = { placeholderStyle("Enter your password") },
         colors = textFieldColors(),
@@ -274,14 +301,17 @@ fun TextfieldForPassword() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextfieldForConfirmPassword() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+fun TextfieldForConfirmPassword(viewModel: LoginPageViewModel) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    var confirmPassword by remember { mutableStateOf(TextFieldValue()) }
 
     TextField(
         modifier = textFieldModifier(),
-        value = text,
-        onValueChange = { text = it },
+        value = confirmPassword,
+        onValueChange = { newValue ->
+            confirmPassword = newValue
+            viewModel.confirmPassword = newValue.text
+        },
         label = { labelStyle("Confirm Password") },
         placeholder = { placeholderStyle("Confirm your password") },
         colors = textFieldColors(),

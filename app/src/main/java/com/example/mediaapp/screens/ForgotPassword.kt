@@ -21,12 +21,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
+import com.example.mediaapp.viewModels.LoginPageViewModel
 
 @Composable
-fun ForgotPasswordPageLayout(navController: NavController) {
+fun ForgotPasswordPageLayout(navController: NavController,
+                             viewModel: LoginPageViewModel = viewModel()
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -48,7 +52,7 @@ fun ForgotPasswordPageLayout(navController: NavController) {
         }
         MainTitleText(R.string.login_forgot_password)
         SubTitleText(R.string.login_forgot_password_please)
-        TextfieldForEmail()
+        TextfieldForEmail(viewModel)
         Button(onClick = {
             navController.navigate(Screen.Login.route)
         },
