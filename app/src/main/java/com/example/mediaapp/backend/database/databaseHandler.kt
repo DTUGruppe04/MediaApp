@@ -1,7 +1,8 @@
-package com.example.mediaapp.models
+package com.example.mediaapp.backend.database
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.example.mediaapp.models.RatingForDatabase
 import com.example.mediaapp.models.Recommend
 import com.example.mediaapp.models.WatchlistMovie
 import com.google.firebase.Firebase
@@ -12,8 +13,20 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class DatabaseHandler {
+
+    private var INSTANCE: DatabaseHandler? = null
+
+    fun getInstance(): DatabaseHandler {
+        return INSTANCE ?: synchronized(this) {
+            val instance = DatabaseHandler()
+            INSTANCE = instance
+            instance
+        }
+    }
     private val database = Firebase.firestore
     private val userCache = mutableMapOf<String, Map<String, Any?>>()
+    private var watchListCache: List<WatchlistMovie>? = null
+    private var watchListState = false
 
     suspend fun getUserFromDatabase(userId: String): Map<String, Any?> {
         // Check if the user data is in the cache
@@ -38,7 +51,7 @@ class DatabaseHandler {
         userCache[userId] = userMap
     }
 
-    fun getCurrentUserID(): String? {
+    private fun getCurrentUserID(): String? {
         return Firebase.auth.currentUser?.uid
     }
 
@@ -49,24 +62,34 @@ class DatabaseHandler {
             .document(watchlistMovieMap["movieID"]
                 .toString())
             .set(watchlistMovieMap) }
+
+        val newMovie = WatchlistMovie.fromMap(watchlistMovieMap)
+        watchListCache = watchListCache?.plus(newMovie)
     }
 
-    suspend fun getWatchlistMovies(): List<WatchlistMovie> = withContext(Dispatchers.IO) {
-        val watchlistMovies = mutableListOf<WatchlistMovie>()
-        getCurrentUserID()?.let { userID ->
-            val result = database.collection("users")
-                .document(userID)
-                .collection("watchlist")
-                .get()
-                .await()
-
-            for (document in result) {
-                Log.d(TAG, "${document.id} => ${document.data}")
-                watchlistMovies += WatchlistMovie.fromMap(document.data)
-            }
+    suspend fun getWatchlistMovies(): List<WatchlistMovie> {
+        // If the cache is not null and not empty, return it instead of making a database call
+        if (watchListCache != null && watchListCache!!.isNotEmpty()) {
+            Log.d(TAG, "Returning cached watchlist movies")
+            return watchListCache!!
         }
+
+        val watchlistMovies = mutableListOf<WatchlistMovie>()
+        val result = database.collection("users")
+            .document(getCurrentUserID()!!)
+            .collection("watchlist")
+            .get()
+            .await()
+
+        for (document in result) {
+            Log.d(TAG, "${document.id} => ${document.data}")
+            watchlistMovies += WatchlistMovie.fromMap(document.data)
+        }
+
         Log.d(TAG, "getWatchlistMovies: $watchlistMovies")
-        return@withContext watchlistMovies
+        watchListCache = watchlistMovies
+
+        return watchlistMovies
     }
 
     suspend fun removeMovieFromWatchlist(movieID: Long) = withContext(Dispatchers.IO) {
@@ -78,6 +101,8 @@ class DatabaseHandler {
                 .delete()
                 .await()
         }
+
+        watchListCache = watchListCache?.filter { it.movieID != movieID }
     }
 
     suspend fun updateRatedMoviesUser(movieID: String, ratedMovieMap: RatingForDatabase) {
@@ -150,5 +175,4 @@ class DatabaseHandler {
                 .await()
         }
     }
-
 }

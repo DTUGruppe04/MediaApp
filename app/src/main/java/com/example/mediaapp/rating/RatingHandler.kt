@@ -1,6 +1,6 @@
 package com.example.mediaapp.rating
 
-import com.example.mediaapp.models.DatabaseHandler
+import com.example.mediaapp.backend.database.DatabaseHandler
 import com.example.mediaapp.models.RatingAverage
 import com.example.mediaapp.models.RatingForDatabase
 
