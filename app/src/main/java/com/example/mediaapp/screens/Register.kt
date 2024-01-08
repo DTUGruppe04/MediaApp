@@ -54,10 +54,7 @@ fun CreateAccountPageLayout(navController: NavController,
             TextfieldForConfirmPassword(viewModel)
             Button(
                 onClick = {
-                    viewModel.registerFlow()
-                    if (viewModel.errorText.value.isEmpty()) {
-                        navController.navigate(Screen.Login.route)
-                    }
+                    viewModel.registerFlow(navController)
                 },
                 modifier = Modifier
                     .width(152.dp)

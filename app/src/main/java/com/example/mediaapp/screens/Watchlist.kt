@@ -26,7 +26,7 @@ fun WatchlistPage(
     drawerState: DrawerState,
     viewModel: WatchlistViewModel = viewModel()) {
 
-    val watchlistMovies = viewModel.watchList.collectAsState()
+    val watchlistMovies = viewModel.filteredWatchList.collectAsState()
 
     val listOfGenres: List<String> = listOf<String>(
         stringResource(R.string.action),
@@ -70,7 +70,7 @@ fun WatchlistPage(
                     stringResource(R.string.genre),
                     listOfGenres,
                 ),
-                TabsAndFilters.FilterOption(
+                /* TabsAndFilters.FilterOption(
                     stringResource(R.string.year_from),
                     (1960..2023).map { it.toString() }),
                 TabsAndFilters.FilterOption(
@@ -81,8 +81,11 @@ fun WatchlistPage(
                     (0..10).map { it.toString() }),
                 TabsAndFilters.FilterOption(
                     stringResource(R.string.rating_to),
-                    (0..10).map { it.toString() })
-            )
+                    (0..10).map { it.toString() })*/
+            ),
+            onGenreSelected = { genre ->
+                viewModel.filterMoviesByGenre(genre)
+            }
         )
         customUITabs.Render()
         val movieLayout = watchlistMovies.value?.let { MovieListLayout(it, navController, scope, viewModel) }

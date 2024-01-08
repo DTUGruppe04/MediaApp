@@ -24,7 +24,7 @@ fun FollowingListPage(navController: NavController, drawerState: DrawerState) {
     ) {
         TopNavBarA(navController = navController, drawerState = drawerState)
         // UI Tabs and Filters
-        val customUITabs = TabsAndFilters(
+        /*val customUITabs = TabsAndFilters(
             tabs = listOf(
                 stringResource(R.string.recommended),
                 stringResource(R.string.last_rated)
@@ -51,9 +51,11 @@ fun FollowingListPage(navController: NavController, drawerState: DrawerState) {
                 TabsAndFilters.FilterOption(
                     stringResource(R.string.rating_to),
                     (0..10).map { it.toString() })
-            )
+            ),
+
+
         )
-        customUITabs.Render()
+        customUITabs.Render()*/
         // Movie List
         /*val movies = listOf(
             Movie(

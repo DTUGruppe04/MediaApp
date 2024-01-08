@@ -67,7 +67,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
 
 
             // UI Tabs and Filters
-            val customUITabs = TabsAndFilters(
+            /*val customUITabs = TabsAndFilters(
                 tabs = listOf(
                     stringResource(R.string.all_movies),
                     stringResource(R.string.watchlist)
@@ -92,7 +92,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
                 )
             )
             customUITabs.Render()
-
+*/
             if (isSearchActive) {
             SearchQueryLayout.SearchQueryList(movies = searchResults, navController = navController)
             }
