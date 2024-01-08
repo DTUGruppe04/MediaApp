@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class WatchlistViewModel : ViewModel(){
-    private val databaseHandler = DatabaseHandler().getInstance()
+    private val databaseHandler = DatabaseHandler.getInstance()
     private val _watchList = MutableStateFlow<List<WatchlistMovie>?>(null)
     val watchList: StateFlow<List<WatchlistMovie>?> = _watchList.asStateFlow()
     private val _deleteview = MutableStateFlow<Boolean>(false)

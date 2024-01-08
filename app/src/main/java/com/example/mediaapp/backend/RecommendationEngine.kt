@@ -7,10 +7,10 @@ import com.example.mediaapp.models.WatchlistMovie
 
 class RecommendationEngine {
     private val api = APIHandler()
-    private val database = DatabaseHandler()
+    private val database = DatabaseHandler.getInstance()
     suspend fun generateMovieSuggestions(movieID: String) {
         val response = api.getMovieSuggestions(movieID)
-        var watchlist = database.getWatchlistMovies()
+        val watchlist = database.getWatchlistMovies()
         if (response != null && response.total_results > 0) {
             var i = 0
             var counter = 0
@@ -38,7 +38,7 @@ class RecommendationEngine {
      */
 
     suspend fun getRecommendMovies() : List<Recommend> {
-        return database.getRecommenedMovies()
+        return database.getRecommendMovies()
     }
 
     suspend fun removeRecommendMovie(movieID: Long) {
@@ -65,7 +65,7 @@ class RecommendationEngine {
      * @return Returns true if valid and false otherwise
      */
     suspend fun isUserValid(): Boolean {
-        val databaseResponse = database.getRecommenedMovies()
+        val databaseResponse = database.getRecommendMovies()
         return databaseResponse.size > 4
     }
 

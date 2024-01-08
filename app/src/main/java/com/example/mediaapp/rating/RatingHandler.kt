@@ -5,7 +5,7 @@ import com.example.mediaapp.models.RatingAverage
 import com.example.mediaapp.models.RatingForDatabase
 
 class RatingHandler {
-    private val databaseHandler = DatabaseHandler()
+    private val databaseHandler = DatabaseHandler.getInstance()
     suspend fun getRating(movieID: Long): RatingAverage {
         val rating = databaseHandler.getRatedMovie(movieID.toString())
         val amount = rating.size

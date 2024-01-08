@@ -31,7 +31,7 @@ class MovieDetailViewModel() : ViewModel() {
 
     private val _isLoading = MutableStateFlow(false)
 
-    private val databaseHandler = DatabaseHandler()
+    private val databaseHandler = DatabaseHandler.getInstance()
 
     fun fetchMovieDetails(movieId: String) {
         _isLoading.value = true

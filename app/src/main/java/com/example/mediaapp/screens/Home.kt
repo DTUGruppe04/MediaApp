@@ -82,6 +82,10 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
         viewModel.fetchUpcomingMovies()
     }
 
+    scope.launch {
+        RecommendationEngine().generateMovieSuggestions("556")
+    }
+
     MediaAppTheme {
         /*
         scope.launch {

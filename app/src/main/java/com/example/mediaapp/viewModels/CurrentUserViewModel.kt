@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class CurrentUserViewModel : ViewModel(){
-    private val databaseHandler = DatabaseHandler()
+    private val databaseHandler = DatabaseHandler.getInstance()
     val user = Firebase.auth.currentUser
     private val _currentUser = MutableStateFlow<CurrentUser?>(null)
     val currentUser: StateFlow<CurrentUser?> = _currentUser.asStateFlow()

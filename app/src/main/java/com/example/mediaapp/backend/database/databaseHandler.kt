@@ -12,21 +12,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class DatabaseHandler {
+class DatabaseHandler private constructor() {
 
-    private var INSTANCE: DatabaseHandler? = null
-
-    fun getInstance(): DatabaseHandler {
-        return INSTANCE ?: synchronized(this) {
-            val instance = DatabaseHandler()
-            INSTANCE = instance
-            instance
-        }
-    }
     private val database = Firebase.firestore
     private val userCache = mutableMapOf<String, Map<String, Any?>>()
     private var watchListCache: List<WatchlistMovie>? = null
-    private var watchListState = false
+    private var recommendCache: List<Recommend>? = null
 
     suspend fun getUserFromDatabase(userId: String): Map<String, Any?> {
         // Check if the user data is in the cache
@@ -63,8 +54,7 @@ class DatabaseHandler {
                 .toString())
             .set(watchlistMovieMap) }
 
-        val newMovie = WatchlistMovie.fromMap(watchlistMovieMap)
-        watchListCache = watchListCache?.plus(newMovie)
+        watchListCache = null
     }
 
     suspend fun getWatchlistMovies(): List<WatchlistMovie> {
@@ -102,7 +92,7 @@ class DatabaseHandler {
                 .await()
         }
 
-        watchListCache = watchListCache?.filter { it.movieID != movieID }
+        watchListCache = null
     }
 
     suspend fun updateRatedMoviesUser(movieID: String, ratedMovieMap: RatingForDatabase) {
@@ -146,10 +136,18 @@ class DatabaseHandler {
             .document(watchlistMovieMap["movieID"]
                 .toString())
             .set(watchlistMovieMap) }
+
+        recommendCache = null
     }
 
-    suspend fun getRecommenedMovies(): List<Recommend> = withContext(Dispatchers.IO) {
-        val recommenedMovies = mutableListOf<Recommend>()
+    suspend fun getRecommendMovies(): List<Recommend> = withContext(Dispatchers.IO) {
+
+        if (recommendCache != null && recommendCache!!.isNotEmpty()) {
+            Log.d(TAG, "Returning cached recommend movies")
+            return@withContext recommendCache!!
+        }
+
+        val recommendMovies = mutableListOf<Recommend>()
         getCurrentUserID()?.let { userID ->
             val result = database.collection("users")
                 .document(userID)
@@ -159,10 +157,11 @@ class DatabaseHandler {
 
             for (document in result) {
                 Log.d(TAG, "${document.id} => ${document.data}")
-                recommenedMovies += Recommend.fromMap(document.data)
+                recommendMovies += Recommend.fromMap(document.data)
             }
         }
-        return@withContext recommenedMovies
+        recommendCache = recommendMovies
+        return@withContext recommendMovies
     }
 
     suspend fun removeMovieRecommend(movieID: Long) = withContext(Dispatchers.IO) {
@@ -173,6 +172,20 @@ class DatabaseHandler {
                 .document(movieID.toString())
                 .delete()
                 .await()
+        }
+
+        recommendCache = null
+    }
+    companion object {
+        @Volatile
+        private var INSTANCE: DatabaseHandler? = null
+
+        fun getInstance(): DatabaseHandler {
+            return INSTANCE ?: synchronized(this) {
+                val instance = DatabaseHandler()
+                INSTANCE = instance
+                instance
+            }
         }
     }
 }
