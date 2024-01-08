@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.backend.database.DatabaseHandler
 import com.example.mediaapp.models.WatchlistMovie
-import com.example.mediaapp.sorting.SortingHandler
+import com.example.mediaapp.backend.sorting.SortingHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +15,6 @@ class WatchlistViewModel : ViewModel() {
     private val databaseHandler = DatabaseHandler()
 
     private val _originalWatchlist = MutableStateFlow<List<WatchlistMovie>?>(null)
-    val originalWatchlist: StateFlow<List<WatchlistMovie>?> = _originalWatchlist.asStateFlow()
 
     private val _filteredWatchList = MutableStateFlow<List<WatchlistMovie>?>(null)
     val filteredWatchList: StateFlow<List<WatchlistMovie>?> = _filteredWatchList.asStateFlow()
@@ -30,7 +29,6 @@ class WatchlistViewModel : ViewModel() {
             _originalWatchlist.value = databaseHandler.getWatchlistMovies()
             _filteredWatchList.value = databaseHandler.getWatchlistMovies()
             Log.w("DATABASE CALL", "getWatchlistMovies() Called!")
-            _watchList.value = databaseHandler.getWatchlistMovies()
         }
     }
     fun openDeleteView() {

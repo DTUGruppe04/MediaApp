@@ -1,6 +1,6 @@
 package com.example.mediaapp.backend.sorting
 
-import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.models.TMDBMovie
 import com.example.mediaapp.models.WatchlistMovie
 

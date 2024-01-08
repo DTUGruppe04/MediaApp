@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class DatabaseHandler private constructor() {
+class DatabaseHandler constructor() {
 
     private val database = Firebase.firestore
     private val userCache = mutableMapOf<String, Map<String, Any?>>()
