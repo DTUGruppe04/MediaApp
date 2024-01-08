@@ -1,4 +1,4 @@
-package com.example.mediaapp.apirequests
+package com.example.mediaapp.backend.apirequests
 
 import com.example.mediaapp.models.TMDBMovieCredits
 import com.example.mediaapp.models.TMDBMovieDetail
@@ -72,13 +72,15 @@ interface TMDBApi {
     @GET("movie/upcoming?api_key=4d8b26c7e474409c5926dca8433a8262")
     fun getUpcomingMovies(
         @Query("language") language: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("region") region: String
     ) : Call<TMDBUpcomingMovies>
 
     //https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=4d8b26c7e474409c5926dca8433a8262
     @GET("movie/now_playing?api_key=4d8b26c7e474409c5926dca8433a8262")
     fun getNowPlayingMovies(
         @Query("language") language: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("region") region: String
     ) : Call<TMDBUpcomingMovies>
 }

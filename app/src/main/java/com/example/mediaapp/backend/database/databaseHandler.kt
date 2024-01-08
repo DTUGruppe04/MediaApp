@@ -2,6 +2,8 @@ package com.example.mediaapp.models
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.example.mediaapp.models.Recommend
+import com.example.mediaapp.models.WatchlistMovie
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
@@ -109,6 +111,44 @@ class DatabaseHandler {
             ratings += RatingForDatabase.fromMap(document.data)
         }
         return ratings
+    }
+
+
+    fun updateRecommendDatabase(watchlistMovieMap: Map<String, Any?>) {
+        getCurrentUserID()?.let { database.collection("users")
+            .document(it)
+            .collection("recommend")
+            .document(watchlistMovieMap["movieID"]
+                .toString())
+            .set(watchlistMovieMap) }
+    }
+
+    suspend fun getRecommenedMovies(): List<Recommend> = withContext(Dispatchers.IO) {
+        val recommenedMovies = mutableListOf<Recommend>()
+        getCurrentUserID()?.let { userID ->
+            val result = database.collection("users")
+                .document(userID)
+                .collection("recommend")
+                .get()
+                .await()
+
+            for (document in result) {
+                Log.d(TAG, "${document.id} => ${document.data}")
+                recommenedMovies += Recommend.fromMap(document.data)
+            }
+        }
+        return@withContext recommenedMovies
+    }
+
+    suspend fun removeMovieRecommend(movieID: Long) = withContext(Dispatchers.IO) {
+        getCurrentUserID()?.let { userID ->
+            database.collection("users")
+                .document(userID)
+                .collection("recommend")
+                .document(movieID.toString())
+                .delete()
+                .await()
+        }
     }
 
 }

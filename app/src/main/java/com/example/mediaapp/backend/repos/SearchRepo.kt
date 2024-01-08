@@ -1,6 +1,6 @@
-package com.example.mediaapp.repos
+package com.example.mediaapp.backend.repos
 
-import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.models.TMDBMovie
 
 class SearchRepository(private val apiHandler: APIHandler) {

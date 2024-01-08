@@ -1,4 +1,4 @@
-package com.example.mediaapp.sorting
+package com.example.mediaapp.backend.sorting
 
 import com.example.mediaapp.models.WatchlistMovie
 

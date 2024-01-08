@@ -1,8 +1,9 @@
 package com.example.mediaapp.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mediaapp.models.DatabaseHandler
+import com.example.mediaapp.backend.database.DatabaseHandler
 import com.example.mediaapp.models.WatchlistMovie
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +19,7 @@ class WatchlistViewModel : ViewModel(){
 
     fun getWatchlistMovies() {
         viewModelScope.launch {
+            Log.w("DATA BASE CALL", "getWatchlistMovies() Called!")
             _watchList.value = databaseHandler.getWatchlistMovies()
         }
     }
