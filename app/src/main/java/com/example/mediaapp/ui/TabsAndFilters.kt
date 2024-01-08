@@ -41,7 +41,7 @@ import com.example.mediaapp.ui.theme.MediaAppTheme
 class TabsAndFilters(
     private val tabs: List<String>,
     private val filters: List<FilterOption>,
-
+    private val onGenreSelected: (String) -> Unit
 ) {
 
     data class FilterOption(val label: String, val options: List<String>)
@@ -169,14 +169,15 @@ class TabsAndFilters(
                 onDismissRequest = {expanded = false},
                 modifier = Modifier.heightIn(max = dropdownHeight)
             ) {
-                options.forEach{
-                        option -> DropdownMenuItem(text = { Text(text = option) }, onClick = {
-                    expanded = false
-                    selectedOption = option
-
-                    clicked = true
-
-                })
+                options.forEach{ option ->
+                    DropdownMenuItem(
+                        text = { Text(text = option) },
+                        onClick = {
+                            expanded = false
+                            selectedOption = option
+                            onGenreSelected(option)
+                        }
+                    )
                 }
             }
         }

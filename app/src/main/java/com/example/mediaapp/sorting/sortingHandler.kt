@@ -1,9 +1,12 @@
 package com.example.mediaapp.sorting
 
+import com.example.mediaapp.apirequests.APIHandler
 import com.example.mediaapp.models.TMDBMovie
 import com.example.mediaapp.models.WatchlistMovie
 
 class SortingHandler {
+
+    private val apiHandler = APIHandler()
     fun sortWatchListMoviesAlphabetically(movies: List<WatchlistMovie>, ascending: Boolean = true): List<WatchlistMovie> {
         return if (ascending) {
             movies.sortedBy { it.title }
@@ -19,12 +22,23 @@ class SortingHandler {
             movies.sortedByDescending { it.title }
         }
     }
-/*
     fun filterWatchListMoviesByGenre(movies: List<WatchlistMovie>, genre: String): List<WatchlistMovie> {
-        return movies.filter { movie -> movie.genres.any { it.name == genre } }
+        return movies.filter { movie ->
+            val genreNames = extractGenreNames(movie)
+            genre in genreNames
+        }
     }
-*/
-    //implement when sort works
+
+    private fun extractGenreNames(watchlistMovie: WatchlistMovie): List<String> {
+        val genreList = mutableListOf<String>()
+        for (i in 0 until watchlistMovie.genres.size) {
+            val tempGenre = watchlistMovie.genres[i] as? HashMap<*, *>
+            val genreName = tempGenre?.get("name") as? String
+            genreList.add(genreName ?: "")
+        }
+        return genreList
+    }
+//implement when sort works
     /*
     fun filterTMDBMoviesByGenre(movies: List<TMDBMovie>, genre: String): List<TMDBMovie> {
         return movies.filter { movie -> movie.genres.any { it.name == genre } }
