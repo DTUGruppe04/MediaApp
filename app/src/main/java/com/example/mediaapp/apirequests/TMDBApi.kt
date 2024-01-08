@@ -81,4 +81,10 @@ interface TMDBApi {
         @Query("language") language: String,
         @Query("page") page: Int
     ) : Call<TMDBUpcomingMovies>
+
+    //https://api.themoviedb.org/3/discover/movie?api_key=4d8b26c7e474409c5926dca8433a8262&with_genres=28
+    @GET("discover/movie?api_key=4d8b26c7e474409c5926dca8433a8262&with_genres=28")
+    fun getMoviesWithGenre(
+        @Query("with_genres") with_genre: Int,
+    ) : Call<TMDBMovieResponse>
 }

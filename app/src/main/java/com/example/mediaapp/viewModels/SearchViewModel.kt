@@ -47,6 +47,11 @@ class SearchViewModel() : ViewModel() {
         }
     }
 
+    suspend fun getMoviesWithGenre(genre: String) {
+        val tempGenreList: List<String> = listOf<String>(genre)
+        apiHandler.getMoviesWithGenre(apiHandler.getIDByGenre(tempGenreList)[0])
+    }
+
     fun resetSearch() {
         _searchQuery.value = ""
         _searchResults.value = emptyList()
