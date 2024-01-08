@@ -19,11 +19,11 @@ class SortingHandler {
             movies.sortedByDescending { it.title }
         }
     }
-
+/*
     fun filterWatchListMoviesByGenre(movies: List<WatchlistMovie>, genre: String): List<WatchlistMovie> {
         return movies.filter { movie -> movie.genres.any { it.name == genre } }
     }
-
+*/
     //implement when sort works
     /*
     fun filterTMDBMoviesByGenre(movies: List<TMDBMovie>, genre: String): List<TMDBMovie> {

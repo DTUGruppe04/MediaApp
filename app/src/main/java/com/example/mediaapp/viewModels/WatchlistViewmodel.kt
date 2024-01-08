@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class WatchlistViewModel : ViewModel(), SortableViewmodel{
+class WatchlistViewModel : ViewModel() {
     private val databaseHandler = DatabaseHandler()
     private val _watchList = MutableStateFlow<List<WatchlistMovie>?>(null)
     val watchList: StateFlow<List<WatchlistMovie>?> = _watchList.asStateFlow()
