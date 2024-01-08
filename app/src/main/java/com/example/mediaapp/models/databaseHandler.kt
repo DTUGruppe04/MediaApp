@@ -78,9 +78,37 @@ class DatabaseHandler {
         }
     }
 
-    fun updateRatedMovies(movieID: String, ratedMovieMap: Map<String, Any?>) {
-        database.collection("ratedMovies").document(movieID).set(ratedMovieMap)
+    suspend fun updateRatedMoviesUser(movieID: String, ratedMovieMap: RatingForDatabase) {
+        database.collection("Users")
+            .document(getCurrentUserID()!!)
+            .collection("ratedMovies")
+            .document(movieID)
+            .set(ratedMovieMap)
+            .await()
+    }
 
+    suspend fun updateRatedMovies(movieID: String, ratedMovieMap: RatingForDatabase) {
+        database.collection("ratedMovies")
+            .document(movieID)
+            .collection("ratings")
+            .document(getCurrentUserID()!!)
+            .set(ratedMovieMap)
+            .await()
+    }
+
+    suspend fun getRatedMovie(movieID: String): List<RatingForDatabase> {
+        val ratings = mutableListOf<RatingForDatabase>()
+        val result = database.collection("ratedMovies")
+            .document(movieID)
+            .collection("ratings")
+            .get()
+            .await()
+
+        for (document in result) {
+            Log.d(TAG, "${document.id} => ${document.data}")
+            ratings += RatingForDatabase.fromMap(document.data)
+        }
+        return ratings
     }
 
 }

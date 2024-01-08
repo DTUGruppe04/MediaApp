@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.apirequests.APIHandler
 import com.example.mediaapp.models.DatabaseHandler
+import com.example.mediaapp.models.RatingAverage
 import com.example.mediaapp.models.TMDBMovieCredits
 import com.example.mediaapp.models.TMDBMovieDetail
+import com.example.mediaapp.rating.RatingHandler
 import com.example.mediaapp.repos.MovieDetailRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +17,7 @@ import kotlinx.coroutines.launch
 class MovieDetailViewModel() : ViewModel() {
 
     private val apiHandler = APIHandler()
+    private val RatingHandler = RatingHandler()
     private val movieDetailRepo = MovieDetailRepo(apiHandler)
 
     private val _movieDetails = MutableStateFlow<TMDBMovieDetail?>(null)
@@ -22,6 +25,9 @@ class MovieDetailViewModel() : ViewModel() {
 
     private val _movieCredits = MutableStateFlow<TMDBMovieCredits?>(null)
     val movieCredits: StateFlow<TMDBMovieCredits?> = _movieCredits.asStateFlow()
+
+    private val _movieRating = MutableStateFlow<RatingAverage?>(null)
+    val movieRating: StateFlow<RatingAverage?> = _movieRating.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
 
@@ -80,6 +86,27 @@ class MovieDetailViewModel() : ViewModel() {
             try {
                 databaseHandler.removeMovieFromWatchlist(movieId.toLong())
                 _isInWatchlist.value = false
+            } catch (e: Exception) {
+                // Handle errors
+            }
+        }
+    }
+
+    fun updateRating(movieId: String) {
+        viewModelScope.launch {
+            try {
+                _movieRating.value = RatingHandler.getRating(movieId.toLong())
+            } catch (e: Exception) {
+                // Handle errors
+            }
+        }
+    }
+
+    fun rateMovie(movieId: String, rating: Int) {
+        viewModelScope.launch {
+            try {
+                RatingHandler.addRating(movieId.toLong(), rating)
+                _movieRating.value = RatingHandler.getRating(movieId.toLong())
             } catch (e: Exception) {
                 // Handle errors
             }
