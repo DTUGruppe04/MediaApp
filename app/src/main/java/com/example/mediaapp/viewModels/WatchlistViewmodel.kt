@@ -1,8 +1,9 @@
 package com.example.mediaapp.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mediaapp.models.DatabaseHandler
+import com.example.mediaapp.backend.database.DatabaseHandler
 import com.example.mediaapp.models.WatchlistMovie
 import com.example.mediaapp.sorting.SortingHandler
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +29,8 @@ class WatchlistViewModel : ViewModel() {
         viewModelScope.launch {
             _originalWatchlist.value = databaseHandler.getWatchlistMovies()
             _filteredWatchList.value = databaseHandler.getWatchlistMovies()
+            Log.w("DATABASE CALL", "getWatchlistMovies() Called!")
+            _watchList.value = databaseHandler.getWatchlistMovies()
         }
     }
     fun openDeleteView() {
