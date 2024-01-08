@@ -2,15 +2,12 @@ package com.example.mediaapp.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mediaapp.apirequests.APIHandler
 import com.example.mediaapp.models.DatabaseHandler
 import com.example.mediaapp.models.RatingAverage
 import com.example.mediaapp.backend.apirequests.APIHandler
-import com.example.mediaapp.backend.database.DatabaseHandler
 import com.example.mediaapp.models.TMDBMovieCredits
 import com.example.mediaapp.models.TMDBMovieDetail
 import com.example.mediaapp.rating.RatingHandler
-import com.example.mediaapp.repos.MovieDetailRepo
 import com.example.mediaapp.backend.repos.MovieDetailRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

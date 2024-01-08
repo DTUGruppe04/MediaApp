@@ -2,7 +2,7 @@ package com.example.mediaapp.viewModels
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.mediaapp.backend.database.DatabaseHandler
+import com.example.mediaapp.models.DatabaseHandler
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 

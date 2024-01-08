@@ -1,7 +1,7 @@
 package com.example.mediaapp.backend
 
 import com.example.mediaapp.backend.apirequests.APIHandler
-import com.example.mediaapp.backend.database.DatabaseHandler
+import com.example.mediaapp.models.DatabaseHandler
 import com.example.mediaapp.models.Recommend
 import com.example.mediaapp.models.WatchlistMovie
 
