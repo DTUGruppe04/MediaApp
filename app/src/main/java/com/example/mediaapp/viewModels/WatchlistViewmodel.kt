@@ -34,5 +34,4 @@ class WatchlistViewModel : ViewModel(){
             _watchList.value = databaseHandler.getWatchlistMovies()
         }
     }
-
 }
