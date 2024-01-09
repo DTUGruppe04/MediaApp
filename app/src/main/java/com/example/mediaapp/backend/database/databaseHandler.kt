@@ -96,7 +96,7 @@ class DatabaseHandler private constructor() {
     }
 
     suspend fun updateRatedMoviesUser(movieID: String, ratedMovieMap: RatingForDatabase) {
-        database.collection("Users")
+        database.collection("users")
             .document(getCurrentUserID()!!)
             .collection("ratedMovies")
             .document(movieID)
@@ -125,6 +125,7 @@ class DatabaseHandler private constructor() {
             Log.d(TAG, "${document.id} => ${document.data}")
             ratings += RatingForDatabase.fromMap(document.data)
         }
+        Log.d(TAG, "getRatedMovie: $ratings")
         return ratings
     }
 

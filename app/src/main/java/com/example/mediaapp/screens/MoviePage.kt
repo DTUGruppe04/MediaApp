@@ -1,5 +1,6 @@
 package com.example.mediaapp.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -76,12 +77,14 @@ fun MovieDetailPage(
     drawerState: DrawerState) {
     val movieDetails by viewModel.movieDetails.collectAsState()
     val movieCredits by viewModel.movieCredits.collectAsState()
+    val movieRatingAverage by viewModel.movieRating.collectAsState()
 
     LaunchedEffect(movieId) {
         viewModel.fetchMovieDetails(movieId)
         viewModel.fetchMovieCredits(movieId)
         viewModel.checkIfInWatchlist(movieId)
     }
+
     val movie = movieDetails ?: return
     MediaAppTheme {
         LazyColumn(
@@ -281,14 +284,17 @@ fun MovieDescription(movie: TMDBMovieDetail, viewModel: MovieDetailViewModel, mo
                 imageVector = if (inWatchlist) Icons.Outlined.BookmarkRemove else Icons.Outlined.BookmarkAdd,
                 contentDescription = "Bookmark",
                 tint = Color.White,
-                modifier = Modifier.size(30.dp).clickable {
-                    if (inWatchlist) {
-                        viewModel.removeFromWatchlist(movieId)
-                        viewModel.checkIfInWatchlist(movieId)
-                    } else {
-                        viewModel.addToWatchlist(movieId)
-                        viewModel.checkIfInWatchlist(movieId)
-                    }},
+                modifier = Modifier
+                    .size(30.dp)
+                    .clickable {
+                        if (inWatchlist) {
+                            viewModel.removeFromWatchlist(movieId)
+                            viewModel.checkIfInWatchlist(movieId)
+                        } else {
+                            viewModel.addToWatchlist(movieId)
+                            viewModel.checkIfInWatchlist(movieId)
+                        }
+                    },
             )
         }
         Text(

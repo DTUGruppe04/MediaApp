@@ -15,7 +15,7 @@ class RatingHandler {
     }
 
     suspend fun addRating(movieID: Long, rating: Int) {
-        val ratingForDatabase = RatingForDatabase(movieID, rating)
+        val ratingForDatabase = RatingForDatabase(movieID, rating.toLong())
         databaseHandler.updateRatedMovies(movieID.toString(), ratingForDatabase)
         databaseHandler.updateRatedMoviesUser(movieID.toString(), ratingForDatabase)
     }
