@@ -46,7 +46,7 @@ class DatabaseHandler constructor() {
         return Firebase.auth.currentUser?.uid
     }
 
-    fun updateWatchlistMovie(watchlistMovieMap: Map<String, Any?>) {
+    suspend fun updateWatchlistMovie(watchlistMovieMap: Map<String, Any?>) {
         getCurrentUserID()?.let { database.collection("users")
             .document(it)
             .collection("watchlist")
@@ -55,6 +55,7 @@ class DatabaseHandler constructor() {
             .set(watchlistMovieMap) }
 
         watchListCache = null
+        removeMovieRecommend(watchlistMovieMap["movieID"].toString().toLong())
     }
 
     suspend fun getWatchlistMovies(): List<WatchlistMovie> {
@@ -96,7 +97,7 @@ class DatabaseHandler constructor() {
     }
 
     suspend fun updateRatedMoviesUser(movieID: String, ratedMovieMap: RatingForDatabase) {
-        database.collection("Users")
+        database.collection("users")
             .document(getCurrentUserID()!!)
             .collection("ratedMovies")
             .document(movieID)
@@ -125,6 +126,7 @@ class DatabaseHandler constructor() {
             Log.d(TAG, "${document.id} => ${document.data}")
             ratings += RatingForDatabase.fromMap(document.data)
         }
+        Log.d(TAG, "getRatedMovie: $ratings")
         return ratings
     }
 

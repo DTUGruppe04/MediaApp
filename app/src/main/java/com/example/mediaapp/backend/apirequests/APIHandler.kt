@@ -267,9 +267,9 @@ class APIHandler {
      * @return Returns a Data Objects containing upcoming movies.
      * If return is null something went wrong
      */
-    suspend fun getUpcomingMovies(language: String = "en-US", page: Int = 1, region: String = "US") : TMDBUpcomingMovies? {
+    suspend fun getUpcomingMovies(language: String = "en-US", page: Int = 1, region: String = "US", type: String = "2|3") : TMDBUpcomingMovies? {
         try {
-            val response = api.getUpcomingMovies(language, page, region).awaitResponse()
+            val response = api.getUpcomingMovies(language, page, region, type).awaitResponse()
             if (response.isSuccessful) {
                 var data = response.body()
                 if (data != null && data.total_results != 0) {
