@@ -18,9 +18,11 @@ class SearchRepository(private val apiHandler: APIHandler) {
         }
     }
 
-    suspend fun searchMoviesWithGenre(query: Int): Result<List<TMDBMovie>> {
+    suspend fun searchMoviesWithGenre(query: String): Result<List<TMDBMovie>> {
+        val tempGenreList: List<String> = listOf<String>(query)
+        val genreID = apiHandler.getIDByGenre(tempGenreList)
         return try {
-            val response = apiHandler.getMoviesWithGenre(query)
+            val response = apiHandler.getMoviesWithGenre(genreID[0])
             Log.w("API CALL VIEWMODEL", "getMoviesWithGenre() Called!")
             if (response != null && response.total_results > 0) {
                 Result.success(response.results)

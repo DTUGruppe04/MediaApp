@@ -29,6 +29,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
 
     val searchResults by viewModel.searchResults.collectAsState()
     val isSearchActive by viewModel.isSearchActive.collectAsState()
+    val hasGenreBeenChosen by viewModel.hasGenreBeenChosen.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
 
     val listOfGenres: List<String> = listOf<String>(
@@ -98,6 +99,10 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
 
             if (isSearchActive) {
             SearchQueryLayout.SearchQueryList(movies = searchResults, navController = navController)
+            } else {
+                if (hasGenreBeenChosen) {
+                    SearchQueryLayout.SearchQueryList(movies = searchResults, navController = navController)
+                }
             }
         }
     }

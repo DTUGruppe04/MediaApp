@@ -22,8 +22,13 @@ class SearchViewModel() : ViewModel() {
     private val _isSearchActive = MutableStateFlow(false)
     val isSearchActive: StateFlow<Boolean> = _isSearchActive
 
+    private val _hasGenreBeenChosen = MutableStateFlow(false)
+    val hasGenreBeenChosen: StateFlow<Boolean> = _hasGenreBeenChosen
+
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
+
+
     fun setSearchQuery(query: String) {
         _searchQuery.value = query // Method to update search query
     }
@@ -50,11 +55,10 @@ class SearchViewModel() : ViewModel() {
 
     fun getMoviesWithGenre(genre: String) {
         viewModelScope.launch {
-            val tempGenreList: List<String> = listOf<String>(genre)
-            val genreID = apiHandler.getIDByGenre(tempGenreList)
-            searchRepository.searchMoviesWithGenre(genreID[0]).also { result ->
+            searchRepository.searchMoviesWithGenre(genre).also { result ->
                 result.onSuccess { movies ->
                     _searchResults.value = movies
+                    _hasGenreBeenChosen.value = true
                 }.onFailure { throwable ->
                     _error.value = throwable.localizedMessage ?: "Error with getting movies by genre"
                 }
