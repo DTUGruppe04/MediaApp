@@ -5,8 +5,6 @@ import com.example.mediaapp.models.TMDBMovie
 import com.example.mediaapp.models.WatchlistMovie
 
 class SortingHandler {
-
-    private val apiHandler = APIHandler()
     fun sortWatchListMoviesAlphabetically(movies: List<WatchlistMovie>, ascending: Boolean = true): List<WatchlistMovie> {
         return if (ascending) {
             movies.sortedBy { it.title }
@@ -14,12 +12,11 @@ class SortingHandler {
             movies.sortedByDescending { it.title }
         }
     }
-
-    fun sortTMDBMoviesAlphabetically(movies: List<TMDBMovie>, ascending: Boolean = true): List<TMDBMovie> {
+    fun sortWatchListMoviesByYear(movies: List<WatchlistMovie>, ascending: Boolean): List<WatchlistMovie> {
         return if (ascending) {
-            movies.sortedBy { it.title }
+            movies.sortedBy { it.release_date }
         } else {
-            movies.sortedByDescending { it.title }
+            movies.sortedByDescending { it.release_date }
         }
     }
     fun filterWatchListMoviesByGenre(movies: List<WatchlistMovie>, genre: String): List<WatchlistMovie> {
@@ -28,7 +25,6 @@ class SortingHandler {
             genre in genreNames
         }
     }
-
     private fun extractGenreNames(watchlistMovie: WatchlistMovie): List<String> {
         val genreList = mutableListOf<String>()
         for (i in 0 until watchlistMovie.genres.size) {
@@ -38,9 +34,4 @@ class SortingHandler {
         }
         return genreList
     }
-//implement when sort works
-    /*
-    fun filterTMDBMoviesByGenre(movies: List<TMDBMovie>, genre: String): List<TMDBMovie> {
-        return movies.filter { movie -> movie.genres.any { it.name == genre } }
-    }*/
 }

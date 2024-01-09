@@ -118,6 +118,7 @@ class MovieDetailViewModel() : ViewModel() {
         "posterPath" to movieDetails.value?.poster_path,
         "title" to movieDetails.value?.title,
         "genres" to movieDetails.value?.genres,
-        "description" to movieDetails.value?.overview
+        "description" to movieDetails.value?.overview,
+        "release_date" to movieDetails.value?.release_date
     )
 }

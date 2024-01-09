@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.backend.database.DatabaseHandler
 import com.example.mediaapp.models.WatchlistMovie
 import com.example.mediaapp.backend.sorting.SortingHandler
+import com.example.mediaapp.rating.RatingHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +24,7 @@ class WatchlistViewModel : ViewModel() {
     val deleteview: StateFlow<Boolean> = _deleteview.asStateFlow()
 
     val sortingHandler = SortingHandler()
+    val ratingHandler = RatingHandler()
 
     fun getWatchlistMovies() {
         viewModelScope.launch {
@@ -41,11 +43,42 @@ class WatchlistViewModel : ViewModel() {
             _originalWatchlist.value = databaseHandler.getWatchlistMovies()
         }
     }
-    fun filterMoviesByGenre(genre: String) {
+    fun onFilterOptionSelected(filterId: String, option: String) {
+        when (filterId) {
+            "Genre" -> filterMoviesByGenre(option)
+            "Year" -> filterMoviesByDate(option)
+            "Name" -> filterMoviesByName(option)
+            "Rating" -> filterMoviesByRating(option)
+        }
+    }
+
+    private fun filterMoviesByRating(order: String) {
+
+    }
+
+    private fun filterMoviesByGenre(genre: String) {
         viewModelScope.launch {
             val filteredMovies = sortingHandler.filterWatchListMoviesByGenre(
                 _originalWatchlist.value ?: emptyList(),
                 genre
+            )
+            _filteredWatchList.value = filteredMovies
+        }
+    }
+    private fun filterMoviesByDate(order: String) {
+        viewModelScope.launch {
+            val ascending = order == "Ascending"
+            val filteredMovies = sortingHandler.sortWatchListMoviesByYear(
+                _filteredWatchList.value ?: emptyList(), ascending
+            )
+            _filteredWatchList.value = filteredMovies
+        }
+    }
+    private fun filterMoviesByName(order: String) {
+        viewModelScope.launch {
+            val ascending = order == "Ascending"
+            val filteredMovies = sortingHandler.sortWatchListMoviesAlphabetically(
+                _filteredWatchList.value ?: emptyList(), ascending
             )
             _filteredWatchList.value = filteredMovies
         }
