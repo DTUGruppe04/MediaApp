@@ -66,7 +66,7 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
     val scope = rememberCoroutineScope()
     val popularMovies by viewModel.popularMovies.collectAsState()
     val recommendedMovies by viewModel.recommendedMovies.collectAsState()
-    val recommendedState by viewModel.recommendedState.collectAsState()
+    //val recommendedState by viewModel.recommendedState.collectAsState()
     val moviesInTheatre by viewModel.inTheatres.collectAsState()
     val upComingMovies by viewModel.upComingMovies.collectAsState()
     val firstFiveMovies = popularMovies.take(5)
@@ -77,22 +77,11 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
     LaunchedEffect("Homepage") {
         viewModel.fetchPopularMovies()
         viewModel.fetchRecommendedMovies()
-        viewModel.fetchRecommendedState()
         viewModel.fetchMoviesInTheatre()
         viewModel.fetchUpcomingMovies()
     }
 
-
-
     MediaAppTheme {
-        /*
-        scope.launch {
-            RecommendationEngine().generateMovieSuggestions("438631")
-        }
-        scope.launch {
-            RecommendationEngine().removeRecommendMovie(11324)
-        }
-        */
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -325,10 +314,10 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                     }
                 }
             }
-            item {
-                SeparationBox()
-            }
-            if (recommendedState == true) {
+            if (recommendedMovies.isNotEmpty()) {
+                item {
+                    SeparationBox()
+                }
                 item {
                     //This is for the second horizontal list (RECOMMENDED BASED ON ALGORITHM)
                     Box(

@@ -73,7 +73,8 @@ interface TMDBApi {
     fun getUpcomingMovies(
         @Query("language") language: String,
         @Query("page") page: Int,
-        @Query("region") region: String
+        @Query("region") region: String,
+        @Query("with_release_type") type: String
     ) : Call<TMDBUpcomingMovies>
 
     //https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=4d8b26c7e474409c5926dca8433a8262
@@ -83,4 +84,10 @@ interface TMDBApi {
         @Query("page") page: Int,
         @Query("region") region: String
     ) : Call<TMDBUpcomingMovies>
+
+    //https://api.themoviedb.org/3/discover/movie?api_key=4d8b26c7e474409c5926dca8433a8262&with_genres=28
+    @GET("discover/movie?api_key=4d8b26c7e474409c5926dca8433a8262&with_genres=28")
+    fun getMoviesWithGenre(
+        @Query("with_genres") with_genre: Int,
+    ) : Call<TMDBMovieResponse>
 }

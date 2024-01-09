@@ -267,9 +267,9 @@ class APIHandler {
      * @return Returns a Data Objects containing upcoming movies.
      * If return is null something went wrong
      */
-    suspend fun getUpcomingMovies(language: String = "en-US", page: Int = 1, region: String = "US") : TMDBUpcomingMovies? {
+    suspend fun getUpcomingMovies(language: String = "en-US", page: Int = 1, region: String = "US", type: String = "2|3") : TMDBUpcomingMovies? {
         try {
-            val response = api.getUpcomingMovies(language, page, region).awaitResponse()
+            val response = api.getUpcomingMovies(language, page, region, type).awaitResponse()
             if (response.isSuccessful) {
                 var data = response.body()
                 if (data != null && data.total_results != 0) {
@@ -300,6 +300,22 @@ class APIHandler {
     suspend fun getNowPlayingMovies(language: String = "en-US", page: Int = 1, region: String = "US") : TMDBUpcomingMovies? {
         try {
             val response = api.getNowPlayingMovies(language, page, region).awaitResponse()
+            if (response.isSuccessful) {
+                var data = response.body()
+                if (data != null && data.total_results != 0) {
+                    return data
+                }
+            }
+            return null
+        } catch (e: Exception) {
+            Log.e("APIError", e.toString())
+            return null
+        }
+    }
+
+    suspend fun getMoviesWithGenre(genre: Int) : TMDBMovieResponse? {
+        try {
+            val response = api.getMoviesWithGenre(genre).awaitResponse()
             if (response.isSuccessful) {
                 var data = response.body()
                 if (data != null && data.total_results != 0) {
@@ -354,6 +370,37 @@ class APIHandler {
         }
         if (tempList.isEmpty()) {
             tempList.add("No Genre")
+        }
+        return tempList
+    }
+
+    fun getIDByGenre(genres: List<String>) : List<Int> {
+        val tempList = mutableListOf<Int>()
+        for (item in genres) {
+            when(item) {
+                "Action" -> tempList.add(28)
+                "Adventure" -> tempList.add(12)
+                "Animation" -> tempList.add(16)
+                "Comedy" -> tempList.add(35)
+                "Crime" -> tempList.add(80)
+                "Documentary" -> tempList.add(99)
+                "Drama" -> tempList.add(18)
+                "Family" -> tempList.add(10751)
+                "Fantasy" -> tempList.add(14)
+                "History" -> tempList.add(36)
+                "Horror" -> tempList.add(27)
+                "Music" -> tempList.add(10402)
+                "Mystery" -> tempList.add(9648)
+                "Romance" -> tempList.add(10749)
+                "Science Fiction" -> tempList.add(878)
+                "TV Movie" -> tempList.add(10770)
+                "Thriller" -> tempList.add(53)
+                "War" -> tempList.add(10752)
+                "Western" -> tempList.add(37)
+            }
+        }
+        if (tempList.isEmpty()) {
+            tempList.add(-1)
         }
         return tempList
     }
