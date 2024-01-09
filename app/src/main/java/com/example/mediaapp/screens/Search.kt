@@ -65,37 +65,19 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
                     viewModel.setSearchQuery(query)
                     viewModel.performSearch(query) }
             )
-
-
-            // UI Tabs and Filters
-            val customUITabs = TabsAndFilters(
-                tabs = listOf(
-                    stringResource(R.string.all),
-                    stringResource(R.string.watched), stringResource(R.string.not_watched)
-                ),
-                filters = listOf(
-                    TabsAndFilters.FilterOption(
-                        stringResource(R.string.genre),
-                        listOfGenres,
-                    ),
-                    /* TabsAndFilters.FilterOption(
-                        stringResource(R.string.year_from),
-                        (1960..2023).map { it.toString() }),
-                    TabsAndFilters.FilterOption(
-                        stringResource(R.string.year_to),
-                        (1960..2023).map { it.toString() }),
-                    TabsAndFilters.FilterOption(
-                        stringResource(R.string.rating_from),
-                        (0..10).map { it.toString() }),
-                    TabsAndFilters.FilterOption(
-                        stringResource(R.string.rating_to),
-                        (0..10).map { it.toString() })*/
-                ),
-                onGenreSelected = { genre ->
-                    viewModel.getMoviesWithGenre(genre)
-                }
+            val tabs = listOf(
+                stringResource(R.string.all),
             )
-            customUITabs.Render()
+            val filters = listOf(
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.genre),
+                    stringResource(R.string.genre),
+                    listOfGenres,
+                ),
+            )
+            TabsAndFilters(tabs, filters) { filterId, option ->
+                viewModel.getMoviesWithGenre(option) // Call ViewModel function
+            }.Render()
 
             if (isSearchActive) {
             SearchQueryLayout.SearchQueryList(movies = searchResults, navController = navController)
