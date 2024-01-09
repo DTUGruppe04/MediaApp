@@ -66,18 +66,6 @@ class HomeViewModel(): ViewModel() {
         }
     }
 
-    fun fetchRecommendedState() {
-        viewModelScope.launch {
-            Repo.isUserValid().also { result ->
-                result.onSuccess { movies ->
-                    _recommendedState.value = movies
-                }.onFailure { throwable ->
-                    _error.value = throwable.localizedMessage ?: "Unknown Error"
-                }
-            }
-        }
-    }
-
     fun fetchMoviesInTheatre() {
         viewModelScope.launch {
             Repo.getMoviesInTheatre().also { result ->

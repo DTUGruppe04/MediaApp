@@ -38,6 +38,10 @@ class RecommendationEngine {
      */
 
     suspend fun getRecommendMovies() : List<Recommend> {
+        var response = database.getRecommendMovies()
+        if (response.size < 5) {
+            return emptyList()
+        }
         return database.getRecommendMovies()
     }
 
@@ -55,18 +59,4 @@ class RecommendationEngine {
         }
         return false
     }
-
-    /**
-     * isUserValid
-     *
-     * This function determines if a user is eligible for personal recommendations.
-     * Users with less than 5 movies on their recommendation list are not eligible yet.
-     *
-     * @return Returns true if valid and false otherwise
-     */
-    suspend fun isUserValid(): Boolean {
-        val databaseResponse = database.getRecommendMovies()
-        return databaseResponse.size > 4
-    }
-
 }

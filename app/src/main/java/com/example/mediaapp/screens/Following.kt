@@ -21,6 +21,7 @@ import com.example.mediaapp.ui.nav.TopNavBarA
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FollowingListPage(navController: NavController, drawerState: DrawerState) {
+
     Column (
         modifier = Modifier.padding(bottom = 70.dp)
     ) {

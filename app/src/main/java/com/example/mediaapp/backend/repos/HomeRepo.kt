@@ -75,16 +75,6 @@ class HomeRepo private constructor() {
         }
     }
 
-    suspend fun isUserValid(): Result<Boolean> {
-        return try {
-            val response = algorithm.isUserValid()
-            Log.w("DATABASE CALL VIEWMODEL", "isUserValid() Called!")
-            Result.success(response)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
     companion object {
         @Volatile
         private var INSTANCE: HomeRepo? = null
