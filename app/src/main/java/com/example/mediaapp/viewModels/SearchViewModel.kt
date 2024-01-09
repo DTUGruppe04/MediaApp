@@ -1,8 +1,9 @@
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.backend.apirequests.APIHandler
-import com.example.mediaapp.models.TMDBMovie
 import com.example.mediaapp.backend.repos.SearchRepository
+import com.example.mediaapp.models.TMDBMovie
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -47,9 +48,18 @@ class SearchViewModel() : ViewModel() {
         }
     }
 
-    suspend fun getMoviesWithGenre(genre: String) {
-        val tempGenreList: List<String> = listOf<String>(genre)
-        apiHandler.getMoviesWithGenre(apiHandler.getIDByGenre(tempGenreList)[0])
+    fun getMoviesWithGenre(genre: String) {
+        viewModelScope.launch {
+            val tempGenreList: List<String> = listOf<String>(genre)
+            val genreID = apiHandler.getIDByGenre(tempGenreList)
+            searchRepository.searchMoviesWithGenre(genreID[0]).also { result ->
+                result.onSuccess { movies ->
+                    _searchResults.value = movies
+                }.onFailure { throwable ->
+                    _error.value = throwable.localizedMessage ?: "Error with getting movies by genre"
+                }
+            }
+        }
     }
 
     fun resetSearch() {
