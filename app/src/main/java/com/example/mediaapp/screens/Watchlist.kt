@@ -86,12 +86,7 @@ fun WatchlistPage(
                 stringResource(R.string.name),
                 stringResource(R.string.name),
                 listOfNameOrders
-            ),
-            TabsAndFilters.FilterOption(
-                stringResource(R.string.rating),
-                stringResource(R.string.rating),
-                listOfNameOrders
-            ),
+            )
             /*
             TabsAndFilters.FilterOption(
                 stringResource(R.string.rating_from),

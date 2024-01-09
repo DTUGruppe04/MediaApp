@@ -13,9 +13,9 @@ class SortingHandler {
     }
     fun sortWatchListMoviesByYear(movies: List<WatchlistMovie>, ascending: Boolean): List<WatchlistMovie> {
         return if (ascending) {
-            movies.sortedBy { it.release_date }
-        } else {
             movies.sortedByDescending { it.release_date }
+        } else {
+            movies.sortedBy { it.release_date }
         }
     }
     fun filterWatchListMoviesByGenre(movies: List<WatchlistMovie>, genre: String): List<WatchlistMovie> {

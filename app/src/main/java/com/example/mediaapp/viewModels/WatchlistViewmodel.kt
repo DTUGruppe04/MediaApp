@@ -60,7 +60,7 @@ class WatchlistViewModel : ViewModel() {
     }
     private fun filterMoviesByDate(order: String) {
         viewModelScope.launch {
-            val ascending = order == "Ascending"
+            val ascending = order == "Year Asc"
             val filteredMovies = sortingHandler.sortWatchListMoviesByYear(
                 _filteredWatchList.value ?: emptyList(), ascending
             )
@@ -69,7 +69,7 @@ class WatchlistViewModel : ViewModel() {
     }
     private fun filterMoviesByName(order: String) {
         viewModelScope.launch {
-            val ascending = order == "Ascending"
+            val ascending = order == "Name Asc"
             val filteredMovies = sortingHandler.sortWatchListMoviesAlphabetically(
                 _filteredWatchList.value ?: emptyList(), ascending
             )
