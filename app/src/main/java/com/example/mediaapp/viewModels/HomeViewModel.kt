@@ -13,9 +13,9 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(): ViewModel() {
 
-    private val apiHandler = APIHandler()
-    private val algorithm = RecommendationEngine()
-    private val Repo = HomeRepo(apiHandler, algorithm)
+    //private val apiHandler = APIHandler()
+    //private val algorithm = RecommendationEngine()
+    private val Repo = HomeRepo.getInstance()
 
     //States for pager
     private val _popularMovies = MutableStateFlow<List<TMDBMovie>>(emptyList())
@@ -44,7 +44,9 @@ class HomeViewModel(): ViewModel() {
         viewModelScope.launch {
             Repo.getPopularMovies("week").also { result ->
                 result.onSuccess { movies ->
-                    _popularMovies.value = movies
+                    if (movies != null) {
+                        _popularMovies.value = movies
+                    }
                 }.onFailure { throwable ->
                     _error.value = throwable.localizedMessage ?: "Unknown Error"
                 }
