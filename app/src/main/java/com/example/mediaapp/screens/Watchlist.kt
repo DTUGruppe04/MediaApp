@@ -50,10 +50,6 @@ fun WatchlistPage(
         stringResource(R.string.year_asc),
         stringResource(R.string.year_desc)
     )
-    val listOfRatingOrders: List<String> = listOf<String>(
-        stringResource(R.string.rating_asc),
-        stringResource(R.string.rating_desc)
-    )
     val listOfNameOrders: List<String> = listOf<String>(
         stringResource(R.string.name_asc),
         stringResource(R.string.name_desc)

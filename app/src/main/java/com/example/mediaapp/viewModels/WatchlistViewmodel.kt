@@ -24,7 +24,6 @@ class WatchlistViewModel : ViewModel() {
     val deleteview: StateFlow<Boolean> = _deleteview.asStateFlow()
 
     val sortingHandler = SortingHandler()
-    val ratingHandler = RatingHandler()
 
     fun getWatchlistMovies() {
         viewModelScope.launch {
@@ -48,14 +47,8 @@ class WatchlistViewModel : ViewModel() {
             "Genre" -> filterMoviesByGenre(option)
             "Year" -> filterMoviesByDate(option)
             "Name" -> filterMoviesByName(option)
-            "Rating" -> filterMoviesByRating(option)
         }
     }
-
-    private fun filterMoviesByRating(order: String) {
-
-    }
-
     private fun filterMoviesByGenre(genre: String) {
         viewModelScope.launch {
             val filteredMovies = sortingHandler.filterWatchListMoviesByGenre(
