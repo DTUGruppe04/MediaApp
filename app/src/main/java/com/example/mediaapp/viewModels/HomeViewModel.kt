@@ -82,7 +82,9 @@ class HomeViewModel(): ViewModel() {
         viewModelScope.launch {
             Repo.getMoviesInTheatre().also { result ->
                 result.onSuccess { movies ->
-                    _inTheatres.value = movies
+                    if (movies != null) {
+                        _inTheatres.value = movies
+                    }
                 }.onFailure { throwable ->
                     _error.value = throwable.localizedMessage ?: "Unknown Error"
                 }
@@ -93,7 +95,9 @@ class HomeViewModel(): ViewModel() {
         viewModelScope.launch {
             Repo.getUpcomingMovies().also { result ->
                 result.onSuccess { movies ->
-                    _upComingMovies.value = movies
+                    if (movies != null) {
+                        _upComingMovies.value = movies
+                    }
                 }.onFailure { throwable ->
                     _error.value = throwable.localizedMessage ?: "Unknown Error"
                 }

@@ -13,6 +13,7 @@ class HomeRepo private constructor() {
     private val algorithm = RecommendationEngine()
     private var popularMoviesCache: List<TMDBMovie>? = null
     private var moviesInTheatreCache: List<Result2>? = null
+    private var upcomingMoviesCache: List<Result2>? = null
 
     suspend fun getPopularMovies(timeWindow: String): Result<List<TMDBMovie>?> {
         return if (popularMoviesCache != null && popularMoviesCache!!.isNotEmpty()) {
@@ -46,17 +47,19 @@ class HomeRepo private constructor() {
         }
     }
 
-    suspend fun getUpcomingMovies(): Result<List<Result2>> {
-        return try {
+    suspend fun getUpcomingMovies(): Result<List<Result2>?> {
+        return if (upcomingMoviesCache != null && upcomingMoviesCache!!.isNotEmpty()) {
+            Log.w("DATABASE CALL VIEWMODEL", "getUpcomingMovies() Cache Returned!")
+            Result.success(upcomingMoviesCache)
+        } else {
             val response = apiHandler.getUpcomingMovies()
             Log.w("API CALL VIEWMODEL", "getUpcomingMovies() Called!")
             if (response != null && response.total_results > 0) {
+                upcomingMoviesCache = response.results
                 Result.success(response.results)
             } else {
                 Result.failure(Exception("No result found"))
             }
-        } catch (e: Exception) {
-            Result.failure(e)
         }
     }
 
