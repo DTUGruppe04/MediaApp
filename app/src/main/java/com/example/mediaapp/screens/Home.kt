@@ -66,7 +66,6 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
     val scope = rememberCoroutineScope()
     val popularMovies by viewModel.popularMovies.collectAsState()
     val recommendedMovies by viewModel.recommendedMovies.collectAsState()
-    //val recommendedState by viewModel.recommendedState.collectAsState()
     val moviesInTheatre by viewModel.inTheatres.collectAsState()
     val upComingMovies by viewModel.upComingMovies.collectAsState()
     val firstFiveMovies = popularMovies.take(5)
@@ -90,7 +89,7 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
             item {
                 //This is the uppermost part of the main page
                 val pageCount = firstFiveMovies.size
-                val pagerState = rememberPagerState(pageCount = {popularMovies.size})
+                val pagerState = rememberPagerState(pageCount = {firstFiveMovies.size})
 
                 //The sliding horizontal pager
                 Box(modifier = Modifier
