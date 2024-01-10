@@ -91,7 +91,6 @@ class MovieDetailViewModel() : ViewModel() {
             try {
                 databaseHandler.removeMovieFromWatchlist(movieId.toLong())
                 _isInWatchlist.value = false
-                _watchedBool.value = false
             } catch (e: Exception) {
                 // Handle errors
             }
@@ -119,11 +118,46 @@ class MovieDetailViewModel() : ViewModel() {
         }
     }
 
+    fun checkIfWatched(movieId: String) {
+        viewModelScope.launch {
+            try {
+                val watchedlistMovies = databaseHandler.getWatchedMovies()
+                val watchedlistMovie = watchedlistMovies.find { it.movieID == movieId.toLong() }
+                _watchedBool.value = watchedlistMovie?.watched ?: false
+            } catch (e: Exception) {
+                // Handle errors
+            }
+        }
+    }
     fun updateWatchedBool(movieId: String) {
         viewModelScope.launch {
             try {
                 _watchedBool.value = _watchedBool.value.not()
-                addToWatchlist(movieId)
+                if (_watchedBool.value) {
+                    addToWatchedList(movieId)
+                } else {
+                    removeFromWatchedList(movieId)
+                }
+            } catch (e: Exception) {
+                // Handle errors
+            }
+        }
+    }
+
+    private fun addToWatchedList(movieId: String) {
+        viewModelScope.launch {
+            try {
+                databaseHandler.updateWatchedMovie(createWatchlistMap())
+            } catch (e: Exception) {
+                // Handle errors
+            }
+        }
+    }
+
+    private fun removeFromWatchedList(movieId: String) {
+        viewModelScope.launch {
+            try {
+                databaseHandler.removeMovieFromWatched(movieId.toLong())
             } catch (e: Exception) {
                 // Handle errors
             }
