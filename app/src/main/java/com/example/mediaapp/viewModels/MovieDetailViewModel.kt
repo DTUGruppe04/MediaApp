@@ -29,6 +29,9 @@ class MovieDetailViewModel() : ViewModel() {
     private val _movieRating = MutableStateFlow<RatingAverage?>(null)
     val movieRating: StateFlow<RatingAverage?> = _movieRating.asStateFlow()
 
+    private val _watchedBool = MutableStateFlow<Boolean>(false)
+    val watchedBool: StateFlow<Boolean> = _watchedBool.asStateFlow()
+
     private val _isLoading = MutableStateFlow(false)
 
     private val databaseHandler = DatabaseHandler.getInstance()
@@ -63,7 +66,9 @@ class MovieDetailViewModel() : ViewModel() {
         viewModelScope.launch {
             try {
                 val watchlistMovies = databaseHandler.getWatchlistMovies()
-                _isInWatchlist.value = watchlistMovies.any { it.movieID == movieId.toLong() }
+                val watchlistMovie = watchlistMovies.find { it.movieID == movieId.toLong() }
+                _isInWatchlist.value = watchlistMovie != null
+                _watchedBool.value = watchlistMovie?.watched ?: false
             } catch (e: Exception) {
                 // Handle errors
             }
@@ -86,6 +91,7 @@ class MovieDetailViewModel() : ViewModel() {
             try {
                 databaseHandler.removeMovieFromWatchlist(movieId.toLong())
                 _isInWatchlist.value = false
+                _watchedBool.value = false
             } catch (e: Exception) {
                 // Handle errors
             }
@@ -113,12 +119,24 @@ class MovieDetailViewModel() : ViewModel() {
         }
     }
 
+    fun updateWatchedBool(movieId: String) {
+        viewModelScope.launch {
+            try {
+                _watchedBool.value = _watchedBool.value.not()
+                addToWatchlist(movieId)
+            } catch (e: Exception) {
+                // Handle errors
+            }
+        }
+    }
+
     private fun createWatchlistMap() = hashMapOf(
         "movieID" to movieDetails.value?.id,
         "posterPath" to movieDetails.value?.poster_path,
         "title" to movieDetails.value?.title,
         "genres" to movieDetails.value?.genres,
         "description" to movieDetails.value?.overview,
-        "release_date" to movieDetails.value?.release_date
+        "release_date" to movieDetails.value?.release_date,
+        "watched" to watchedBool.value
     )
 }

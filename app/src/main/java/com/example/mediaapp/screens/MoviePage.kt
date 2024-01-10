@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.outlined.BookmarkRemove
 import androidx.compose.material.icons.outlined.Recommend
+import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Card
 import androidx.compose.material3.DrawerState
@@ -78,6 +79,7 @@ fun MovieDetailPage(
     val movieDetails by viewModel.movieDetails.collectAsState()
     val movieCredits by viewModel.movieCredits.collectAsState()
     val movieRatingAverage by viewModel.movieRating.collectAsState()
+    val watchedBool by viewModel.watchedBool.collectAsState()
 
     LaunchedEffect(movieId) {
         viewModel.fetchMovieDetails(movieId)
@@ -123,7 +125,7 @@ fun MovieDetailPage(
                                 .background(color = Color(0xFF1D1B20))
                         ) {
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { viewModel.updateWatchedBool(movieId) },
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
@@ -131,7 +133,7 @@ fun MovieDetailPage(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Outlined.VisibilityOff,
+                                        imageVector = if(watchedBool) { Icons.Outlined.Visibility} else {Icons.Outlined.VisibilityOff},
                                         contentDescription = "N/A",
                                         tint = colorResource(R.color.white),
                                         modifier = Modifier
@@ -139,7 +141,7 @@ fun MovieDetailPage(
                                             .size(18.dp)
                                     )
                                     Text(
-                                        text = "Not Watched",
+                                        text = if (watchedBool) {"Watched"} else {"Not Watched"},
                                         color = Color.White,
                                         fontSize = 14.sp,
                                         modifier = Modifier
