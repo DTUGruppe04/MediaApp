@@ -46,7 +46,6 @@ fun ProfilePageLayout(
     LaunchedEffect(Unit) {
         viewModel.getCurrentUser()
     }
-
     val user = currentUser ?: return
     MediaAppTheme {
         Column {
@@ -63,7 +62,7 @@ fun ProfilePageLayout(
                             ProfileDescription(
                                 profilePicture = R.drawable.profilepicture,
                                 description = if(user.user.description != "") user.user.description else stringResource(R.string.profile_page_no_description),
-                                countryFlag = R.drawable.dk,
+                                countryFlag = viewModel.getCountryFlag(user.user.location),
                                 countryName = if(user.user.location != "") user.user.location else stringResource(R.string.profile_page_unknown),
                                 followers = user.user.followers.size,
                                 following = user.user.following.size,
