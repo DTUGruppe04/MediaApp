@@ -46,7 +46,6 @@ fun ProfilePageLayout(
     LaunchedEffect(Unit) {
         viewModel.getCurrentUser()
     }
-
     val user = currentUser ?: return
     MediaAppTheme {
         Column {

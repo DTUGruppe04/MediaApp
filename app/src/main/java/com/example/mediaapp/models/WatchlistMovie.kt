@@ -5,7 +5,9 @@ data class WatchlistMovie(
     val posterPath: String,
     val title: String,
     val genres: List<Genre>,
-    val description: String
+    val description: String,
+    val release_date: String,
+    val watched: Boolean = false
 ) {
     companion object {
         fun fromMap(map: Map<String, Any?>): WatchlistMovie {
@@ -14,7 +16,9 @@ data class WatchlistMovie(
                 map["posterPath"] as? String ?: "",
                 map["title"] as? String ?: "",
                 map["genres"] as? List<Genre>?: listOf(),
-                map["description"] as? String ?: ""
+                map["description"] as? String ?: "",
+                map["release_date"] as? String ?: "",
+                map["watched"] as? Boolean ?: false
             )
         }
     }

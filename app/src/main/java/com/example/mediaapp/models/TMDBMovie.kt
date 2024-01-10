@@ -17,4 +17,26 @@ data class TMDBMovie(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int
-)
+)  {
+    companion object {
+        fun fromMap(map: Map<String, Any?>): TMDBMovie {
+            return TMDBMovie(
+                map["adult"] as? Boolean ?: false,
+                map["backdrop_path"] as? String ?: "",
+                map["genre_ids"] as? List<Int> ?: listOf(),
+                map["id"] as? Int ?: -1,
+                map["media_type"] as? String ?: "",
+                map["original_language"] as? String ?: "",
+                map["original_title"] as? String ?: "",
+                map["overview"] as? String ?: "",
+                map["popularity"] as? Double ?: -1.0,
+                map["posterPath"] as? String ?: "",
+                map["release_date"] as? String ?: "",
+                map["title"] as? String ?: "",
+                map["video"] as? Boolean ?: false,
+                map["vote_average"] as Double ?: -1.0,
+                map["vote_count"] as Int ?: -1
+            )
+        }
+    }
+}

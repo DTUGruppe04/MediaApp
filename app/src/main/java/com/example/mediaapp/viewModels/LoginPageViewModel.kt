@@ -2,10 +2,12 @@ package com.example.mediaapp.viewModels
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.mediaapp.models.DatabaseHandler
+import androidx.navigation.NavController
+import com.example.mediaapp.Screen
+import com.example.mediaapp.backend.database.DatabaseHandler
+
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import kotlinx.coroutines.tasks.await
 
 /**
  * ViewModel for the login page.
@@ -14,7 +16,7 @@ import kotlinx.coroutines.tasks.await
 class LoginPageViewModel : ViewModel() {
 
     // Instance of DatabaseHandler for database operations
-    private val databaseHandler = DatabaseHandler()
+    private val databaseHandler = DatabaseHandler.getInstance()
 
     // Variables to hold user input
     var errorText = mutableStateOf("")
@@ -27,7 +29,7 @@ class LoginPageViewModel : ViewModel() {
      * Handles the registration flow.
      * Validates user input and registers the user if the input is valid.
      */
-    fun registerFlow() {
+    fun registerFlow(navController: NavController) {
         when {
             // Check if any field is empty
             listOf(email, password, username, confirmPassword).any { it.isEmpty() } -> errorText.value = "Please fill in all fields"
@@ -40,7 +42,7 @@ class LoginPageViewModel : ViewModel() {
             // Check if username is valid
             validateUsername(username).isNotEmpty() -> errorText.value = validateUsername(username)
             // If all checks pass, register the user
-            else -> registerUser()
+            else -> registerUser(navController)
         }
     }
 
@@ -48,7 +50,7 @@ class LoginPageViewModel : ViewModel() {
      * Registers the user with Firebase Authentication.
      * If registration is successful, updates the user's profile and adds the user to the database.
      */
-    private fun registerUser() {
+    private fun registerUser(navController: NavController) {
         Firebase.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Firebase.auth.currentUser?.let { user ->
@@ -57,7 +59,8 @@ class LoginPageViewModel : ViewModel() {
                     // Add the user to the database
                     databaseHandler.updateUserInDatabase(user.uid, createUserMap())
                 }
-                errorText.value = ""
+                errorText.value = "User created successfully"
+                navController.navigate(Screen.Login.route)
             } else {
                 // Handle registration errors
                 errorText.value = when {
@@ -73,14 +76,14 @@ class LoginPageViewModel : ViewModel() {
      * Handles the login flow.
      * Validates user input and logs in the user if the input is valid.
      */
-    fun loginFlow() {
+    fun loginFlow(navController: NavController) {
         when {
             // Check if any field is empty
             listOf(email, password).any { it.isEmpty() } -> errorText.value = "Please fill in all fields"
             // Check if email is valid
             !email.contains("@") || !email.contains(".") -> errorText.value = "Please enter a valid email address"
             // If all checks pass, log in the user
-            else -> loginUser()
+            else -> loginUser(navController)
         }
     }
 
@@ -88,15 +91,16 @@ class LoginPageViewModel : ViewModel() {
      * Logs in the user with Firebase Authentication.
      * If login is successful, clears the error text. Otherwise, sets the error text to an appropriate error message.
      */
-    private fun loginUser() {
+    private fun loginUser(navController: NavController) {
         Firebase.auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 errorText.value = ""
+                navController.navigate(Screen.MainScreen.route)
             } else {
                 // Handle login errors
                 errorText.value = when {
                     task.exception.toString().contains("email address is badly formatted") -> "Please enter a valid email address"
-                    task.exception.toString().contains("supplied auth credential is incorrect") -> "The email ore password is incorrect"
+                    task.exception.toString().contains("supplied auth credential is incorrect") -> "The email or password is incorrect"
                     task.exception.toString().contains("Access to this account has been temporarily disabled due to many failed login attempts") -> "Too many failed login attempts. Please try again later"
                     else -> "Login failed"
                 }
