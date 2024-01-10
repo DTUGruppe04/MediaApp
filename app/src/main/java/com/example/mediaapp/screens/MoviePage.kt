@@ -75,7 +75,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mediaapp.R
-import com.example.mediaapp.apirequests.APIHandler
+import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.models.Crew
 import com.example.mediaapp.models.Genre
 import com.example.mediaapp.models.TMDBMovieDetail
@@ -102,9 +102,11 @@ fun MovieDetailPage(
     val movieCredits by viewModel.movieCredits.collectAsState()
 
     LaunchedEffect(movieId) {
+        viewModel.checkIfInWatchlist(movieId)
         viewModel.fetchMovieDetails(movieId)
         viewModel.fetchMovieCredits(movieId)
     }
+
     val movie = movieDetails ?: return
     MediaAppTheme {
         LazyColumn(
@@ -127,88 +129,6 @@ fun MovieDetailPage(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
                     )
-                    /*
-                    Row(
-                        modifier = Modifier
-                            .padding(top = 20.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .padding(start = 8.dp)
-                                .height(32.dp)
-                                .width(132.dp)
-                                .wrapContentWidth()
-                                .clip(shape = RoundedCornerShape(8.dp))
-                                .background(color = Color(0xFF1D1B20))
-                        ) {
-                            IconButton(
-                                onClick = { /*TODO*/ },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.VisibilityOff,
-                                        contentDescription = "N/A",
-                                        tint = colorResource(R.color.white),
-                                        modifier = Modifier
-                                            .padding(start = 8.dp)
-                                            .size(18.dp)
-                                    )
-                                    Text(
-                                        text = "Not Watched",
-                                        color = Color.White,
-                                        fontSize = 14.sp,
-                                        modifier = Modifier
-                                            .padding(start = 8.dp, end = 8.dp)
-                                    )
-                                }
-
-                            }
-                        }
-                        Box(
-                            modifier = Modifier
-                                .padding(end = 8.dp)
-                                .height(32.dp)
-                                .width(126.dp)
-                                .clip(shape = RoundedCornerShape(8.dp))
-                                .background(color = Color(0xff4a4458))
-                        ) {
-                            IconButton(
-                                onClick = { /*TODO*/ },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-
-                                    Icon(
-                                        imageVector = Icons.Outlined.Recommend,
-                                        contentDescription = "N/A",
-                                        tint = colorResource(R.color.white),
-                                        modifier = Modifier
-                                            .padding(start = 8.dp)
-                                            .size(18.dp)
-                                    )
-                                    Text(
-                                        text = "Recommend",
-                                        color = Color.White,
-                                        fontSize = 14.sp,
-                                        modifier = Modifier
-                                            .padding(start = 8.dp, end = 8.dp)
-                                    )
-                                }
-
-                            }
-                        }
-                    }
-
-                     */
                 }
             }
             item {
@@ -222,7 +142,7 @@ fun MovieDetailPage(
                 MovieDescription(movie, true, viewModel, movieId)
             }// TODO Add Director and Actors
             item {
-                WatchAndRecommend()
+                WatchAndRecommend(viewModel, movieId)
             }
 
             /*
@@ -241,9 +161,9 @@ fun MovieDetailPage(
 }
 
 @Composable
-fun WatchAndRecommend() {
-    var hasWatched by remember { mutableStateOf(false) }
+fun WatchAndRecommend(viewModel: MovieDetailViewModel, movieId: String) {
     var hasRecommended by remember { mutableStateOf(false) }
+    val watchedBool by viewModel.watchedBool.collectAsState()
 
     Row(
         modifier = Modifier
@@ -254,7 +174,7 @@ fun WatchAndRecommend() {
         // The watch button
         Button(
             // The onClick is working as intended
-            onClick = { hasWatched = !hasWatched },
+            onClick = { viewModel.updateWatchedBool(movieId) },
             modifier = Modifier
                 .padding(end = 10.dp)
                 .weight(1f),
@@ -263,13 +183,13 @@ fun WatchAndRecommend() {
             contentPadding = PaddingValues(0.dp)
         ) {
             Icon(
-                imageVector = if (hasWatched) Icons.Filled.Visibility else Icons.Outlined.VisibilityOff,
+                imageVector = if (watchedBool) Icons.Filled.Visibility else Icons.Outlined.VisibilityOff,
                 contentDescription = "Watched",
                 tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(end = 5.dp)
             )
             Text(
-                text = if (hasWatched) "Watched" else "Not Watched",
+                text = if (watchedBool) "Watched" else "Not Watched",
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -358,6 +278,7 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel:
 fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel: MovieDetailViewModel, movieId: String) {
     var isBookmarked by remember { mutableStateOf(bookmarkStatus) }
     var isRating by remember { mutableStateOf(false) }
+    val isInWatchlist by viewModel.isInWatchlist.collectAsState()
 
     if (isRating) {
         RatingDialog(onDismissRequest = { isRating = false }, text = "Example")
@@ -422,14 +343,19 @@ fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel
                 horizontalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    imageVector = if (isBookmarked) Icons.Outlined.BookmarkAdd else Icons.Outlined.BookmarkRemove,
+                    imageVector = if (isInWatchlist) Icons.Outlined.BookmarkRemove else Icons.Outlined.BookmarkAdd,
                     contentDescription = "Bookmark",
                     tint = Color.White,
                     modifier = Modifier
                         .size(30.dp)
                         .clickable {
-                            viewModel.addToWatchlist(movieId)
-                            isBookmarked = !isBookmarked
+                            if (isInWatchlist) {
+                                viewModel.removeFromWatchlist(movieId)
+                                viewModel.checkIfInWatchlist(movieId)
+                            } else {
+                                viewModel.addToWatchlist(movieId)
+                                viewModel.checkIfInWatchlist(movieId)
+                            }
                         }
                 )
             }
@@ -441,6 +367,7 @@ fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel
 fun RatingDialog(onDismissRequest: () -> Unit, text: String) {
     var tempRating: Float by remember { mutableStateOf(0f) }
     var rating: Int by remember { mutableStateOf(0) }
+    var chooseRating: Int
 
     Dialog(
         onDismissRequest = { onDismissRequest() },
@@ -494,6 +421,7 @@ fun RatingDialog(onDismissRequest: () -> Unit, text: String) {
                         },
                         onRatingChanged = {
                             Log.d("TAG", "onRatingChanged: $it")
+                            chooseRating = it.toInt()
                         },
                         numOfStars = 10,
                         size = 24.dp,
@@ -521,6 +449,7 @@ fun RatingDialog(onDismissRequest: () -> Unit, text: String) {
                         onClick = {
                             onDismissRequest()
                             rating = tempRating.toInt()
+                            //Log.w("Rating", "Rating: $chooseRating")
                         }
                     ) {
                         Text(
