@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class WatchlistViewModel : ViewModel() {
-    private val databaseHandler = DatabaseHandler()
+    private val databaseHandler = DatabaseHandler.getInstance()
 
     private val _originalWatchlist = MutableStateFlow<List<WatchlistMovie>?>(null)
 
@@ -27,8 +27,9 @@ class WatchlistViewModel : ViewModel() {
 
     fun getWatchlistMovies() {
         viewModelScope.launch {
-            _originalWatchlist.value = databaseHandler.getWatchlistMovies()
-            _filteredWatchList.value = databaseHandler.getWatchlistMovies()
+            val watchlist = databaseHandler.getWatchlistMovies()
+            _originalWatchlist.value = watchlist
+            _filteredWatchList.value = watchlist
             Log.w("DATABASE CALL", "getWatchlistMovies() Called!")
         }
     }
@@ -39,8 +40,9 @@ class WatchlistViewModel : ViewModel() {
     fun removeMovieFromWatchlist(movieID: Long) {
         viewModelScope.launch {
             databaseHandler.removeMovieFromWatchlist(movieID)
-            _originalWatchlist.value = databaseHandler.getWatchlistMovies()
-            _filteredWatchList.value = databaseHandler.getWatchlistMovies()
+            val watchlist = databaseHandler.getWatchlistMovies()
+            _originalWatchlist.value = watchlist
+            _filteredWatchList.value = watchlist
         }
     }
     fun onFilterOptionSelected(filterId: String, option: String) {
