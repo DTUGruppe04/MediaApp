@@ -24,5 +24,4 @@ class RatingHandler {
             recommendationEngine.generateMovieSuggestions(movieID.toString())
         }
     }
-
 }

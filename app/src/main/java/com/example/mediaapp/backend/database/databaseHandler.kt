@@ -184,7 +184,6 @@ class DatabaseHandler private constructor() {
         return ratings
     }
 
-
     fun updateRecommendDatabase(watchlistMovieMap: Map<String, Any?>) {
         getCurrentUserID()?.let { database.collection("users")
             .document(it)

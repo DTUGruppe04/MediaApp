@@ -106,6 +106,7 @@ fun MovieDetailPage(
         viewModel.fetchMovieDetails(movieId)
         viewModel.fetchMovieCredits(movieId)
         viewModel.checkIfWatched(movieId)
+        viewModel.updateRating(movieId)
     }
 
     val movie = movieDetails ?: return
@@ -282,7 +283,7 @@ fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel
     val isInWatchlist by viewModel.isInWatchlist.collectAsState()
 
     if (isRating) {
-        RatingDialog(onDismissRequest = { isRating = false }, text = "Example")
+        RatingDialog(onDismissRequest = { isRating = false }, viewModel = viewModel, movieId = movieId)
     }
 
     Column(
@@ -365,10 +366,18 @@ fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel
 }
 
 @Composable
-fun RatingDialog(onDismissRequest: () -> Unit, text: String) {
-    var tempRating: Float by remember { mutableStateOf(0f) }
-    var rating: Int by remember { mutableStateOf(0) }
-    var chooseRating: Int
+fun RatingDialog(onDismissRequest: () -> Unit, viewModel: MovieDetailViewModel, movieId: String) {
+    val movieRating by viewModel.movieRating.collectAsState()
+
+    var tempRating by remember { mutableFloatStateOf(0f) }
+    /*
+    var tempRating = remember {
+        movieRating?.let { mutableFloatStateOf(it.amount.toFloat()) } ?: mutableStateOf(0f)
+    }
+     */
+
+
+    var chooseRating: Int by remember { mutableIntStateOf(0) }
 
     Dialog(
         onDismissRequest = { onDismissRequest() },
@@ -449,8 +458,9 @@ fun RatingDialog(onDismissRequest: () -> Unit, text: String) {
                     TextButton(
                         onClick = {
                             onDismissRequest()
-                            rating = tempRating.toInt()
-                            //Log.w("Rating", "Rating: $chooseRating")
+                            Log.w("Rating", "Rating: $chooseRating")
+                            viewModel.rateMovie(movieId, chooseRating)
+
                         }
                     ) {
                         Text(
