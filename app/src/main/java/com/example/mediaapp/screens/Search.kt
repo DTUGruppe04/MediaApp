@@ -74,7 +74,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
             )
             TabsAndFilters(filters) { filterId, option ->
                 viewModel.getMoviesWithGenre(option) // Call ViewModel function
-            }.Render()
+            }.Render(navController = navController)
 
             if (isSearchActive) {
             SearchQueryLayout.SearchQueryList(movies = searchResults, navController = navController)

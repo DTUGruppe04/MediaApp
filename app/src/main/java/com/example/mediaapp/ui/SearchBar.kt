@@ -45,11 +45,11 @@ fun SearchBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(8.dp, bottom = 0.dp)
             .height(56.dp)
             .background(
-                shape = RoundedCornerShape(size = 28.dp),
-                color = MaterialTheme.colorScheme.background
+                shape = RoundedCornerShape(size = 8.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly

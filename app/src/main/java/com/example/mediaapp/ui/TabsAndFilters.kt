@@ -1,7 +1,5 @@
 package com.example.mediaapp.ui
 
-import android.util.Log
-import android.widget.Button
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,10 +35,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.mediaapp.R
+import com.example.mediaapp.Screen
 import com.example.mediaapp.ui.theme.MediaAppTheme
 
 
@@ -55,7 +54,7 @@ class TabsAndFilters(
         val options: List<String>
     )
     @Composable
-    fun Render() {
+    fun Render(navController: NavController) {
         MediaAppTheme{
             var selectedTab by remember { mutableStateOf("All") }
             var selectedFilters = mutableStateMapOf<String, String>()
@@ -76,9 +75,8 @@ class TabsAndFilters(
                     { filterId, selectedOption ->
                     selectedFilters[filterId] = selectedOption
                     onFilterSelected(filterId, selectedOption)
-                }, {
-                    Log.d("FiltersRow", "Clear filters clicked")
-                        selectedFilters.clear() }
+                    },
+                    navController = navController
                 )
             }
         }
@@ -103,34 +101,48 @@ class TabsAndFilters(
             }
         }
     }
+    fun NavController.currentRoute(): String? {
+        return currentBackStackEntry?.destination?.route
+    }
     @Composable
     private fun FiltersRow(
         filters: List<FilterOption>,
         onFilterSelected:(String, String) -> Unit,
-        onClearFilters: () -> Unit
+        navController: NavController,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())
                 .padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            filters.forEach { filter ->
-                FilterDropdown(filter, onFilterSelected)
-            }
-            Box(
+            Row (
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .clickable { onClearFilters() }
+                    .padding(end = 8.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.clear),
-                    style = MaterialTheme.typography.labelLarge,
+                filters.forEach { filter ->
+                    FilterDropdown(filter, onFilterSelected)
+                }
+            }
+            val currentRoute = navController.currentRoute()
+            if (currentRoute == Screen.Watchlist.route) {
+                Box(
                     modifier = Modifier
-                        .padding(start = 20.dp, top = 8.5.dp, end = 20.dp, bottom = 8.5.dp)
-                )
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .clickable {
+                            navController.navigate(Screen.Watchlist.route)
+                        }
+                ) {
+                    Text(
+                        text = stringResource(R.string.clear),
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier
+                            .padding(start = 20.dp, top = 8.5.dp, end = 20.dp, bottom = 8.5.dp)
+                    )
+                }
             }
         }
     }

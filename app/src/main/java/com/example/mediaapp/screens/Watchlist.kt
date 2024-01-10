@@ -98,7 +98,7 @@ fun WatchlistPage(
         )
         TabsAndFilters(filters, tabs) { filterId, option ->
             viewModel.onFilterOptionSelected(filterId, option) // Call ViewModel function
-        }.Render()
+        }.Render(navController = navController)
 
         val movieLayout = watchlistMovies.value?.let { MovieListLayout(it, navController, scope, viewModel) }
         movieLayout?.MovieList()
