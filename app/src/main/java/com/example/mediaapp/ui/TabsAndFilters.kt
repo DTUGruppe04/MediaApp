@@ -1,5 +1,7 @@
 package com.example.mediaapp.ui
 
+import android.util.Log
+import android.widget.Button
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,8 +36,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.mediaapp.R
 import com.example.mediaapp.ui.theme.MediaAppTheme
 
 
@@ -60,14 +65,21 @@ class TabsAndFilters(
                     .background(MaterialTheme.colorScheme.background),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TabsRow(tabs, selectedTab) { tab ->
-                    selectedTab = tab
+                if(tabs.isNotEmpty()) {
+                    TabsRow(tabs, selectedTab) { tab ->
+                        selectedTab = tab
+                    }
+                    Divider(color = MaterialTheme.colorScheme.outline, thickness = 0.5.dp,)
                 }
-                Divider(color = MaterialTheme.colorScheme.outline, thickness = 0.5.dp,)
-                FiltersRow(filters) { filterId, selectedOption ->
+                FiltersRow(
+                    filters,
+                    { filterId, selectedOption ->
                     selectedFilters[filterId] = selectedOption
                     onFilterSelected(filterId, selectedOption)
-                }
+                }, {
+                    Log.d("FiltersRow", "Clear filters clicked")
+                        selectedFilters.clear() }
+                )
             }
         }
     }
@@ -92,7 +104,11 @@ class TabsAndFilters(
         }
     }
     @Composable
-    private fun FiltersRow(filters: List<FilterOption>, onFilterSelected:(String, String) -> Unit) {
+    private fun FiltersRow(
+        filters: List<FilterOption>,
+        onFilterSelected:(String, String) -> Unit,
+        onClearFilters: () -> Unit
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -103,8 +119,22 @@ class TabsAndFilters(
             filters.forEach { filter ->
                 FilterDropdown(filter, onFilterSelected)
             }
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .clickable { onClearFilters() }
+            ) {
+                Text(
+                    text = stringResource(R.string.clear),
+                    style = MaterialTheme.typography.labelLarge,
+                    modifier = Modifier
+                        .padding(start = 20.dp, top = 8.5.dp, end = 20.dp, bottom = 8.5.dp)
+                )
+            }
         }
     }
+
     @Composable
     fun TabButton(label: String, isSelected: Boolean, onClick: () -> Unit) {
         Column(
