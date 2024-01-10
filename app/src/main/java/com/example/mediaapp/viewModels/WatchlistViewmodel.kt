@@ -40,6 +40,7 @@ class WatchlistViewModel : ViewModel() {
         viewModelScope.launch {
             databaseHandler.removeMovieFromWatchlist(movieID)
             _originalWatchlist.value = databaseHandler.getWatchlistMovies()
+            _filteredWatchList.value = databaseHandler.getWatchlistMovies()
         }
     }
     fun onFilterOptionSelected(filterId: String, option: String) {
