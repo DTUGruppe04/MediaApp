@@ -65,9 +65,6 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
                     viewModel.setSearchQuery(query)
                     viewModel.performSearch(query) }
             )
-            val tabs = listOf(
-                stringResource(R.string.all),
-            )
             val filters = listOf(
                 TabsAndFilters.FilterOption(
                     stringResource(R.string.genre),
@@ -75,7 +72,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
                     listOfGenres,
                 ),
             )
-            TabsAndFilters(tabs, filters) { filterId, option ->
+            TabsAndFilters(filters) { filterId, option ->
                 viewModel.getMoviesWithGenre(option) // Call ViewModel function
             }.Render()
 

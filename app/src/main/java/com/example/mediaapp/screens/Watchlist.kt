@@ -96,7 +96,7 @@ fun WatchlistPage(
                 (0..10).map { it.toString() })
                 */
         )
-        TabsAndFilters(tabs, filters) { filterId, option ->
+        TabsAndFilters(filters, tabs) { filterId, option ->
             viewModel.onFilterOptionSelected(filterId, option) // Call ViewModel function
         }.Render()
 

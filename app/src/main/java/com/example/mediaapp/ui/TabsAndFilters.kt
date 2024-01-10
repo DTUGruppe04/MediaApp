@@ -40,8 +40,8 @@ import com.example.mediaapp.ui.theme.MediaAppTheme
 
 
 class TabsAndFilters(
-    private val tabs: List<String>,
     private val filters: List<FilterOption>,
+    private val tabs: List<String> = emptyList(),
     val onFilterSelected: (String, String) -> Unit
 ) {
     data class FilterOption(
