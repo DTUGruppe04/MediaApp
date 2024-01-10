@@ -208,4 +208,14 @@
     <string name="clear_icon">Clear icon</string>
     <string name="search_icon">Search icon</string>
     <string name="view_more">View More</string>
+    <string name="year_asc">Year Asc</string>
+    <string name="year_desc">Year Desc</string>
+    <string name="rating_asc">Rating Asc</string>
+    <string name="rating_desc">Rating Desc</string>
+    <string name="name_asc">Name Asc</string>
+    <string name="name_desc">Name Desc</string>
+    <string name="year">Year</string>
+    <string name="date">Date</string>
+    <string name="name">Name</string>
+    <string name="rating">Rating</string>
 </resources>

@@ -27,7 +27,6 @@ fun WatchlistPage(
     viewModel: WatchlistViewModel = viewModel()) {
 
     val watchlistMovies = viewModel.filteredWatchList.collectAsState()
-
     val listOfGenres: List<String> = listOf<String>(
         stringResource(R.string.action),
         stringResource(R.string.adventure),
@@ -47,6 +46,14 @@ fun WatchlistPage(
         stringResource(R.string.war),
         stringResource(R.string.western)
     )
+    val listOfYearOrders: List<String> = listOf<String>(
+        stringResource(R.string.year_asc),
+        stringResource(R.string.year_desc)
+    )
+    val listOfNameOrders: List<String> = listOf<String>(
+        stringResource(R.string.name_asc),
+        stringResource(R.string.name_desc)
+    )
 
     LaunchedEffect(Unit) {
         viewModel.getWatchlistMovies()
@@ -60,37 +67,41 @@ fun WatchlistPage(
         TopNavBarA(navController = navController, drawerState = drawerState)
         // UI Tabs and Filters
 
-        val customUITabs = TabsAndFilters(
-            tabs = listOf(
-                stringResource(R.string.all),
-                stringResource(R.string.watched), stringResource(R.string.not_watched)
-            ),
-            filters = listOf(
-                TabsAndFilters.FilterOption(
-                    stringResource(R.string.genre),
-                    listOfGenres,
-                ),
-                /* TabsAndFilters.FilterOption(
-                    stringResource(R.string.year_from),
-                    (1960..2023).map { it.toString() }),
-                TabsAndFilters.FilterOption(
-                    stringResource(R.string.year_to),
-                    (1960..2023).map { it.toString() }),
-                TabsAndFilters.FilterOption(
-                    stringResource(R.string.rating_from),
-                    (0..10).map { it.toString() }),
-                TabsAndFilters.FilterOption(
-                    stringResource(R.string.rating_to),
-                    (0..10).map { it.toString() })*/
-            ),
-            onGenreSelected = { genre ->
-                viewModel.filterMoviesByGenre(genre)
-            }
+        val tabs = listOf(
+            stringResource(R.string.all),
+            stringResource(R.string.watched), stringResource(R.string.not_watched)
         )
-        customUITabs.Render()
+        val filters = listOf(
+            TabsAndFilters.FilterOption(
+                stringResource(R.string.genre),
+                stringResource(R.string.genre),
+                listOfGenres,
+            ),
+            TabsAndFilters.FilterOption(
+                stringResource(R.string.year),
+                stringResource(R.string.year),
+                listOfYearOrders
+            ),
+            TabsAndFilters.FilterOption(
+                stringResource(R.string.name),
+                stringResource(R.string.name),
+                listOfNameOrders
+            )
+            /*
+            TabsAndFilters.FilterOption(
+                stringResource(R.string.rating_from),
+                (0..10).map { it.toString() }),
+            TabsAndFilters.FilterOption(
+                stringResource(R.string.rating_to),
+                (0..10).map { it.toString() })
+                */
+        )
+        TabsAndFilters(tabs, filters) { filterId, option ->
+            viewModel.onFilterOptionSelected(filterId, option) // Call ViewModel function
+        }.Render()
+
         val movieLayout = watchlistMovies.value?.let { MovieListLayout(it, navController, scope, viewModel) }
         movieLayout?.MovieList()
-
     }
 }
 
