@@ -61,6 +61,8 @@ class DatabaseHandler private constructor() {
             .document(watchedMovieMap["movieID"]
                 .toString())
             .set(watchedMovieMap) }
+
+        watchedListCache = null
     }
 
     suspend fun getWatchedMovies(): List<WatchlistMovie> {
@@ -95,7 +97,7 @@ class DatabaseHandler private constructor() {
             .document(movieID.toString())
             .delete() }
 
-        watchListCache = null
+        watchedListCache = null
     }
 
     suspend fun updateWatchlistMovie(watchlistMovieMap: Map<String, Any?>) {

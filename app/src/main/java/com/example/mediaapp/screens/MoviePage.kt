@@ -105,6 +105,7 @@ fun MovieDetailPage(
         viewModel.checkIfInWatchlist(movieId)
         viewModel.fetchMovieDetails(movieId)
         viewModel.fetchMovieCredits(movieId)
+        viewModel.checkIfWatched(movieId)
     }
 
     val movie = movieDetails ?: return
