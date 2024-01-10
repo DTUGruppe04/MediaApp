@@ -10,29 +10,48 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
+import com.example.mediaapp.ui.nav.TopNavBarA
 import com.example.mediaapp.ui.nav.TopNavBarC
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import com.example.mediaapp.viewModels.CurrentUserViewModel
+import com.example.mediaapp.viewModels.LoginPageViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +68,7 @@ fun ProfilePageLayout(
     val user = currentUser ?: return
     MediaAppTheme {
         Column {
-            TopNavBarC(navController = navController, drawerState = drawerState)
+            TopNavBarA(navController = navController, drawerState = drawerState)
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 75.dp)
@@ -60,10 +79,10 @@ fun ProfilePageLayout(
                         .fillMaxWidth()
                         .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
                             ProfileDescription(
-                                profilePicture = R.drawable.profilepicture,
+                                profilePicture = if (user.user.profilePicture == "") R.drawable.image_not_found_picture else R.drawable.image_not_found_picture,
                                 description = if(user.user.description != "") user.user.description else stringResource(R.string.profile_page_no_description),
                                 countryFlag = viewModel.getCountryFlag(user.user.location),
-                                countryName = if(user.user.location != "") user.user.location else stringResource(R.string.profile_page_unknown),
+                                countryName = if(user.user.location != "") user.user.location else stringResource(R.string.profile_page_unknown_location),
                                 followers = user.user.followers.size,
                                 following = user.user.following.size,
                                 username = user.user.username,
@@ -238,6 +257,11 @@ fun ProfileDescription(
     following: Int,
     username: String,
     nameOfUser: String) {
+    var isEditing by remember { mutableStateOf(false) }
+
+    if (isEditing) {
+        EditProfile(onDismissRequest = { isEditing = false })
+    }
     Box(modifier = Modifier
         .clip(RoundedCornerShape(10.dp))
         .background(MaterialTheme.colorScheme.surfaceVariant)
@@ -286,16 +310,35 @@ fun ProfileDescription(
                 }
             }
             Column {
-                Text (
-                    text = username,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center,
+                Row(
                     modifier = Modifier
-                        .padding(start = 8.dp, top = 8.dp)
-                        .height(32.dp)
-                )
-                Row(modifier = Modifier.height(13.dp).fillMaxWidth(),
+                        .padding(start = 8.dp, top = 8.dp, end = 8.dp)
+                        .fillMaxWidth()
+                        .height(32.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text (
+                        text = username,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Center
+                    )
+                    IconButton(onClick = { isEditing = true }) {
+                        Icon(
+                            imageVector = Icons.Filled.Edit,
+                            contentDescription = "edit_button",
+                            tint = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier
+                                .size(24.dp)
+
+                        )
+                    }
+                }
+
+                Row(modifier = Modifier
+                    .height(13.dp)
+                    .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically) {
                     Text (
                         text = nameOfUser,
@@ -303,10 +346,13 @@ fun ProfileDescription(
                         fontSize = 10.sp,
                         modifier = Modifier.padding(start = 10.dp, end = 8.dp)
                     )
-                    Image(modifier = Modifier
-                        .size(13.dp, 8.dp)
-                        .padding(start = 0.dp, top = 0.dp), painter = painterResource(id = countryFlag),
-                        contentDescription = "country_flag")
+                    if (countryFlag != -1) {
+                        Image(modifier = Modifier
+                            .size(13.dp, 8.dp)
+                            .padding(start = 0.dp, top = 0.dp),
+                            painter = painterResource(id = countryFlag),
+                            contentDescription = "country_flag")
+                    }
                     Text (
                         text = countryName,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -327,6 +373,117 @@ fun ProfileDescription(
         }
     }
 }
+
+@Composable
+fun EditProfile(onDismissRequest: () -> Unit, viewModel: CurrentUserViewModel = viewModel()) {
+    Dialog(
+        onDismissRequest = { onDismissRequest() },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(10.dp))
+                .background(color = MaterialTheme.colorScheme.surface)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(top = 10.dp, start = 10.dp, end = 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.edit_profile),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                )
+                IconButton(onClick = { onDismissRequest() }) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "close_button",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier
+                            .size(24.dp)
+                    )
+                }
+            }
+            TextfieldForEditUsername(viewModel = viewModel)
+            TextfieldForEditName(viewModel = viewModel)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TextfieldForEditUsername(viewModel: CurrentUserViewModel) {
+    var username by remember { mutableStateOf(TextFieldValue()) }
+
+    TextField(
+        modifier = textFieldModifier(),
+        value = username,
+        onValueChange = { newValue ->
+            username = newValue
+            viewModel.username = newValue.text},
+        label = {labelStyle("Username")},
+        placeholder = {placeholderStyle("Enter your username")},
+        colors = textFieldColors(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TextfieldForEditName(viewModel: CurrentUserViewModel) {
+    var name by remember { mutableStateOf(TextFieldValue()) }
+
+    TextField(
+        modifier = textFieldModifier(),
+        value = name,
+        onValueChange = { newValue ->
+            name = newValue
+            viewModel.name = newValue.text},
+        label = {labelStyle("Name")},
+        placeholder = {placeholderStyle("Enter your name")},
+        colors = textFieldColors(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+    )
+}
+
+@Composable
+private fun textFieldModifier() = Modifier
+    .padding(start = 29.dp, top = 16.dp, end = 29.dp)
+    .fillMaxWidth()
+    .height(56.dp)
+    .clip(RoundedCornerShape(10.dp))
+
+@Composable
+private fun labelStyle(text: String) = Text(
+    text = text,
+    color = MaterialTheme.colorScheme.primary,
+    style = MaterialTheme.typography.labelMedium
+)
+
+@Composable
+private fun placeholderStyle(text: String) = Text(
+    text = text,
+    color = MaterialTheme.colorScheme.onSurfaceVariant,
+    fontStyle = FontStyle.Italic,
+    style = MaterialTheme.typography.titleMedium,
+    letterSpacing = 0.5.sp
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun textFieldColors() = TextFieldDefaults.textFieldColors(
+    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+    textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+    unfocusedIndicatorColor = Color.Transparent
+)
 
 @Composable
 private fun FollowText(text: String, paddingValue: Dp, color: Color, textAlign: TextAlign) {

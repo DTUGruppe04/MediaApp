@@ -19,6 +19,9 @@ class CurrentUserViewModel : ViewModel(){
     private val _currentUser = MutableStateFlow<CurrentUser?>(null)
     val currentUser: StateFlow<CurrentUser?> = _currentUser.asStateFlow()
 
+    var username = ""
+    var name = ""
+
     fun getCurrentUser() {
         viewModelScope.launch {
             _currentUser.value = databaseHandler.getUserFromDatabase()
@@ -27,7 +30,7 @@ class CurrentUserViewModel : ViewModel(){
 
     fun getCountryFlag(countryName: String): Int {
         val country = countries.find { it.name == countryName }
-        return country?.flag ?: R.drawable.image_not_found
+        return country?.flag ?: -1
     }
 
     private val countries = listOf(

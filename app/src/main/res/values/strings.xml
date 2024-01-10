@@ -146,6 +146,8 @@
     <string name="saved_number">7</string>
     <string name="profile_page_no_description">This user haven\'t made a description yet</string>
     <string name="profile_page_unknown">Unknown</string>
+    <string name="profile_page_unknown_location">No location</string>
+    <string name="edit_profile">Customize Profile</string>
 
     //Settings Page Strings
     <string name="settingnodesc"></string>
