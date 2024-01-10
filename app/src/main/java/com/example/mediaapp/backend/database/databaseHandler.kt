@@ -19,6 +19,7 @@ class DatabaseHandler private constructor() {
     private val database = Firebase.firestore
     private var userCache: CurrentUser? = null
     private var watchListCache: List<WatchlistMovie>? = null
+    private var watchedListCache: List<WatchlistMovie>? = null
     private var recommendCache: List<Recommend>? = null
 
     suspend fun getUserFromDatabase(): CurrentUser {
@@ -51,6 +52,50 @@ class DatabaseHandler private constructor() {
 
     private fun getCurrentUserID(): String? {
         return Firebase.auth.currentUser?.uid
+    }
+
+    fun updateWatchedMovie(watchedMovieMap: Map<String, Any?>) {
+        getCurrentUserID()?.let { database.collection("users")
+            .document(it)
+            .collection("watched")
+            .document(watchedMovieMap["movieID"]
+                .toString())
+            .set(watchedMovieMap) }
+    }
+
+    suspend fun getWatchedMovies(): List<WatchlistMovie> {
+        // If the cache is not null and not empty, return it instead of making a database call
+        if (watchedListCache != null) {
+            Log.d(TAG, "Returning cached watched movies")
+            return watchedListCache!!
+        }
+
+        val watchedMovies = mutableListOf<WatchlistMovie>()
+        val result = database.collection("users")
+            .document(getCurrentUserID()!!)
+            .collection("watched")
+            .get()
+            .await()
+
+        for (document in result) {
+            Log.d(TAG, "${document.id} => ${document.data}")
+            watchedMovies += WatchlistMovie.fromMap(document.data)
+        }
+
+        Log.d(TAG, "getWatchedMovies: $watchedMovies")
+        watchedListCache = watchedMovies
+
+        return watchedMovies
+    }
+
+    fun removeMovieFromWatched(movieID: Long) {
+        getCurrentUserID()?.let { database.collection("users")
+            .document(it)
+            .collection("watched")
+            .document(movieID.toString())
+            .delete() }
+
+        watchListCache = null
     }
 
     suspend fun updateWatchlistMovie(watchlistMovieMap: Map<String, Any?>) {
