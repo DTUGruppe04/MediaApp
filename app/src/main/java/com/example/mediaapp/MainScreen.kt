@@ -26,6 +26,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.currentRecomposeScope
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,19 +39,26 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.mediaapp.models.CurrentUser
 import com.example.mediaapp.ui.nav.BottomNavBar
 import com.example.mediaapp.ui.nav.NavigationGraph
 import com.example.mediaapp.ui.nav.TopNavBarE
+import com.example.mediaapp.viewModels.CurrentUserViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(loginNavController: NavController) {
+fun MainScreen(loginNavController: NavController, viewModel: CurrentUserViewModel = viewModel()) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val currentUser by viewModel.currentUser.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getCurrentUser()
+    }
     ModalNavigationDrawer(
         drawerContent = {
             ModalDrawerSheet (
@@ -62,7 +73,7 @@ fun MainScreen(loginNavController: NavController) {
                     modifier = Modifier.padding(16.dp)
                 )
                 NavigationDrawerItem(
-                    label = { Text(stringResource(R.string.profilename)) },
+                    label = { currentUser?.user?.username?.let { Text(it) } },
                     colors = NavigationDrawerItemDefaults.colors(
                         selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                         selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer
@@ -98,7 +109,7 @@ fun MainScreen(loginNavController: NavController) {
                         )
                     },
                     selected = false,
-                    badge = { Badge(containerColor = MaterialTheme.colorScheme.tertiaryContainer) { Text(text = "100+", color = MaterialTheme.colorScheme.onTertiaryContainer) }  },
+                    badge = { Badge(containerColor = MaterialTheme.colorScheme.tertiaryContainer) { Text(text = currentUser?.user?.following?.size.toString(), color = MaterialTheme.colorScheme.onTertiaryContainer) }  },
                     onClick = {
                         navController.navigate(Screen.YouFollow.route)
                         scope.launch {
@@ -122,7 +133,7 @@ fun MainScreen(loginNavController: NavController) {
                         )
                     },
                     selected = false,
-                    badge = { Badge(containerColor = MaterialTheme.colorScheme.tertiaryContainer) { Text(text = "100+", color = MaterialTheme.colorScheme.onTertiaryContainer) } },
+                    badge = { Badge(containerColor = MaterialTheme.colorScheme.tertiaryContainer) { Text(text = currentUser?.user?.followers?.size.toString(), color = MaterialTheme.colorScheme.onTertiaryContainer) } },
                     onClick = {
                         navController.navigate(Screen.YourFollowers.route)
                         scope.launch {
