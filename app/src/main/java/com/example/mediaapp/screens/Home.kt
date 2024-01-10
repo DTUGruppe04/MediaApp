@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
@@ -26,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -158,7 +160,9 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                             }
                                     )
                                     Column(
-                                        verticalArrangement = Arrangement.Bottom
+                                        verticalArrangement = Arrangement.Bottom,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
                                     ) {
                                         Text(
                                             text = popularMovies[index].title,
@@ -195,6 +199,14 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                                 }
                                         )
                                     }
+                                    //Add to watchlist button
+                                    Icon(
+                                        imageVector = Icons.Outlined.Bookmark,
+                                        contentDescription = "bookmark",
+                                        tint = MaterialTheme.colorScheme.onSurface,
+                                        modifier = Modifier
+                                            .size(33.dp)
+                                    )
                                 }
                             }
                         }
@@ -259,6 +271,7 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                 .size(40.dp)
                         )
                     }
+                    /*
                     //Add to watchlist button
                     IconButton(onClick = {
                             /*TODO*/
@@ -275,6 +288,8 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                 .padding(end = 5.dp)
                         )
                     }
+
+                     */
                 }
             }
             item {//TODO
