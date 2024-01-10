@@ -159,6 +159,7 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                                 }
                                             }
                                     )
+
                                     Column(
                                         verticalArrangement = Arrangement.Bottom,
                                         modifier = Modifier
@@ -199,15 +200,18 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                                 }
                                         )
                                     }
-                                    //Add to watchlist button
-                                    Icon(
-                                        imageVector = Icons.Outlined.Bookmark,
-                                        contentDescription = "bookmark",
-                                        tint = MaterialTheme.colorScheme.onSurface,
-                                        modifier = Modifier
-                                            .size(33.dp)
-                                    )
                                 }
+                            // Bookmark Icon
+                            Icon(
+                                painter = painterResource(R.drawable.bookmark),
+                                contentDescription = "bookmark",
+                                modifier = Modifier
+                                    .size(33.dp)
+                                    .padding(end = 5.dp)
+                                    .clickable { /*TODO*/ }
+                                    .align(Alignment.BottomEnd)
+                                    .offset(y = -(20).dp, x = -(5).dp)
+                            )
                             }
                         }
                     }
@@ -271,25 +275,6 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                 .size(40.dp)
                         )
                     }
-                    /*
-                    //Add to watchlist button
-                    IconButton(onClick = {
-                            /*TODO*/
-                        },
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.bookmark),
-                            contentDescription = "bookmark",
-                            modifier = Modifier
-                                .size(33.dp)
-                                .offset(y = -(13).dp)
-                                .padding(end = 5.dp)
-                        )
-                    }
-
-                     */
                 }
             }
             item {//TODO
