@@ -25,6 +25,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.PlaylistAdd
+import androidx.compose.material.icons.automirrored.outlined.PlaylistAdd
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
@@ -33,6 +35,8 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material.icons.outlined.BookmarkRemove
+import androidx.compose.material.icons.outlined.PlaylistAdd
+import androidx.compose.material.icons.outlined.PlaylistRemove
 import androidx.compose.material.icons.outlined.Recommend
 import androidx.compose.material.icons.outlined.ThumbUpAlt
 import androidx.compose.material.icons.outlined.VisibilityOff
@@ -486,7 +490,7 @@ fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel
                 horizontalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    imageVector = if (isInWatchlist) Icons.Outlined.BookmarkRemove else Icons.Outlined.BookmarkAdd,
+                    imageVector = if (isInWatchlist) Icons.Outlined.PlaylistRemove else Icons.Outlined.PlaylistAdd,
                     contentDescription = "Bookmark",
                     tint = Color.White,
                     modifier = Modifier

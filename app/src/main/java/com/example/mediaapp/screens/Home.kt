@@ -26,8 +26,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.PlaylistAdd
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.PlaylistAdd
+import androidx.compose.material.icons.outlined.PlaylistRemove
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -201,9 +204,10 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                         )
                                     }
                                 }
+                            // HERE HERE HERE HERE HERE HERE
                             // Bookmark Icon
                             Icon(
-                                painter = painterResource(R.drawable.bookmark),
+                                imageVector = Icons.Outlined.PlaylistAdd,
                                 contentDescription = "bookmark",
                                 modifier = Modifier
                                     .size(33.dp)
