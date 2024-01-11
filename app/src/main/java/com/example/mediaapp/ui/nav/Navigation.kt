@@ -356,8 +356,8 @@ fun TopNavBarE(navController: NavController,  drawerState: DrawerState, modifier
                     imageVector = Icons.Filled.Close,
                     contentDescription = "arrow back",
                     modifier = Modifier
-                        .width(48.dp)
-                        .height(48.dp)
+                        .width(30.dp)
+                        .height(30.dp)
                 )
             }
         },
