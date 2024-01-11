@@ -207,10 +207,10 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                 contentDescription = "bookmark",
                                 modifier = Modifier
                                     .size(33.dp)
+                                    .offset(y = -(20).dp, x = -(5).dp)
                                     .padding(end = 5.dp)
                                     .clickable { /*TODO*/ }
                                     .align(Alignment.BottomEnd)
-                                    .offset(y = -(20).dp, x = -(5).dp)
                             )
                             }
                         }
