@@ -107,6 +107,7 @@ fun MovieDetailPage(
         viewModel.fetchMovieCredits(movieId)
         viewModel.checkIfWatched(movieId)
         viewModel.updateRating(movieId)
+        viewModel.fetchUserRating(movieId.toLong())
     }
 
     val movie = movieDetails ?: return
@@ -368,15 +369,8 @@ fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel
 @Composable
 fun RatingDialog(onDismissRequest: () -> Unit, viewModel: MovieDetailViewModel, movieId: String) {
     val movieRating by viewModel.movieRating.collectAsState()
-
-    var tempRating by remember { mutableFloatStateOf(0f) }
-    /*
-    var tempRating = remember {
-        movieRating?.let { mutableFloatStateOf(it.amount.toFloat()) } ?: mutableStateOf(0f)
-    }
-     */
-
-
+    val userRating by viewModel.movieUserRating.collectAsState()
+    var tempRating by remember { mutableFloatStateOf(userRating?.toFloat() ?: 0f) }
     var chooseRating: Int by remember { mutableIntStateOf(0) }
 
     Dialog(

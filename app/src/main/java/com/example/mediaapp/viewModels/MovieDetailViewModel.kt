@@ -1,5 +1,6 @@
 package com.example.mediaapp.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.backend.database.DatabaseHandler
@@ -9,6 +10,7 @@ import com.example.mediaapp.models.TMDBMovieCredits
 import com.example.mediaapp.models.TMDBMovieDetail
 import com.example.mediaapp.rating.RatingHandler
 import com.example.mediaapp.backend.repos.MovieDetailRepo
+import com.example.mediaapp.models.RatingForDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +30,9 @@ class MovieDetailViewModel() : ViewModel() {
 
     private val _movieRating = MutableStateFlow<RatingAverage?>(null)
     val movieRating: StateFlow<RatingAverage?> = _movieRating.asStateFlow()
+
+    private var _movieUserRating = MutableStateFlow<Long?>(0)
+    val movieUserRating: StateFlow<Long?> = _movieUserRating
 
     private val _watchedBool = MutableStateFlow<Boolean>(false)
     val watchedBool: StateFlow<Boolean> = _watchedBool.asStateFlow()
@@ -116,6 +121,18 @@ class MovieDetailViewModel() : ViewModel() {
             }
         }
     }
+
+    //HERE HERE HERE
+    fun fetchUserRating(movieID: Long) {
+        viewModelScope.launch {
+            try {
+                _movieUserRating.value = RatingHandler.getUserRating(movieID)
+            } catch (e: Exception) {
+                Log.e("DATABASE", "fetchUserRating(): $e")
+            }
+        }
+    }
+
 
     fun checkIfWatched(movieId: String) {
         viewModelScope.launch {
