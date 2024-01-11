@@ -110,18 +110,6 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                 .height(280.dp)
                                 .fillMaxWidth()
                         ) {
-                            /* Have some problems with sometimes skipping two pages
-                        LaunchedEffect("autoscroll") {
-                            while(pageCount > 0) {
-                                delay(8000)
-                                scope.launch {
-                                    val nextPage = (pagerState.currentPage + 1) % pageCount
-                                    pagerState.animateScrollToPage(nextPage)
-                                }
-                            }
-                        }
-
-                         */
                             AsyncImage(
                                 model = baseURL + movie.backdrop_path,
                                 contentDescription = null,

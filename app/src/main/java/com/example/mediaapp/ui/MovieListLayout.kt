@@ -231,3 +231,137 @@ fun StandardBoxInRow(navController: NavController, movie_poster_path: String, mo
         }
     }
 }
+
+@Composable
+fun StandardBoxInRowActors() {
+    Box(
+        modifier = Modifier
+            .width(100.dp)
+            .height(200.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AsyncImage(
+                model = "https://image.tmdb.org/t/p/original/2lKs67r7FI4bPu0AXxMUJZxmUXn.jpg",
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 5.dp)
+                    .width(90.dp)
+                    .height(139.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    /*
+                    .clickable {
+                        scope.launch {
+                            navController.navigate("${Screen.MoviePage.route}/$movieId")
+                        }
+                    }
+
+                     */
+            )
+            Text(
+                text = "Cillian Murphy",
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelMedium,
+                fontSize = 11.sp,
+                softWrap = true,
+                maxLines = 1,
+                lineHeight = 1.em,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 5.dp)
+                    /*
+                    .clickable {
+                        scope.launch {
+                            navController.navigate("${Screen.MoviePage.route}/$movieId")
+                        }
+                    }
+
+                     */
+            )
+            Text(
+                text = "J. Robert Oppenheimer",
+                color = MaterialTheme.colorScheme.outline,
+                style = MaterialTheme.typography.labelMedium,
+                fontSize = 10.sp,
+                softWrap = true,
+                maxLines = 2,
+                lineHeight = 1.em,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+        }
+    }
+}
+
+
+@Composable
+fun StandardBoxInRowCrew() {
+    Box(
+        modifier = Modifier
+            .width(100.dp)
+            .height(200.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AsyncImage(
+                model = "https://image.tmdb.org/t/p/original/2lKs67r7FI4bPu0AXxMUJZxmUXn.jpg",
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 5.dp)
+                    .width(90.dp)
+                    .height(139.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                /*
+                .clickable {
+                    scope.launch {
+                        navController.navigate("${Screen.MoviePage.route}/$movieId")
+                    }
+                }
+
+                 */
+            )
+            Text(
+                text = "Cillian Murphy",
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.labelMedium,
+                fontSize = 11.sp,
+                softWrap = true,
+                maxLines = 1,
+                lineHeight = 1.em,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 5.dp)
+                /*
+                .clickable {
+                    scope.launch {
+                        navController.navigate("${Screen.MoviePage.route}/$movieId")
+                    }
+                }
+
+                 */
+            )
+            Text(
+                text = "J. Robert Oppenheimer",
+                color = MaterialTheme.colorScheme.outline,
+                style = MaterialTheme.typography.labelMedium,
+                fontSize = 10.sp,
+                softWrap = true,
+                maxLines = 2,
+                lineHeight = 1.em,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+        }
+    }
+}
+

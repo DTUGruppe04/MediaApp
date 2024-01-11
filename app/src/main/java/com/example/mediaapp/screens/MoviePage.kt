@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -87,6 +88,9 @@ import com.example.mediaapp.viewModels.MovieDetailViewModel
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
+import com.example.mediaapp.ui.StandardBoxInRow
+import com.example.mediaapp.ui.StandardBoxInRowActors
+import com.example.mediaapp.ui.StandardBoxInRowCrew
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
 
@@ -147,6 +151,67 @@ fun MovieDetailPage(
             }// TODO Add Director and Actors
             item {
                 WatchAndRecommend(viewModel, movieId)
+            }
+            item {
+                SeparationBox()
+            }
+            item {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .fillMaxWidth()
+                        .height(220.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Column {
+                        Text(
+                            text = "Actors",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                        )
+                        LazyRow(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            item {
+                                StandardBoxInRowActors()
+                            }
+                        }
+                    }
+                }
+            }
+            item {
+                SeparationBox()
+                SeparationBox()
+            }
+            item {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .fillMaxWidth()
+                        .height(220.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Column {
+                        Text(
+                            text = "Crew",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                        )
+                        LazyRow(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            item {
+                                StandardBoxInRowCrew()
+                            }
+                        }
+                    }
+                }
             }
 
             /*
@@ -283,6 +348,7 @@ fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel
     var isBookmarked by remember { mutableStateOf(bookmarkStatus) }
     var isRating by remember { mutableStateOf(false) }
     val isInWatchlist by viewModel.isInWatchlist.collectAsState()
+    val dataForRating by viewModel.movieRating.collectAsState()
 
     if (isRating) {
         RatingDialog(onDismissRequest = { isRating = false }, viewModel = viewModel, movieId = movieId)
@@ -333,12 +399,26 @@ fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel
                     contentDescription = "star",
                     tint = Color.Yellow
                 )
-                Text(
-                    text = movie.vote_count.toString(),
-                    color = Color.White,
-                    modifier = Modifier.padding(start = 5.dp, end = 15.dp),
-                    fontSize = 14.sp
-                )
+                Column(
+                    modifier = Modifier.padding(start = 7.dp, end = 15.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Log.d("Avg","${dataForRating?.average}")
+                    Text(
+                        text = if (dataForRating?.average?.isNaN() != true) "${dataForRating?.average}/10" else "0.0/10",
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "${dataForRating?.amount}",
+                        color = MaterialTheme.colorScheme.outline,
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
             }
             // "Bookmark" Icon
             Row(
