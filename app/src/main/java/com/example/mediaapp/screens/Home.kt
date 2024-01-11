@@ -16,17 +16,18 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -55,6 +56,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
+import com.example.mediaapp.backend.RecommendationEngine
 import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import kotlinx.coroutines.launch
@@ -66,13 +68,12 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
     val scope = rememberCoroutineScope()
     val popularMovies by viewModel.popularMovies.collectAsState()
     val recommendedMovies by viewModel.recommendedMovies.collectAsState()
-    //val recommendedState by viewModel.recommendedState.collectAsState()
     val moviesInTheatre by viewModel.inTheatres.collectAsState()
     val upComingMovies by viewModel.upComingMovies.collectAsState()
     val firstFiveMovies = popularMovies.take(5)
     val remainingMovies = popularMovies.drop(5)
     val baseURL = "https://image.tmdb.org/t/p/original"
-    val scrollState = rememberScrollState()
+
 
     LaunchedEffect("Homepage") {
         viewModel.fetchPopularMovies()
@@ -82,15 +83,15 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
     }
 
     MediaAppTheme {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 70.dp)
-                .verticalScroll(scrollState)
         ) {
+            item {
                 //This is the uppermost part of the main page
                 val pageCount = firstFiveMovies.size
-                val pagerState = rememberPagerState(pageCount = {popularMovies.size})
+                val pagerState = rememberPagerState(pageCount = {firstFiveMovies.size})
 
                 //The sliding horizontal pager
                 Box(modifier = Modifier
@@ -110,6 +111,18 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                 .height(280.dp)
                                 .fillMaxWidth()
                         ) {
+                            /* Have some problems with sometimes skipping two pages
+                        LaunchedEffect("autoscroll") {
+                            while(pageCount > 0) {
+                                delay(8000)
+                                scope.launch {
+                                    val nextPage = (pagerState.currentPage + 1) % pageCount
+                                    pagerState.animateScrollToPage(nextPage)
+                                }
+                            }
+                        }
+
+                         */
                             AsyncImage(
                                 model = baseURL + movie.backdrop_path,
                                 contentDescription = null,
@@ -146,8 +159,11 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                                 }
                                             }
                                     )
+
                                     Column(
-                                        verticalArrangement = Arrangement.Bottom
+                                        verticalArrangement = Arrangement.Bottom,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
                                     ) {
                                         Text(
                                             text = popularMovies[index].title,
@@ -185,6 +201,17 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                         )
                                     }
                                 }
+                            // Bookmark Icon
+                            Icon(
+                                painter = painterResource(R.drawable.bookmark),
+                                contentDescription = "bookmark",
+                                modifier = Modifier
+                                    .size(33.dp)
+                                    .offset(y = -(20).dp, x = -(5).dp)
+                                    .padding(end = 5.dp)
+                                    .clickable { /*TODO*/ }
+                                    .align(Alignment.BottomEnd)
+                            )
                             }
                         }
                     }
@@ -248,25 +275,9 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                 .size(40.dp)
                         )
                     }
-                    //Add to watchlist button
-                    IconButton(onClick = {
-                            /*TODO*/
-                        },
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.bookmark),
-                            contentDescription = "bookmark",
-                            modifier = Modifier
-                                .size(33.dp)
-                                .offset(y = -(13).dp)
-                                .padding(end = 5.dp)
-                        )
-                    }
                 }
-
-             //TODO
+            }
+            item {//TODO
                 //This is for the first horizontal list
                 Box(
                     modifier = Modifier
@@ -301,10 +312,12 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                         }
                     }
                 }
-
+            }
             if (recommendedMovies.isNotEmpty()) {
+                item {
                     SeparationBox()
-
+                }
+                item {
                     //This is for the second horizontal list (RECOMMENDED BASED ON ALGORITHM)
                     Box(
                         modifier = Modifier
@@ -337,9 +350,12 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                             }
                         }
                     }
-
+                }
             }
+            item {
                 SeparationBox()
+            }
+            item {
                 //This is for the third horizontal list (UpcomingMovies)
                 Box(
                     modifier = Modifier
@@ -371,8 +387,11 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                         }
                     }
                 }
-
+            }
+            item {
                 SeparationBox()
+            }
+            item {
                 //This is for the 4 horizontal list (In Theatres)
                 Box(
                     modifier = Modifier
@@ -407,7 +426,7 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
             }
         }
     }
-
+}
 
 //Is still being used in Profile
 @Composable
