@@ -233,7 +233,7 @@ fun StandardBoxInRow(navController: NavController, movie_poster_path: String, mo
 }
 
 @Composable
-fun StandardBoxInRowActors() {
+fun StandardBoxInRowActors(actorPicPath: String, actorName: String, actorCharacter: String) {
     Box(
         modifier = Modifier
             .width(100.dp)
@@ -244,7 +244,7 @@ fun StandardBoxInRowActors() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
-                model = "https://image.tmdb.org/t/p/original/2lKs67r7FI4bPu0AXxMUJZxmUXn.jpg",
+                model = actorPicPath,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -252,17 +252,9 @@ fun StandardBoxInRowActors() {
                     .width(90.dp)
                     .height(139.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    /*
-                    .clickable {
-                        scope.launch {
-                            navController.navigate("${Screen.MoviePage.route}/$movieId")
-                        }
-                    }
-
-                     */
             )
             Text(
-                text = "Cillian Murphy",
+                text = actorName,
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.labelMedium,
                 fontSize = 11.sp,
@@ -273,17 +265,9 @@ fun StandardBoxInRowActors() {
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .padding(start = 10.dp, top = 5.dp)
-                    /*
-                    .clickable {
-                        scope.launch {
-                            navController.navigate("${Screen.MoviePage.route}/$movieId")
-                        }
-                    }
-
-                     */
             )
             Text(
-                text = "J. Robert Oppenheimer",
+                text = actorCharacter,
                 color = MaterialTheme.colorScheme.outline,
                 style = MaterialTheme.typography.labelMedium,
                 fontSize = 10.sp,
@@ -300,7 +284,7 @@ fun StandardBoxInRowActors() {
 
 
 @Composable
-fun StandardBoxInRowCrew() {
+fun StandardBoxInRowCrew(crewPicPath: String, crewName: String, crewJob: String) {
     Box(
         modifier = Modifier
             .width(100.dp)
@@ -311,7 +295,7 @@ fun StandardBoxInRowCrew() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
-                model = "https://image.tmdb.org/t/p/original/2lKs67r7FI4bPu0AXxMUJZxmUXn.jpg",
+                model = crewPicPath,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -319,17 +303,9 @@ fun StandardBoxInRowCrew() {
                     .width(90.dp)
                     .height(139.dp)
                     .clip(RoundedCornerShape(10.dp))
-                /*
-                .clickable {
-                    scope.launch {
-                        navController.navigate("${Screen.MoviePage.route}/$movieId")
-                    }
-                }
-
-                 */
             )
             Text(
-                text = "Cillian Murphy",
+                text = crewName,
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.labelMedium,
                 fontSize = 11.sp,
@@ -340,17 +316,9 @@ fun StandardBoxInRowCrew() {
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .padding(start = 10.dp, top = 5.dp)
-                /*
-                .clickable {
-                    scope.launch {
-                        navController.navigate("${Screen.MoviePage.route}/$movieId")
-                    }
-                }
-
-                 */
             )
             Text(
-                text = "J. Robert Oppenheimer",
+                text = crewJob,
                 color = MaterialTheme.colorScheme.outline,
                 style = MaterialTheme.typography.labelMedium,
                 fontSize = 10.sp,

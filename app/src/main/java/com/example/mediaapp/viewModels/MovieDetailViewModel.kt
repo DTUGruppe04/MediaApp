@@ -3,6 +3,7 @@ package com.example.mediaapp.viewModels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mediaapp.backend.database.DatabaseHandler
 import com.example.mediaapp.models.RatingAverage
 import com.example.mediaapp.backend.apirequests.APIHandler
@@ -10,7 +11,7 @@ import com.example.mediaapp.models.TMDBMovieCredits
 import com.example.mediaapp.models.TMDBMovieDetail
 import com.example.mediaapp.rating.RatingHandler
 import com.example.mediaapp.backend.repos.MovieDetailRepo
-import com.example.mediaapp.models.RatingForDatabase
+import com.example.mediaapp.models.TMDBMovie
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,7 +38,16 @@ class MovieDetailViewModel() : ViewModel() {
     private val _watchedBool = MutableStateFlow<Boolean>(false)
     val watchedBool: StateFlow<Boolean> = _watchedBool.asStateFlow()
 
+    private val _isInWatchlist = MutableStateFlow(false)
+    val isInWatchlist: StateFlow<Boolean> = _isInWatchlist.asStateFlow()
+
+    private val _similarMovies = MutableStateFlow<List<TMDBMovie>?>(emptyList())
+    val similarMovies: StateFlow<List<TMDBMovie>?> = _similarMovies.asStateFlow()
+
     private val _isLoading = MutableStateFlow(false)
+
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
 
     private val databaseHandler = DatabaseHandler.getInstance()
 
@@ -64,8 +74,16 @@ class MovieDetailViewModel() : ViewModel() {
         }
     }
 
-    private val _isInWatchlist = MutableStateFlow(false)
-    val isInWatchlist: StateFlow<Boolean> = _isInWatchlist.asStateFlow()
+    fun fetchSimilarMovies(movieID: String) {
+        viewModelScope.launch {
+            try {
+                val response = movieDetailRepo.getSimilarMovies(movieID)
+                _similarMovies.value = response
+            } catch (e: Exception) {
+                Log.e("DATABASE", "fetchUserRating(): $e")
+            }
+        }
+    }
 
     fun checkIfInWatchlist(movieId: String) {
         viewModelScope.launch {
@@ -74,7 +92,7 @@ class MovieDetailViewModel() : ViewModel() {
                 val watchlistMovie = watchlistMovies.find { it.movieID == movieId.toLong() }
                 _isInWatchlist.value = watchlistMovie != null
             } catch (e: Exception) {
-                // Handle errors
+                Log.e("DATABASE", "checkIfInWatchlist(): $e")
             }
         }
     }
@@ -85,7 +103,7 @@ class MovieDetailViewModel() : ViewModel() {
                 databaseHandler.updateWatchlistMovie(createWatchlistMap())
                 _isInWatchlist.value = true
             } catch (e: Exception) {
-                // Handle errors
+                Log.e("DATABASE", "addToWatchlist(): $e")
             }
         }
     }
@@ -96,7 +114,7 @@ class MovieDetailViewModel() : ViewModel() {
                 databaseHandler.removeMovieFromWatchlist(movieId.toLong())
                 _isInWatchlist.value = false
             } catch (e: Exception) {
-                // Handle errors
+                Log.e("DATABASE", "removeFromWatchlist(): $e")
             }
         }
     }
@@ -106,7 +124,7 @@ class MovieDetailViewModel() : ViewModel() {
             try {
                 _movieRating.value = RatingHandler.getRating(movieId.toLong())
             } catch (e: Exception) {
-                // Handle errors
+                Log.e("DATABASE", "updateRating(): $e")
             }
         }
     }
@@ -118,7 +136,7 @@ class MovieDetailViewModel() : ViewModel() {
                 _movieRating.value = RatingHandler.getRating(movieId.toLong())
                 fetchUserRating(movieId)
             } catch (e: Exception) {
-                // Handle errors
+                Log.e("DATABASE", "rateMovie(): $e")
             }
         }
     }
@@ -142,7 +160,7 @@ class MovieDetailViewModel() : ViewModel() {
                 val watchedlistMovie = watchedlistMovies.find { it.movieID == movieId.toLong() }
                 _watchedBool.value = watchedlistMovie != null
             } catch (e: Exception) {
-                // Handle errors
+                Log.e("DATABASE", "checkIfWatched(): $e")
             }
         }
     }
@@ -155,7 +173,7 @@ class MovieDetailViewModel() : ViewModel() {
                     removeFromWatchedList(movieId)
                 }
             } catch (e: Exception) {
-                // Handle errors
+                Log.e("DATABASE", "updateWatchedBool(): $e")
             }
         }
     }
@@ -166,7 +184,7 @@ class MovieDetailViewModel() : ViewModel() {
                 _watchedBool.value = true
                 databaseHandler.updateWatchedMovie(createWatchlistMap())
             } catch (e: Exception) {
-                // Handle errors
+                Log.e("DATABASE", "addToWatchedList(): $e")
             }
         }
     }
@@ -177,7 +195,7 @@ class MovieDetailViewModel() : ViewModel() {
                 _watchedBool.value = false
                 databaseHandler.removeMovieFromWatched(movieId.toLong())
             } catch (e: Exception) {
-                // Handle errors
+                Log.e("DATABASE", "removeFromWatchedList(): $e")
             }
         }
     }

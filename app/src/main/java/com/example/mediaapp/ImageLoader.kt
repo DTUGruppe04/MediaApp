@@ -19,6 +19,7 @@ class ImageLoader: Application(), ImageLoaderFactory {
                     .build()
             }
             .diskCachePolicy(CachePolicy.ENABLED)
+            .error(R.drawable.imagefail)
             .diskCache {
                 DiskCache.Builder()
                     .maxSizePercent(0.1)

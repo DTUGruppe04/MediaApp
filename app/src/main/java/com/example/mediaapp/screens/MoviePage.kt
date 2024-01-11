@@ -93,18 +93,23 @@ import com.example.mediaapp.ui.StandardBoxInRowActors
 import com.example.mediaapp.ui.StandardBoxInRowCrew
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
+import javax.inject.Scope
 
 private const val baseURL = "https://image.tmdb.org/t/p/original"
-private const val failURL = "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailPage(
     movieId: String,
     viewModel: MovieDetailViewModel = viewModel(),
     navController: NavController,
-    drawerState: DrawerState) {
+    drawerState: DrawerState
+) {
     val movieDetails by viewModel.movieDetails.collectAsState()
     val movieCredits by viewModel.movieCredits.collectAsState()
+    val actors = movieCredits?.cast?.take(20)
+    val crew = movieCredits?.crew?.take(20)
+    val similarMovies by viewModel.similarMovies.collectAsState()
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(movieId) {
         viewModel.checkIfInWatchlist(movieId)
@@ -113,6 +118,7 @@ fun MovieDetailPage(
         viewModel.checkIfWatched(movieId)
         viewModel.updateRating(movieId)
         viewModel.fetchUserRating(movieId)
+        viewModel.fetchSimilarMovies(movieId)
     }
 
     val movie = movieDetails ?: return
@@ -148,7 +154,7 @@ fun MovieDetailPage(
             item {
                 //Top part
                 MovieDescription(movie, true, viewModel, movieId)
-            }// TODO Add Director and Actors
+            }
             item {
                 WatchAndRecommend(viewModel, movieId)
             }
@@ -156,6 +162,7 @@ fun MovieDetailPage(
                 SeparationBox()
             }
             item {
+                //Actor Showcase
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
@@ -175,8 +182,14 @@ fun MovieDetailPage(
                         LazyRow(
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            item {
-                                StandardBoxInRowActors()
+                            if (actors != null) {
+                                items(actors.size) {
+                                    StandardBoxInRowActors(
+                                        baseURL + actors[it].profile_path,
+                                        actors[it].name,
+                                        actors[it].character
+                                    )
+                                }
                             }
                         }
                     }
@@ -187,6 +200,7 @@ fun MovieDetailPage(
                 SeparationBox()
             }
             item {
+                //Crew Showcase
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
@@ -206,14 +220,59 @@ fun MovieDetailPage(
                         LazyRow(
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            item {
-                                StandardBoxInRowCrew()
+                            if (crew != null) {
+                                items(crew.size) {
+                                    StandardBoxInRowCrew(
+                                        baseURL + crew[it].profile_path,
+                                        crew[it].name,
+                                        crew[it].job
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
-
+            //SimilarMovies Showcase
+            if (similarMovies?.isNotEmpty() == true) {
+                item {
+                    SeparationBox()
+                    SeparationBox()
+                }
+                item {
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp)
+                            .fillMaxWidth()
+                            .height(220.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                    ) {
+                        Column {
+                            Text(
+                                text = "Similar Movies",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.labelMedium,
+                                fontSize = 18.sp,
+                                modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                            )
+                            LazyRow(
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                items(similarMovies!!.size) {
+                                    StandardBoxInRow(
+                                        navController = navController,
+                                        movie_poster_path = baseURL + similarMovies!![it].poster_path,
+                                        movieTitle = similarMovies!![it].title,
+                                        scope = scope,
+                                        movieId = similarMovies!![it].id.toString()
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             /*
             item {
                 Detail(detail = "Crew", infoList = convertCrewToStringList(movieCredits?.crew))
@@ -345,7 +404,7 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel:
 
 @Composable
 fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel: MovieDetailViewModel, movieId: String) {
-    var isBookmarked by remember { mutableStateOf(bookmarkStatus) }
+    //var isBookmarked by remember { mutableStateOf(bookmarkStatus) }
     var isRating by remember { mutableStateOf(false) }
     val isInWatchlist by viewModel.isInWatchlist.collectAsState()
     val dataForRating by viewModel.movieRating.collectAsState()
@@ -449,7 +508,7 @@ fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel
 
 @Composable
 fun RatingDialog(onDismissRequest: () -> Unit, viewModel: MovieDetailViewModel, movieId: String) {
-    val movieRating by viewModel.movieRating.collectAsState()
+    //val movieRating by viewModel.movieRating.collectAsState()
     val userRating by viewModel.movieUserRating.collectAsState()
     var tempRating by remember { mutableFloatStateOf(userRating?.toFloat() ?: 0f) }
     var chooseRating: Int by remember { mutableIntStateOf(0) }
