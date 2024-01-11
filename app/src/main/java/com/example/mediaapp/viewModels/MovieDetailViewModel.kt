@@ -116,6 +116,7 @@ class MovieDetailViewModel() : ViewModel() {
             try {
                 RatingHandler.addRating(movieId.toLong(), rating)
                 _movieRating.value = RatingHandler.getRating(movieId.toLong())
+                fetchUserRating(movieId)
             } catch (e: Exception) {
                 // Handle errors
             }
@@ -123,10 +124,10 @@ class MovieDetailViewModel() : ViewModel() {
     }
 
     //HERE HERE HERE
-    fun fetchUserRating(movieID: Long) {
+    fun fetchUserRating(movieID: String) {
         viewModelScope.launch {
             try {
-                _movieUserRating.value = RatingHandler.getUserRating(movieID)
+                _movieUserRating.value = RatingHandler.getUserRating(movieID.toLong())
             } catch (e: Exception) {
                 Log.e("DATABASE", "fetchUserRating(): $e")
             }

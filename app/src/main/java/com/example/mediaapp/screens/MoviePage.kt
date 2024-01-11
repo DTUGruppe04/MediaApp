@@ -1,6 +1,7 @@
 package com.example.mediaapp.screens
 
 import android.util.Log
+import android.widget.RatingBar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -107,7 +108,7 @@ fun MovieDetailPage(
         viewModel.fetchMovieCredits(movieId)
         viewModel.checkIfWatched(movieId)
         viewModel.updateRating(movieId)
-        viewModel.fetchUserRating(movieId.toLong())
+        viewModel.fetchUserRating(movieId)
     }
 
     val movie = movieDetails ?: return
