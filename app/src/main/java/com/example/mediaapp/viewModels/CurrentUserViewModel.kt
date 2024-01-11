@@ -21,6 +21,7 @@ class CurrentUserViewModel : ViewModel(){
 
     var username = ""
     var name = ""
+    var desc = ""
 
     fun getCurrentUser() {
         viewModelScope.launch {

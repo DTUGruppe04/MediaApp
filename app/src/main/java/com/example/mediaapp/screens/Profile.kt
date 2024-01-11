@@ -413,6 +413,7 @@ fun EditProfile(onDismissRequest: () -> Unit, viewModel: CurrentUserViewModel = 
             }
             TextfieldForEditUsername(viewModel = viewModel)
             TextfieldForEditName(viewModel = viewModel)
+            TextfieldForEditDesc(viewModel = viewModel)
         }
     }
 }
@@ -448,6 +449,27 @@ private fun TextfieldForEditName(viewModel: CurrentUserViewModel) {
             viewModel.name = newValue.text},
         label = {labelStyle("Name")},
         placeholder = {placeholderStyle("Enter your name")},
+        colors = textFieldColors(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TextfieldForEditDesc(viewModel: CurrentUserViewModel) {
+    var desc by remember { mutableStateOf(TextFieldValue()) }
+
+    TextField(
+        modifier = Modifier.padding(start = 29.dp, top = 16.dp, end = 29.dp)
+                .fillMaxWidth()
+                .height(198.dp)
+                .clip(RoundedCornerShape(10.dp)),
+        value = desc,
+        onValueChange = { newValue ->
+            desc = newValue
+            viewModel.desc = newValue.text},
+        label = {labelStyle("Description")},
+        placeholder = {placeholderStyle("Enter a description")},
         colors = textFieldColors(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
     )
