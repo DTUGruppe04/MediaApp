@@ -34,6 +34,10 @@ class CurrentUserViewModel : ViewModel(){
         return country?.flag ?: -1
     }
 
+    fun getCountryNames(): List<String> {
+        return countries.map { it.name }
+    }
+
     private val countries = listOf(
         Country("Andorra", R.drawable.ad),
         Country("United Arab Emirates", R.drawable.ae),

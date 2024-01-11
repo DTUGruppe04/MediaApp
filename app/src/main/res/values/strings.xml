@@ -148,6 +148,8 @@
     <string name="profile_page_unknown">Unknown</string>
     <string name="profile_page_unknown_location">No location</string>
     <string name="edit_profile">Customize Profile</string>
+    <string name="location">Choose location</string>
+    <string name="picture">Change picture</string>
 
     //Settings Page Strings
     <string name="settingnodesc"></string>

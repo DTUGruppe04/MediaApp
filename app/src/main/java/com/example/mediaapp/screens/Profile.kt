@@ -1,5 +1,6 @@
 package com.example.mediaapp.screens
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,18 +9,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.LaunchedEffect
@@ -30,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -39,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,11 +53,10 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
+import com.example.mediaapp.ui.TabsAndFilters
 import com.example.mediaapp.ui.nav.TopNavBarA
-import com.example.mediaapp.ui.nav.TopNavBarC
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import com.example.mediaapp.viewModels.CurrentUserViewModel
-import com.example.mediaapp.viewModels.LoginPageViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -266,9 +271,12 @@ fun ProfileDescription(
         .clip(RoundedCornerShape(10.dp))
         .background(MaterialTheme.colorScheme.surfaceVariant)
         .fillMaxWidth()
-        .height(162.dp)) {
+        .wrapContentHeight()) {
         Row(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.size(145.dp, 160.dp)) {
+            Column(modifier = Modifier
+                .width(145.dp)
+                .wrapContentHeight()
+                .padding(bottom = 5.dp)) {
                 Image(
                     painter = painterResource(profilePicture),
                     contentDescription = "profile_picture",
@@ -376,6 +384,8 @@ fun ProfileDescription(
 
 @Composable
 fun EditProfile(onDismissRequest: () -> Unit, viewModel: CurrentUserViewModel = viewModel()) {
+    val countryList = viewModel.getCountryNames()
+    val pictures : List<String> = listOf<String>()
     Dialog(
         onDismissRequest = { onDismissRequest() },
         properties = DialogProperties(usePlatformDefaultWidth = false)
@@ -413,9 +423,109 @@ fun EditProfile(onDismissRequest: () -> Unit, viewModel: CurrentUserViewModel = 
             }
             TextfieldForEditUsername(viewModel = viewModel)
             TextfieldForEditName(viewModel = viewModel)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(start = 29.dp, top = 16.dp, end = 29.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                DropdownLocation(filterOption = TabsAndFilters.FilterOption(
+                    stringResource(R.string.location),
+                    stringResource(R.string.location),
+                    countryList,
+                ))
+                DropdownLocation(filterOption = TabsAndFilters.FilterOption(
+                    stringResource(R.string.picture),
+                    stringResource(R.string.picture),
+                    pictures,
+                ))
+            }
+
             TextfieldForEditDesc(viewModel = viewModel)
         }
     }
+}
+
+@Composable
+fun DropdownLocation(filterOption: TabsAndFilters.FilterOption) {
+    var selectedOption by remember { mutableStateOf(filterOption.label) }
+    var expanded by remember { mutableStateOf(false)}
+    val (backgroundColor, textColor) = getDropdownColors(expanded)
+    val itemHeight = 48.dp
+    val dropdownHeight = itemHeight * (if (filterOption.options.size < 8) filterOption.options.size else 8)
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .background(backgroundColor)
+
+    ) {
+        DropdownMenuToggle(
+            label = selectedOption,
+            expanded = expanded,
+            onToggle = { expanded = !expanded },
+            textColor = textColor
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = {expanded = false},
+            modifier = Modifier.heightIn(max = dropdownHeight)
+        ) {
+            filterOption.options.forEach{ option ->
+                DropdownMenuItem(
+                    text = { Text(text = option) },
+                    onClick = {
+                        expanded = false
+                        selectedOption = option
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun DropdownMenuToggle(
+    label: String,
+    expanded: Boolean,
+    onToggle: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    textColor: Color
+) {
+    Row(
+        modifier = modifier
+            .padding(start = 16.dp, top = 6.dp, end = 8.dp, bottom = 6.dp)
+            .clickable { onToggle(!expanded) },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val shortlabel = if (label.length > 18) label.substring(0, 18) + "..." else label
+        Text(
+            text = shortlabel,
+            style = MaterialTheme.typography.labelLarge,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Icon(
+            Icons.Filled.ArrowDropDown,
+            contentDescription = null,
+            tint = textColor,
+            modifier = Modifier
+                .padding(1.dp)
+                .width(18.dp)
+                .height(18.dp)
+                .rotate(if (expanded) 180f else 0f))
+    }
+}
+
+@Composable
+private fun getDropdownColors(expanded: Boolean): Pair<Color, Color> {
+    val backgroundColor = animateColorAsState(if (expanded) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+        label = ""
+    ).value
+    val textColor = animateColorAsState(if (expanded) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+        label = ""
+    ).value
+    return Pair(backgroundColor, textColor)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -460,10 +570,11 @@ private fun TextfieldForEditDesc(viewModel: CurrentUserViewModel) {
     var desc by remember { mutableStateOf(TextFieldValue()) }
 
     TextField(
-        modifier = Modifier.padding(start = 29.dp, top = 16.dp, end = 29.dp)
-                .fillMaxWidth()
-                .height(198.dp)
-                .clip(RoundedCornerShape(10.dp)),
+        modifier = Modifier
+            .padding(start = 29.dp, top = 16.dp, end = 29.dp, bottom = 16.dp)
+            .fillMaxWidth()
+            .height(198.dp)
+            .clip(RoundedCornerShape(10.dp)),
         value = desc,
         onValueChange = { newValue ->
             desc = newValue
@@ -516,6 +627,8 @@ private fun FollowText(text: String, paddingValue: Dp, color: Color, textAlign: 
         color = color,
         textAlign = textAlign,
         modifier = Modifier
-            .padding(start = paddingValue)
+            .padding(start = paddingValue, top = 5.dp)
     )
+
+
 }
