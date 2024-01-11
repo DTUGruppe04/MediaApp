@@ -42,6 +42,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
 import kotlinx.coroutines.launch
@@ -89,6 +90,10 @@ fun BottomNavBar(navController: NavController, modifier : Modifier = Modifier) {
     val contentColor = MaterialTheme.colorScheme.onSurface
     val containerColor = MaterialTheme.colorScheme.surface
     val indicatorColor = MaterialTheme.colorScheme.secondaryContainer
+
+    val navStackBackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navStackBackEntry?.destination?.route
+    selectedItemIndex = bottomNavItems.indexOfFirst { it.route == currentRoute }.coerceAtLeast(0)
 
     NavigationBar(
         containerColor = containerColor,

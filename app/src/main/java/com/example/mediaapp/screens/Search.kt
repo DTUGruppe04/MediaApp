@@ -8,9 +8,12 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,6 +30,7 @@ import com.example.mediaapp.ui.theme.MediaAppTheme
 @Composable
 fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavController, drawerState: DrawerState) {
 
+    val focusRequester = remember { FocusRequester() }
     val searchResults by viewModel.searchResults.collectAsState()
     val isSearchActive by viewModel.isSearchActive.collectAsState()
     val hasGenreBeenChosen by viewModel.hasGenreBeenChosen.collectAsState()
@@ -51,7 +55,9 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
         stringResource(R.string.war),
         stringResource(R.string.western)
     )
-
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
     MediaAppTheme {
         Column(
             modifier = Modifier
@@ -60,43 +66,23 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
         ) {
             TopNavBarA(navController = navController, drawerState = drawerState)
             SearchBar(
-                query = searchQuery,
-                onSearch = { query ->
-                    viewModel.setSearchQuery(query)
-                    viewModel.performSearch(query) }
-            )
-
-
-            // UI Tabs and Filters
-            /*val customUITabs = TabsAndFilters(
-                tabs = listOf(
-                    stringResource(R.string.all),
-                    stringResource(R.string.watched), stringResource(R.string.not_watched)
+                focusRequester = focusRequester,
+                query = searchQuery
+            ) { query ->
+                viewModel.setSearchQuery(query)
+                viewModel.performSearch(query)
+            }
+            val filters = listOf(
+                TabsAndFilters.FilterOption(
+                    stringResource(R.string.genre),
+                    stringResource(R.string.genre),
+                    listOfGenres,
                 ),
-                filters = listOf(
-                    TabsAndFilters.FilterOption(
-                        stringResource(R.string.genre),
-                        listOfGenres,
-                    ),
-                    /* TabsAndFilters.FilterOption(
-                        stringResource(R.string.year_from),
-                        (1960..2023).map { it.toString() }),
-                    TabsAndFilters.FilterOption(
-                        stringResource(R.string.year_to),
-                        (1960..2023).map { it.toString() }),
-                    TabsAndFilters.FilterOption(
-                        stringResource(R.string.rating_from),
-                        (0..10).map { it.toString() }),
-                    TabsAndFilters.FilterOption(
-                        stringResource(R.string.rating_to),
-                        (0..10).map { it.toString() })*/
-                ),
-                onGenreSelected = { genre ->
-                    viewModel.getMoviesWithGenre(genre)
-                }
             )
-            customUITabs.Render()
-            */
+            TabsAndFilters(filters) { filterId, option ->
+                viewModel.getMoviesWithGenre(option) // Call ViewModel function
+            }.Render(navController = navController)
+
             if (isSearchActive) {
             SearchQueryLayout.SearchQueryList(movies = searchResults, navController = navController)
             } else {

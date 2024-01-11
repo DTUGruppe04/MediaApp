@@ -66,6 +66,7 @@ class SearchViewModel() : ViewModel() {
         }
     }
 
+
     fun resetSearch() {
         _searchQuery.value = ""
         _searchResults.value = emptyList()
