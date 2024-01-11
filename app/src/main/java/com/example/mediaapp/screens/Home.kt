@@ -16,12 +16,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -54,7 +55,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
-import com.example.mediaapp.backend.RecommendationEngine
 import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import kotlinx.coroutines.launch
@@ -72,7 +72,7 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
     val firstFiveMovies = popularMovies.take(5)
     val remainingMovies = popularMovies.drop(5)
     val baseURL = "https://image.tmdb.org/t/p/original"
-
+    val scrollState = rememberScrollState()
 
     LaunchedEffect("Homepage") {
         viewModel.fetchPopularMovies()
@@ -82,12 +82,12 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
     }
 
     MediaAppTheme {
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 70.dp)
+                .verticalScroll(scrollState)
         ) {
-            item {
                 //This is the uppermost part of the main page
                 val pageCount = firstFiveMovies.size
                 val pagerState = rememberPagerState(pageCount = {popularMovies.size})
@@ -277,8 +277,8 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                         )
                     }
                 }
-            }
-            item {//TODO
+
+             //TODO
                 //This is for the first horizontal list
                 Box(
                     modifier = Modifier
@@ -313,12 +313,10 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                         }
                     }
                 }
-            }
+
             if (recommendedMovies.isNotEmpty()) {
-                item {
                     SeparationBox()
-                }
-                item {
+
                     //This is for the second horizontal list (RECOMMENDED BASED ON ALGORITHM)
                     Box(
                         modifier = Modifier
@@ -351,12 +349,9 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                             }
                         }
                     }
-                }
+
             }
-            item {
                 SeparationBox()
-            }
-            item {
                 //This is for the third horizontal list (UpcomingMovies)
                 Box(
                     modifier = Modifier
@@ -388,11 +383,8 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                         }
                     }
                 }
-            }
-            item {
+
                 SeparationBox()
-            }
-            item {
                 //This is for the 4 horizontal list (In Theatres)
                 Box(
                     modifier = Modifier
@@ -427,7 +419,7 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
             }
         }
     }
-}
+
 
 //Is still being used in Profile
 @Composable
