@@ -639,13 +639,13 @@ fun DescriptionDialog(onDismissRequest: () -> Unit, text: String) {
 }
 
 @Composable
-fun ExpandableTextDescription(text: String, maxLength: Int = 180) {
+fun ExpandableTextDescription(text: String, maxLength: Int = 150) {
     var isExpanded by remember { mutableStateOf(false) }
 
     val displayText = if (text.length <= maxLength) {
         text
     } else {
-        text.take(maxLength)
+        text.take(maxLength) + "..."
     }
 
     if (isExpanded) {

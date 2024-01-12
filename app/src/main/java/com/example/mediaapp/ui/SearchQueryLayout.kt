@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -54,7 +55,15 @@ object SearchQueryLayout {
             }
         }
     }
-
+    @Composable
+    fun ShortenedText(text: String): String {
+        var shortText: String = text
+        // Check if the text needs truncation
+        if (text.length > 80) {
+            shortText = text.take(80) + "..."
+        }
+        return shortText
+    }
     @Composable
     fun SearchQueryListItem(movie: TMDBMovie,movieId: Int, navController: NavController) {
         Row(
@@ -79,7 +88,10 @@ object SearchQueryLayout {
                     text = movie.title,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Text(text = movie.overview, style = MaterialTheme.typography.titleSmall)
+                Text(text = ShortenedText(text = movie.overview),
+                    style = MaterialTheme.typography.titleSmall,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(top = 8.dp))
             }
         }
     }
