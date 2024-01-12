@@ -78,10 +78,14 @@ class WatchlistViewModel : ViewModel() {
             _filteredWatchList.value = filteredMovies
         }
     }
-    private fun filterWatchedMovies(isItWatched: Boolean) {
+    fun filterWatchedMovies(watched: String) {
         viewModelScope.launch {
-            val filteredMovies = sortingHandler.filterWatchedMovies(
-                _originalWatchlist.value ?: emptyList(), isItWatched)
+            val isItWatched = watched == "Watched"
+            val filteredMovies = if (watched == "All") {
+                _originalWatchlist.value ?: emptyList()
+            } else {
+                sortingHandler.filterWatchedMovies(_originalWatchlist.value ?: emptyList(), isItWatched)
+            }
             _filteredWatchList.value = filteredMovies
         }
     }
