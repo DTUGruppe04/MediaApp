@@ -69,7 +69,8 @@ fun WatchlistPage(
 
         val tabs = listOf(
             stringResource(R.string.all),
-            stringResource(R.string.watched), stringResource(R.string.not_watched)
+            stringResource(R.string.watched),
+            stringResource(R.string.not_watched)
         )
         val filters = listOf(
             TabsAndFilters.FilterOption(

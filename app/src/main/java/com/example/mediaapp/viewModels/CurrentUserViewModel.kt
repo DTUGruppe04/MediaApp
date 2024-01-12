@@ -6,6 +6,7 @@ import com.example.mediaapp.R
 import com.example.mediaapp.models.CurrentUser
 import com.example.mediaapp.backend.database.DatabaseHandler
 import com.example.mediaapp.models.Country
+import com.example.mediaapp.models.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,11 @@ class CurrentUserViewModel : ViewModel(){
     private val _currentUser = MutableStateFlow<CurrentUser?>(null)
     val currentUser: StateFlow<CurrentUser?> = _currentUser.asStateFlow()
 
+    var username = ""
+    var name = ""
+    var desc = ""
+    var location = ""
+
     fun getCurrentUser() {
         viewModelScope.launch {
             _currentUser.value = databaseHandler.getUserFromDatabase()
@@ -27,7 +33,34 @@ class CurrentUserViewModel : ViewModel(){
 
     fun getCountryFlag(countryName: String): Int {
         val country = countries.find { it.name == countryName }
-        return country?.flag ?: R.drawable.image_not_found
+        return country?.flag ?: -1
+    }
+
+    fun getCountryNames(): List<String> {
+        return countries.map { it.name }
+    }
+
+    fun updateAccountDetails() {
+        val Tempuser = User(
+            if (username.equals("")) _currentUser.value!!.user.username else username,
+            if (name.equals("")) _currentUser.value!!.user.name else name,
+            if (location.equals("")) _currentUser.value!!.user.location else location,
+            _currentUser.value!!.user.followers,
+            _currentUser.value!!.user.following,
+            if (desc.equals("")) _currentUser.value!!.user.description else desc,
+            _currentUser.value!!.user.profilePicture,
+            _currentUser.value!!.user.stats,
+            _currentUser.value!!.user.favorites,
+            _currentUser.value!!.user.recentlyWatched,
+            _currentUser.value!!.user.ratedMovies
+        )
+        viewModelScope.launch {
+            databaseHandler.updateUserInDatabase(
+                user!!.uid,
+                User.toMap(Tempuser)
+            )
+        }
+        getCurrentUser()
     }
 
     private val countries = listOf(
@@ -280,5 +313,5 @@ class CurrentUserViewModel : ViewModel(){
         Country("South Africa", R.drawable.za),
         Country("Zambia", R.drawable.zm),
         Country("Zimbabwe", R.drawable.zw)
-    )
+    ).sortedBy { it.name }
 }
