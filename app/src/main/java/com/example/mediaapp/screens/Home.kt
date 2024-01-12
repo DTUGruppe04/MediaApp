@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
@@ -25,7 +26,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.PlaylistAdd
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.PlaylistAdd
+import androidx.compose.material.icons.outlined.PlaylistRemove
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -66,7 +71,6 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
     val scope = rememberCoroutineScope()
     val popularMovies by viewModel.popularMovies.collectAsState()
     val recommendedMovies by viewModel.recommendedMovies.collectAsState()
-    //val recommendedState by viewModel.recommendedState.collectAsState()
     val moviesInTheatre by viewModel.inTheatres.collectAsState()
     val upComingMovies by viewModel.upComingMovies.collectAsState()
     val firstFiveMovies = popularMovies.take(5)
@@ -90,7 +94,7 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
             item {
                 //This is the uppermost part of the main page
                 val pageCount = firstFiveMovies.size
-                val pagerState = rememberPagerState(pageCount = {popularMovies.size})
+                val pagerState = rememberPagerState(pageCount = {firstFiveMovies.size})
 
                 //The sliding horizontal pager
                 Box(modifier = Modifier
@@ -158,8 +162,11 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                                 }
                                             }
                                     )
+
                                     Column(
-                                        verticalArrangement = Arrangement.Bottom
+                                        verticalArrangement = Arrangement.Bottom,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
                                     ) {
                                         Text(
                                             text = popularMovies[index].title,
@@ -197,6 +204,18 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                         )
                                     }
                                 }
+                            // HERE HERE HERE HERE HERE HERE
+                            // Bookmark Icon
+                            Icon(
+                                imageVector = Icons.Outlined.PlaylistAdd,
+                                contentDescription = "bookmark",
+                                modifier = Modifier
+                                    .size(33.dp)
+                                    .offset(y = -(20).dp, x = -(5).dp)
+                                    .padding(end = 5.dp)
+                                    .clickable { /*TODO*/ }
+                                    .align(Alignment.BottomEnd)
+                            )
                             }
                         }
                     }
@@ -258,22 +277,6 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                             modifier = Modifier
                                 .padding(10.dp)
                                 .size(40.dp)
-                        )
-                    }
-                    //Add to watchlist button
-                    IconButton(onClick = {
-                            /*TODO*/
-                        },
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.bookmark),
-                            contentDescription = "bookmark",
-                            modifier = Modifier
-                                .size(33.dp)
-                                .offset(y = -(13).dp)
-                                .padding(end = 5.dp)
                         )
                     }
                 }

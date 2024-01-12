@@ -184,6 +184,25 @@ class DatabaseHandler private constructor() {
         return ratings
     }
 
+    suspend fun getUserRatedMovie(): List<RatingForDatabase> {
+        val ratings = mutableListOf<RatingForDatabase>()
+        val result = getCurrentUserID()?.let {
+            database.collection("users")
+                .document(it)
+                .collection("ratedMovies")
+                .get()
+                .await()
+        }
+
+        if (result != null) {
+            for (document in result) {
+                Log.d(TAG, "${document.id} => ${document.data}")
+                ratings += RatingForDatabase.fromMap(document.data)
+            }
+        }
+        Log.d(TAG, "getRatedMovie: $ratings")
+        return ratings
+    }
 
     fun updateRecommendDatabase(watchlistMovieMap: Map<String, Any?>) {
         getCurrentUserID()?.let { database.collection("users")

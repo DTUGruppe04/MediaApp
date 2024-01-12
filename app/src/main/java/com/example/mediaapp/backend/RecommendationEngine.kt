@@ -1,5 +1,6 @@
 package com.example.mediaapp.backend
 
+import android.util.Log
 import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.backend.database.DatabaseHandler
 import com.example.mediaapp.models.Recommend
@@ -9,11 +10,13 @@ class RecommendationEngine {
     private val api = APIHandler()
     private val database = DatabaseHandler.getInstance()
     suspend fun generateMovieSuggestions(movieID: String) {
+        Log.w("FUNCTION CALL", "generateMovieSuggestions()")
         val response = api.getMovieSuggestions(movieID)
         val watchlist = database.getWatchlistMovies()
         if (response != null && response.total_results > 0) {
             var i = 0
             var counter = 0
+            Log.w("FUNCTION CALL", "generateMovieSuggestions() - While loop")
             while (i < 3 && counter < response.results.size) {
                 if (!containMovieId(watchlist, response.results[counter].id.toLong())) {
                     val hash = hashMapOf(
@@ -23,6 +26,7 @@ class RecommendationEngine {
                     )
                     database.updateRecommendDatabase(hash)
                     i++
+                    Log.w("DATABASE CALL", "Added movie to recommendations!")
                 }
                 counter++
             }
