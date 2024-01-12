@@ -150,6 +150,8 @@
     <string name="edit_profile">Customize Profile</string>
     <string name="location">Choose location</string>
     <string name="picture">Change picture</string>
+    <string name="save">Save changes</string>
+    <string name="cancel">Cancel changes</string>
 
     //Settings Page Strings
     <string name="settingnodesc"></string>

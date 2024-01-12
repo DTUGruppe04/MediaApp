@@ -435,21 +435,47 @@ fun EditProfile(onDismissRequest: () -> Unit, viewModel: CurrentUserViewModel = 
                     stringResource(R.string.location),
                     stringResource(R.string.location),
                     countryList,
-                ))
+                ), viewModel = viewModel)
                 DropdownLocation(filterOption = TabsAndFilters.FilterOption(
                     stringResource(R.string.picture),
                     stringResource(R.string.picture),
                     pictures,
-                ))
+                ), viewModel = viewModel)
             }
 
             TextfieldForEditDesc(viewModel = viewModel)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(start = 29.dp, end = 29.dp, bottom = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.cancel),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.clickable { onDismissRequest() }
+                )
+                Text(
+                    text = stringResource(R.string.save),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.clickable {
+                        viewModel.updateAccountDetails()
+                        onDismissRequest()
+                    }
+                )
+            }
         }
     }
 }
 
 @Composable
-fun DropdownLocation(filterOption: TabsAndFilters.FilterOption) {
+fun DropdownLocation(filterOption: TabsAndFilters.FilterOption, viewModel: CurrentUserViewModel) {
     var selectedOption by remember { mutableStateOf(filterOption.label) }
     var expanded by remember { mutableStateOf(false)}
     val (backgroundColor, textColor) = getDropdownColors(expanded)
@@ -478,6 +504,7 @@ fun DropdownLocation(filterOption: TabsAndFilters.FilterOption) {
                     onClick = {
                         expanded = false
                         selectedOption = option
+                        viewModel.location = option
                     }
                 )
             }
