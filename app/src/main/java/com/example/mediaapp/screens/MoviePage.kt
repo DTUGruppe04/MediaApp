@@ -1,7 +1,6 @@
 package com.example.mediaapp.screens
 
 import android.util.Log
-import android.widget.RatingBar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -19,28 +18,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.PlaylistAdd
-import androidx.compose.material.icons.automirrored.outlined.PlaylistAdd
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.icons.outlined.BookmarkAdd
-import androidx.compose.material.icons.outlined.BookmarkRemove
 import androidx.compose.material.icons.outlined.PlaylistAdd
 import androidx.compose.material.icons.outlined.PlaylistRemove
-import androidx.compose.material.icons.outlined.Recommend
 import androidx.compose.material.icons.outlined.ThumbUpAlt
 import androidx.compose.material.icons.outlined.VisibilityOff
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -66,12 +55,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -90,14 +75,12 @@ import com.example.mediaapp.ui.theme.MediaAppTheme
 import com.example.mediaapp.ui.theme.md_theme_dark_background
 import com.example.mediaapp.viewModels.MovieDetailViewModel
 import androidx.compose.runtime.*
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
 import com.example.mediaapp.ui.StandardBoxInRow
 import com.example.mediaapp.ui.StandardBoxInRowActors
 import com.example.mediaapp.ui.StandardBoxInRowCrew
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
-import javax.inject.Scope
 
 private const val baseURL = "https://image.tmdb.org/t/p/original"
 @OptIn(ExperimentalMaterial3Api::class)
@@ -157,7 +140,7 @@ fun MovieDetailPage(
             }
             item {
                 //Top part
-                MovieDescription(movie, true, viewModel, movieId)
+                MovieDescription(movie, viewModel, movieId)
             }
             item {
                 WatchAndRecommend(viewModel, movieId)
@@ -277,17 +260,6 @@ fun MovieDetailPage(
                     }
                 }
             }
-            /*
-            item {
-                Detail(detail = "Crew", infoList = convertCrewToStringList(movieCredits?.crew))
-            }
-             */
-
-            /*
-            item {
-                Detail(detail = "Actors", infoList = convertCrewToStringList(movieCredits?.crew))
-            }
-            */
         }
     }
 }
@@ -356,7 +328,7 @@ fun WatchAndRecommend(viewModel: MovieDetailViewModel, movieId: String) {
 
 
 @Composable
-fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel: MovieDetailViewModel, movieId: String) {
+fun MovieDescription(movie: TMDBMovieDetail, viewModel: MovieDetailViewModel, movieId: String) {
     val genreIds = convertGenresToIntList(movie.genres)
 
     Column(
@@ -394,7 +366,7 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel:
             ) {
                 GenreTags(genreIds)
                 ExpandableTextDescription(movie.overview)
-                RatingAndBookmark(movie = movie, bookmarkStatus = bookmarkStatus, viewModel = viewModel, movieId = movieId)
+                RatingAndBookmark(viewModel = viewModel, movieId = movieId)
             }
         }
         Text(
@@ -407,8 +379,7 @@ fun MovieDescription(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel:
 }
 
 @Composable
-fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel: MovieDetailViewModel, movieId: String) {
-    //var isBookmarked by remember { mutableStateOf(bookmarkStatus) }
+fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
     var isRating by remember { mutableStateOf(false) }
     val isInWatchlist by viewModel.isInWatchlist.collectAsState()
     val dataForRating by viewModel.movieRating.collectAsState()
@@ -512,7 +483,6 @@ fun RatingAndBookmark(movie: TMDBMovieDetail, bookmarkStatus: Boolean, viewModel
 
 @Composable
 fun RatingDialog(onDismissRequest: () -> Unit, viewModel: MovieDetailViewModel, movieId: String) {
-    //val movieRating by viewModel.movieRating.collectAsState()
     val userRating by viewModel.movieUserRating.collectAsState()
     var tempRating by remember { mutableFloatStateOf(userRating?.toFloat() ?: 0f) }
     var chooseRating: Int by remember { mutableIntStateOf(0) }
@@ -552,7 +522,7 @@ fun RatingDialog(onDismissRequest: () -> Unit, viewModel: MovieDetailViewModel, 
                     thickness = 1.dp,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                // A really cool rating bar
+                // Rating bar
                 Row(
                     modifier = Modifier
                         .padding(top = 20.dp)
@@ -748,25 +718,6 @@ fun TagBox(shape : Shape, tag : String) {
                 color = Color.White,
                 modifier = Modifier.align(Alignment.Center),
                 fontSize = 12.sp)
-        }
-    }
-}
-
-@Composable
-fun Detail(detail : String, infoList : List<String>) {
-    Box(modifier = Modifier
-        .padding(top = 10.dp)
-        .padding(start = 10.dp)) {
-        Text(text = detail,
-            fontWeight = FontWeight.Bold,
-            color = Color.White)
-    }
-    for (info in infoList) {
-        Box(modifier = Modifier
-            .padding(top = 5.dp)
-            .padding(start = 20.dp)) {
-            Text(text = info,
-                color = Color.White)
         }
     }
 }
