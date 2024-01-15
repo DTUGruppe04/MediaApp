@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediaapp.backend.database.DatabaseHandler
-import com.example.mediaapp.models.WatchlistMovie
 import com.example.mediaapp.backend.sorting.SortingHandler
-import com.example.mediaapp.rating.RatingHandler
+import com.example.mediaapp.models.WatchlistMovie
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -76,6 +75,17 @@ class WatchlistViewModel : ViewModel() {
             val filteredMovies = sortingHandler.sortWatchListMoviesAlphabetically(
                 _filteredWatchList.value ?: emptyList(), ascending
             )
+            _filteredWatchList.value = filteredMovies
+        }
+    }
+    fun filterWatchedMovies(watched: String) {
+        viewModelScope.launch {
+            val isItWatched = watched == "Watched"
+            val filteredMovies = if (watched == "All") {
+                _originalWatchlist.value ?: emptyList()
+            } else {
+                sortingHandler.filterWatchedMovies(_originalWatchlist.value ?: emptyList(), isItWatched)
+            }
             _filteredWatchList.value = filteredMovies
         }
     }

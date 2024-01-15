@@ -33,4 +33,10 @@ class SortingHandler {
         }
         return genreList
     }
+
+    fun filterWatchedMovies(watchlistMovieList: List<WatchlistMovie>, isItWatched: Boolean): List<WatchlistMovie> {
+        return watchlistMovieList.filter { watchlistMovie ->
+            watchlistMovie.watched == isItWatched
+        }
+    }
 }

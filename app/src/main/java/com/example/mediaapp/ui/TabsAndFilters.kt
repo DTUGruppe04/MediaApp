@@ -46,7 +46,9 @@ import com.example.mediaapp.ui.theme.MediaAppTheme
 class TabsAndFilters(
     private val filters: List<FilterOption>,
     private val tabs: List<String> = emptyList(),
-    val onFilterSelected: (String, String) -> Unit
+    val onFilterSelected: (String, String) -> Unit,
+    val onTabSelected: (String) -> Unit
+
 ) {
     data class FilterOption(
         val id: String,
@@ -67,6 +69,7 @@ class TabsAndFilters(
                 if(tabs.isNotEmpty()) {
                     TabsRow(tabs, selectedTab) { tab ->
                         selectedTab = tab
+                        onTabSelected(tab)
                     }
                     Divider(color = MaterialTheme.colorScheme.outline, thickness = 0.5.dp,)
                 }
