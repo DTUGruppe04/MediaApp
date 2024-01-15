@@ -67,7 +67,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
             TopNavBarA(drawerState = drawerState)
             SearchBar(
                 focusRequester = focusRequester,
-                query = searchQuery
+                query = searchQuery,
             ) { query ->
                 viewModel.setSearchQuery(query)
                 viewModel.performSearch(query)

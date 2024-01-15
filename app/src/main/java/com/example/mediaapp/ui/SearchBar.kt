@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
@@ -31,6 +33,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.mediaapp.R
 
@@ -74,6 +77,11 @@ fun SearchBar(
                 text = it
                 onSearch(it)
             },
+            keyboardActions = KeyboardActions(onSearch = {
+                focusManager.clearFocus()
+                text?.let { onSearch(it) }
+            }),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             maxLines = 1,
             singleLine = true,
             placeholder = {
@@ -98,7 +106,6 @@ fun SearchBar(
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
                 }
-
         )
         if (isFocused) {
             Icon(
