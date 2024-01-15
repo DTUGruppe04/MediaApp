@@ -36,7 +36,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
     val hasGenreBeenChosen by viewModel.hasGenreBeenChosen.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
 
-    val listOfGenres: List<String> = listOf<String>(
+    val listOfGenres: List<String> = listOf(
         stringResource(R.string.action),
         stringResource(R.string.adventure),
         stringResource(R.string.animation),
@@ -64,7 +64,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
                 .padding(bottom = 75.dp)
                 .background(MaterialTheme.colorScheme.surface)
         ) {
-            TopNavBarA(navController = navController, drawerState = drawerState)
+            TopNavBarA(drawerState = drawerState)
             SearchBar(
                 focusRequester = focusRequester,
                 query = searchQuery

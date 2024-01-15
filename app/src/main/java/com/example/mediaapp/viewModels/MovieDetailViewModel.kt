@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mediaapp.backend.RecommendationEngine
 import com.example.mediaapp.backend.database.DatabaseHandler
 import com.example.mediaapp.models.RatingAverage
 import com.example.mediaapp.backend.apirequests.APIHandler
@@ -22,6 +23,7 @@ class MovieDetailViewModel() : ViewModel() {
     private val apiHandler = APIHandler()
     private val RatingHandler = RatingHandler()
     private val movieDetailRepo = MovieDetailRepo(apiHandler)
+    private val recommend = RecommendationEngine()
 
     private val _movieDetails = MutableStateFlow<TMDBMovieDetail?>(null)
     val movieDetails: StateFlow<TMDBMovieDetail?> = _movieDetails.asStateFlow()
@@ -100,6 +102,9 @@ class MovieDetailViewModel() : ViewModel() {
     fun addToWatchlist(movieId: String) {
         viewModelScope.launch {
             try {
+                if (recommend.containMovieId(movieId.toLong())) {
+                    recommend.removeRecommendMovie(movieId.toLong())
+                }
                 databaseHandler.updateWatchlistMovie(createWatchlistMap())
                 _isInWatchlist.value = true
             } catch (e: Exception) {

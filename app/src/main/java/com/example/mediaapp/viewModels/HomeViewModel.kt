@@ -1,7 +1,5 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mediaapp.backend.RecommendationEngine
-import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.models.Recommend
 import com.example.mediaapp.models.Result2
 import com.example.mediaapp.models.TMDBMovie

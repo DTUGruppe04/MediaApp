@@ -4,7 +4,6 @@ import com.example.mediaapp.backend.RecommendationEngine
 import com.example.mediaapp.backend.database.DatabaseHandler
 import com.example.mediaapp.models.RatingAverage
 import com.example.mediaapp.models.RatingForDatabase
-import com.example.mediaapp.models.WatchlistMovie
 
 class RatingHandler {
     private val databaseHandler = DatabaseHandler.getInstance()

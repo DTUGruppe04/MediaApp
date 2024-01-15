@@ -38,7 +38,7 @@ fun NavigationGraph(navController: NavHostController, loginNavController: NavCon
             HomeScreen(navController = navController, drawerState = drawerState)
         }
         composable(route = Screen.Following.route) {
-            FollowingListPage(navController = navController, drawerState = drawerState)
+            FollowingListPage(drawerState = drawerState)
         }
         composable(route = Screen.Watchlist.route) {
             WatchlistPage(navController = navController, drawerState = drawerState)
