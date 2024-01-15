@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -88,6 +89,7 @@ fun LoginPageLayout(
                 Box(
                     modifier = Modifier
                         .padding(top = 11.dp, end = 29.dp)
+                        .wrapContentSize()
                 ) {Text(
                     stringResource(R.string.login_forgot_password),
                     modifier = Modifier

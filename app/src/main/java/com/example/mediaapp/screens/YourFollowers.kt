@@ -36,6 +36,13 @@ fun YourfollowersPageLayout(navController: NavController, drawerState: DrawerSta
                     modifier = Modifier
                         .padding(start = 18.dp, bottom = 10.dp, top = 10.dp)
                 )
+                Text(
+                    "Feature coming soon!",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                )
+                /*
                 searchBar(R.string.searchtext)
                 LazyColumn() {
                     item {
@@ -77,7 +84,7 @@ fun YourfollowersPageLayout(navController: NavController, drawerState: DrawerSta
                     item {
                         ProfileListItem(name = R.string.ph4ntom, iconColor = R.color.red, false)
                     }
-                }
+                }*/
             }
         }
     }

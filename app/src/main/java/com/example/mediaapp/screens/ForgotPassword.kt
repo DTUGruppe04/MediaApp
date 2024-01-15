@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -49,6 +50,12 @@ fun ForgotPasswordPageLayout(navController: NavController,
                 textAlign = TextAlign.Center
             )
         }
+        Text(
+            "Feature coming soon! can't reset password yet.",
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.titleSmall,
+            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+        )
         MainTitleText(R.string.login_forgot_password)
         SubTitleText(R.string.login_forgot_password_please)
         TextfieldForEmail(viewModel)
@@ -68,6 +75,7 @@ fun ForgotPasswordPageLayout(navController: NavController,
                 color = colorResource(R.color.login_button_text)
             )
         }
+
         BottomSignText(R.string.login_already_account, R.string.login_already_account_sign, navController)
     }
 }

@@ -76,7 +76,7 @@ fun ProfilePageLayout(
     val user = currentUser ?: return
     MediaAppTheme {
         Column {
-            TopNavBarA(navController = navController, drawerState = drawerState)
+            TopNavBarA(drawerState = drawerState)
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()

@@ -52,6 +52,12 @@ fun YoufollowPageLayout(navController: NavController, drawerState: DrawerState){
                     modifier = Modifier
                         .padding(start = 18.dp, bottom = 10.dp, top = 10.dp)
                 )
+                Text(
+                        "Feature coming soon!",
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                )/*
                 searchBar(R.string.searchtext)
                 LazyColumn() {
                     item {
@@ -90,7 +96,7 @@ fun YoufollowPageLayout(navController: NavController, drawerState: DrawerState){
                     item {
                         ProfileListItem(name = R.string.mads, iconColor = R.color.purple, true)
                     }
-                }
+                }*/
             }
         }
     }
