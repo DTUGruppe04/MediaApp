@@ -19,10 +19,10 @@ class WatchlistViewModel : ViewModel() {
     private val _filteredWatchList = MutableStateFlow<List<WatchlistMovie>?>(null)
     val filteredWatchList: StateFlow<List<WatchlistMovie>?> = _filteredWatchList.asStateFlow()
 
-    private val _deleteview = MutableStateFlow<Boolean>(false)
+    private val _deleteview = MutableStateFlow(false)
     val deleteview: StateFlow<Boolean> = _deleteview.asStateFlow()
 
-    val sortingHandler = SortingHandler()
+    private val sortingHandler = SortingHandler()
 
     fun getWatchlistMovies() {
         viewModelScope.launch {

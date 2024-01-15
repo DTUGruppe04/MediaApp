@@ -10,9 +10,9 @@ class ProfileCustomizationViewModel : ViewModel() {
     private val databaseHandler = DatabaseHandler.getInstance()
     val user = Firebase.auth.currentUser
 
-    var username = mutableStateOf("")
+    private var username = mutableStateOf("")
     var name = mutableStateOf("")
-    var location = mutableStateOf("")
+    private var location = mutableStateOf("")
     var description = mutableStateOf("")
 
     fun updateAccountDetails() {
