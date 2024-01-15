@@ -46,10 +46,13 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.Popup
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
@@ -74,27 +77,37 @@ fun ProfilePageLayout(
     MediaAppTheme {
         Column {
             TopNavBarA(navController = navController, drawerState = drawerState)
-            LazyColumn(modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 75.dp)
-                .background(color = MaterialTheme.colorScheme.surface))
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 75.dp)
+                    .background(color = MaterialTheme.colorScheme.surface)
+            )
             {
                 item {
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
-                            ProfileDescription(
-                                profilePicture = if (user.user.profilePicture == "") R.drawable.image_not_found_picture else R.drawable.image_not_found_picture,
-                                description = if(user.user.description != "") user.user.description else stringResource(R.string.profile_page_no_description),
-                                countryFlag = viewModel.getCountryFlag(user.user.location),
-                                countryName = if(user.user.location != "") user.user.location else stringResource(R.string.profile_page_unknown_location),
-                                followers = user.user.followers.size,
-                                following = user.user.following.size,
-                                username = user.user.username,
-                                nameOfUser = if(user.user.name != "") user.user.name else stringResource(R.string.profile_page_unknown)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+                    ) {
+                        ProfileDescription(
+                            profilePicture = if (user.user.profilePicture == "") R.drawable.image_not_found_picture else R.drawable.image_not_found_picture,
+                            description = if (user.user.description != "") user.user.description else stringResource(
+                                R.string.profile_page_no_description
+                            ),
+                            countryFlag = viewModel.getCountryFlag(user.user.location),
+                            countryName = if (user.user.location != "") user.user.location else stringResource(
+                                R.string.profile_page_unknown_location
+                            ),
+                            followers = user.user.followers.size,
+                            following = user.user.following.size,
+                            username = user.user.username,
+                            nameOfUser = if (user.user.name != "") user.user.name else stringResource(
+                                R.string.profile_page_unknown
                             )
-                        }
+                        )
                     }
+                }
                 item {
                     Box(
                         modifier = Modifier
@@ -111,6 +124,13 @@ fun ProfilePageLayout(
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier.padding(start = 10.dp, top = 5.dp)
                             )
+                            Text(
+                                "Feature coming soon!",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.titleSmall,
+                                modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                            )
+                            /*
                             LazyRow(
                                 modifier = Modifier.fillMaxSize()
                             ) {
@@ -130,19 +150,42 @@ fun ProfilePageLayout(
                                     StandardBoxInRowOld(navController, R.drawable.indianajones, R.string.indianajones)
                                 }
                             }
+                        }*/
                         }
                     }
                 }
                 item {
-                    Box(modifier = Modifier
-                        .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
-                        ProfileStatistics(
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(118.dp)
+                            .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(color = MaterialTheme.colorScheme.surfaceVariant)
+                    ) {
+                        Column {
+                            Text(
+                                "Profile Statistics",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                            )
+                            Text(
+                                "Feature coming soon!",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.titleSmall,
+                                modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                            )
+                        }
+
+                        /*ProfileStatistics(
                             R.string.watched_number,
                             R.string.reviews_number,
                             R.string.rated_number,
                             R.string.recommends_number,
                             R.string.saved_number
-                        ) }
+                        )*/
+                    }
                 }
                 item {
                     Box(
@@ -160,6 +203,12 @@ fun ProfilePageLayout(
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier.padding(start = 10.dp, top = 5.dp)
                             )
+                            Text(
+                                "Feature coming soon!",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.titleSmall,
+                                modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+                            ) /*
                             LazyRow(
                                 modifier = Modifier.fillMaxSize()
                             ) {
@@ -179,6 +228,7 @@ fun ProfilePageLayout(
                                     StandardBoxInRowOld(navController, R.drawable.readyplayerone, R.string.readyplayerone)
                                 }
                             }
+                        }*/
                         }
                     }
                 }
@@ -328,7 +378,7 @@ fun ProfileDescription(
                 ) {
                     Text (
                         text = username,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center
                     )
@@ -345,15 +395,11 @@ fun ProfileDescription(
                 }
 
                 Row(modifier = Modifier
+                    .padding(start = 10.dp, bottom = 5.dp)
                     .height(13.dp)
                     .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically) {
-                    Text (
-                        text = nameOfUser,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 10.sp,
-                        modifier = Modifier.padding(start = 10.dp, end = 8.dp)
-                    )
+
                     if (countryFlag != -1) {
                         Image(modifier = Modifier
                             .size(13.dp, 8.dp)
@@ -368,6 +414,12 @@ fun ProfileDescription(
                         modifier = Modifier.padding(start = 2.dp)
                     )
                 }
+                Text (
+                    text = nameOfUser,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 10.sp,
+                    modifier = Modifier.padding(start = 10.dp, end = 8.dp)
+                )
                 Text (
                     text = description,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -480,7 +532,7 @@ fun DropdownLocation(filterOption: TabsAndFilters.FilterOption, viewModel: Curre
     var expanded by remember { mutableStateOf(false)}
     val (backgroundColor, textColor) = getDropdownColors(expanded)
     val itemHeight = 48.dp
-    val dropdownHeight = itemHeight * (if (filterOption.options.size < 8) filterOption.options.size else 8)
+    val dropdownHeight = itemHeight * (if (filterOption.options.size < 8) filterOption.options.size else 6)
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
@@ -490,27 +542,45 @@ fun DropdownLocation(filterOption: TabsAndFilters.FilterOption, viewModel: Curre
         DropdownMenuToggle(
             label = selectedOption,
             expanded = expanded,
-            onToggle = { expanded = !expanded },
+            onToggle = { expanded = !expanded},
             textColor = textColor
         )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = {expanded = false},
-            modifier = Modifier.heightIn(max = dropdownHeight)
-        ) {
-            filterOption.options.forEach{ option ->
-                DropdownMenuItem(
-                    text = { Text(text = option) },
-                    onClick = {
-                        expanded = false
-                        selectedOption = option
-                        viewModel.location = option
+            if (expanded) {
+                Popup(
+                    onDismissRequest = { expanded = false },
+                    alignment = Alignment.TopStart,
+                    offset = IntOffset(10, 100)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .padding(start = 6.dp, top = 3.dp, bottom = 3.dp)
+                            .wrapContentWidth()
+                    ) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .heightIn(max = dropdownHeight)
+                                .wrapContentWidth()) {
+                            items(filterOption.options.size) { option ->
+                                DropdownMenuItem(
+                                    text = { Text(text = filterOption.options[option]) },
+                                    modifier = Modifier
+                                        .height(itemHeight)
+                                        .wrapContentWidth(),
+                                    onClick = {
+                                        expanded = false
+                                        selectedOption = filterOption.options[option]
+                                        viewModel.location = filterOption.options[option]
+                                    }
+                                )
+                            }
+                        }
                     }
-                )
+
+                }
             }
         }
     }
-}
 
 @Composable
 fun DropdownMenuToggle(
