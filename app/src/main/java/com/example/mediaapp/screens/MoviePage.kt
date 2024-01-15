@@ -76,6 +76,7 @@ import com.example.mediaapp.ui.theme.md_theme_dark_background
 import com.example.mediaapp.viewModels.MovieDetailViewModel
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import com.example.mediaapp.ui.StandardBoxInRow
 import com.example.mediaapp.ui.StandardBoxInRowActors
 import com.example.mediaapp.ui.StandardBoxInRowCrew
@@ -364,7 +365,13 @@ fun MovieDescription(movie: TMDBMovieDetail, viewModel: MovieDetailViewModel, mo
                     .padding(start = 10.dp)
                     .fillMaxHeight(),
             ) {
-                GenreTags(genreIds)
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    item {
+                        GenreTags(genreIds)
+                    }
+                }
                 ExpandableTextDescription(movie.overview)
                 RatingAndBookmark(viewModel = viewModel, movieId = movieId)
             }
@@ -658,6 +665,8 @@ fun ExpandableTextDescription(text: String, maxLength: Int = 150) {
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelMedium,
             maxLines = 4,
+            softWrap = true,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .padding(top = 10.dp)
                 .clickable { isExpanded = true }
