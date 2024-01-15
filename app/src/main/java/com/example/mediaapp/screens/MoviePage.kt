@@ -657,6 +657,7 @@ fun ExpandableTextDescription(text: String, maxLength: Int = 150) {
             text = displayText,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelMedium,
+            maxLines = 4,
             modifier = Modifier
                 .padding(top = 10.dp)
                 .clickable { isExpanded = true }

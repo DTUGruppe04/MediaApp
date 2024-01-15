@@ -428,6 +428,10 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                     }
                 }
             }
+            item {
+                SeparationBox()
+                SeparationBox()
+            }
         }
     }
 }
