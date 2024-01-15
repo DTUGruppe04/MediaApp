@@ -144,6 +144,9 @@ fun MovieDetailPage(
                 MovieDescription(movie, viewModel, movieId)
             }
             item {
+                RatingAndBookmark(viewModel = viewModel, movieId = movieId)
+            }
+            item {
                 WatchAndRecommend(viewModel, movieId)
             }
             item {
@@ -373,15 +376,29 @@ fun MovieDescription(movie: TMDBMovieDetail, viewModel: MovieDetailViewModel, mo
                     }
                 }
                 ExpandableTextDescription(movie.overview)
-                RatingAndBookmark(viewModel = viewModel, movieId = movieId)
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Text(
+                        text = "Release Date: ${movie.release_date}",
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(start = 2.dp, bottom = 5.dp)
+                    )
+                }
+                //RatingAndBookmark(viewModel = viewModel, movieId = movieId)
             }
         }
+        /*
         Text(
             text = "Release Date: ${movie.release_date}",
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(start = 2.dp, top = 5.dp)
         )
+         */
     }
 }
 
@@ -402,7 +419,7 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
     ) {
         Row(
             modifier = Modifier
-                .padding(top = 10.dp)
+                .padding(horizontal = 10.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -413,9 +430,9 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
                     .fillMaxWidth()
                     .height(50.dp)
                     .padding(vertical = 6.dp)
-                    .weight(2f),
+                    .weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Start
             ) {
                 Button(
                     modifier = Modifier.height(30.dp),
@@ -431,7 +448,7 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
             }
             // Star and count
             Row(
-                modifier = Modifier.weight(2f),
+                modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -465,7 +482,7 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
             Row(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.End
             ) {
                 Icon(
                     imageVector = if (isInWatchlist) Icons.Outlined.PlaylistRemove else Icons.Outlined.PlaylistAdd,
