@@ -25,6 +25,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -35,6 +37,7 @@ import com.example.mediaapp.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
+    focusRequester: FocusRequester,
     query: String?,
     onSearch: (String) -> Unit)
 {
@@ -45,11 +48,11 @@ fun SearchBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(8.dp, bottom = 0.dp)
             .height(56.dp)
             .background(
-                shape = RoundedCornerShape(size = 28.dp),
-                color = MaterialTheme.colorScheme.background
+                shape = RoundedCornerShape(size = 8.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
@@ -91,6 +94,7 @@ fun SearchBar(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 8.dp)
+                .focusRequester(focusRequester)
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
                 }

@@ -29,6 +29,22 @@ data class User(
                 map["ratedMovies"] as? List<String> ?: listOf()
             )
         }
+
+        fun toMap(user: User): Map<String, Any?> {
+            return mapOf(
+                "username" to user.username,
+                "name" to user.name,
+                "location" to user.location,
+                "followers" to user.followers,
+                "following" to user.following,
+                "description" to user.description,
+                "profilePicture" to user.profilePicture,
+                "stats" to Stats.toMap(user.stats),
+                "favorites" to user.favorites,
+                "recentlyWatched" to user.recentlyWatched,
+                "ratedMovies" to user.ratedMovies
+            )
+        }
     }
 }
 

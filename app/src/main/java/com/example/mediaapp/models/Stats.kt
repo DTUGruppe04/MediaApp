@@ -17,5 +17,15 @@ data class Stats(
                 map["saved"] as? Long ?: 0
             )
         }
+
+        fun toMap(stats: Stats): Map<String, Any?> {
+            return mapOf(
+                "watched" to stats.watched,
+                "reviews" to stats.reviews,
+                "rated" to stats.rated,
+                "recommends" to stats.recommends,
+                "saved" to stats.saved
+            )
+        }
     }
 }

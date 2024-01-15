@@ -25,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,33 +34,53 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.mediaapp.R
+import com.example.mediaapp.Screen
 import com.example.mediaapp.ui.theme.MediaAppTheme
 
 
 class TabsAndFilters(
-    private val tabs: List<String>,
     private val filters: List<FilterOption>,
-    private val onGenreSelected: (String) -> Unit
-) {
+    private val tabs: List<String> = emptyList(),
+    val onFilterSelected: (String, String) -> Unit,
+    val onTabSelected: (String) -> Unit
 
-    data class FilterOption(val label: String, val options: List<String>)
+) {
+    data class FilterOption(
+        val id: String,
+        val label: String,
+        val options: List<String>
+    )
     @Composable
-    fun Render() {
+    fun Render(navController: NavController) {
         MediaAppTheme{
             var selectedTab by remember { mutableStateOf("All") }
+            var selectedFilters = mutableStateMapOf<String, String>()
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TabsRow(tabs, selectedTab) { tab ->
-                    selectedTab = tab
+                if(tabs.isNotEmpty()) {
+                    TabsRow(tabs, selectedTab) { tab ->
+                        selectedTab = tab
+                        onTabSelected(tab)
+                    }
+                    Divider(color = MaterialTheme.colorScheme.outline, thickness = 0.5.dp,)
                 }
-                Divider(color = MaterialTheme.colorScheme.outline, thickness = 0.5.dp,)
-                FiltersRow(filters)
+                FiltersRow(
+                    filters,
+                    { filterId, selectedOption ->
+                    selectedFilters[filterId] = selectedOption
+                    onFilterSelected(filterId, selectedOption)
+                    },
+                    navController = navController
+                )
             }
         }
     }
@@ -83,20 +104,52 @@ class TabsAndFilters(
             }
         }
     }
+    fun NavController.currentRoute(): String? {
+        return currentBackStackEntry?.destination?.route
+    }
     @Composable
-    private fun FiltersRow(filters: List<FilterOption>) {
+    private fun FiltersRow(
+        filters: List<FilterOption>,
+        onFilterSelected:(String, String) -> Unit,
+        navController: NavController,
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())
                 .padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            filters.forEach { filter ->
-                FilterDropdown(filter.label , filter.options)
+            Row (
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .padding(end = 8.dp),
+            ) {
+                filters.forEach { filter ->
+                    FilterDropdown(filter, onFilterSelected)
+                }
+            }
+            val currentRoute = navController.currentRoute()
+            if (currentRoute == Screen.Watchlist.route) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .clickable {
+                            navController.navigate(Screen.Watchlist.route)
+                        }
+                ) {
+                    Text(
+                        text = stringResource(R.string.clear),
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier
+                            .padding(start = 20.dp, top = 8.5.dp, end = 20.dp, bottom = 8.5.dp)
+                    )
+                }
             }
         }
     }
+
     @Composable
     fun TabButton(label: String, isSelected: Boolean, onClick: () -> Unit) {
         Column(
@@ -142,15 +195,13 @@ class TabsAndFilters(
                         .background(color = Color.Transparent)
             )
     }
-
     @Composable
-    fun FilterDropdown(label: String, options: List<String>){
-        var selectedOption by remember { mutableStateOf(label) }
+    fun FilterDropdown(filterOption: FilterOption, onFilterSelected: (String, String) -> Unit){
+        var selectedOption by remember { mutableStateOf(filterOption.label) }
         var expanded by remember { mutableStateOf(false)}
-        var clicked by remember { mutableStateOf(false)}
         val (backgroundColor, textColor) = getDropdownColors(expanded)
         val itemHeight = 48.dp
-        val dropdownHeight = itemHeight * (if (options.size < 8) options.size else 8)
+        val dropdownHeight = itemHeight * (if (filterOption.options.size < 8) filterOption.options.size else 8)
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
@@ -169,13 +220,13 @@ class TabsAndFilters(
                 onDismissRequest = {expanded = false},
                 modifier = Modifier.heightIn(max = dropdownHeight)
             ) {
-                options.forEach{ option ->
+                filterOption.options.forEach{ option ->
                     DropdownMenuItem(
                         text = { Text(text = option) },
                         onClick = {
                             expanded = false
                             selectedOption = option
-                            onGenreSelected(option)
+                            onFilterSelected(filterOption.id, option)
                         }
                     )
                 }

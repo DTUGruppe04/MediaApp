@@ -1,8 +1,11 @@
 package com.example.mediaapp.backend.repos
 
+import android.util.Log
 import com.example.mediaapp.backend.apirequests.APIHandler
+import com.example.mediaapp.models.TMDBMovie
 import com.example.mediaapp.models.TMDBMovieCredits
 import com.example.mediaapp.models.TMDBMovieDetail
+import com.example.mediaapp.models.TMDBMovieResponse
 
 
 class MovieDetailRepo(private val apiHandler: APIHandler) {
@@ -10,6 +13,7 @@ class MovieDetailRepo(private val apiHandler: APIHandler) {
         return try {
             apiHandler.getMovieDetail(movieId)
         } catch (e: Exception) {
+            Log.e("API CALL:", e.toString())
             null
         }
     }
@@ -17,7 +21,18 @@ class MovieDetailRepo(private val apiHandler: APIHandler) {
         return try {
             apiHandler.getMovieCredits(movieId)
         } catch (e: Exception) {
+            Log.e("API CALL:", e.toString())
             null
         }
     }
+
+    suspend fun getSimilarMovies(movieId: String): List<TMDBMovie>? {
+        return try {
+            apiHandler.getSimilarMovies(movieId)?.results
+        } catch (e: Exception) {
+            Log.e("API CALL:", e.toString())
+            null
+        }
+    }
+
 }

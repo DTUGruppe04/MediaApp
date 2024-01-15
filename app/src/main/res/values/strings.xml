@@ -146,6 +146,12 @@
     <string name="saved_number">7</string>
     <string name="profile_page_no_description">This user haven\'t made a description yet</string>
     <string name="profile_page_unknown">Unknown</string>
+    <string name="profile_page_unknown_location">No location</string>
+    <string name="edit_profile">Customize Profile</string>
+    <string name="location">Choose location</string>
+    <string name="picture">Change picture</string>
+    <string name="save">Save changes</string>
+    <string name="cancel">Cancel changes</string>
 
     //Settings Page Strings
     <string name="settingnodesc"></string>
@@ -208,4 +214,15 @@
     <string name="clear_icon">Clear icon</string>
     <string name="search_icon">Search icon</string>
     <string name="view_more">View More</string>
+    <string name="year_asc">Year Asc</string>
+    <string name="year_desc">Year Desc</string>
+    <string name="rating_asc">Rating Asc</string>
+    <string name="rating_desc">Rating Desc</string>
+    <string name="name_asc">Name Asc</string>
+    <string name="name_desc">Name Desc</string>
+    <string name="year">Year</string>
+    <string name="date">Date</string>
+    <string name="name">Name</string>
+    <string name="rating">Rating</string>
+    <string name="clear">Clear</string>
 </resources>

@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+
 android {
     namespace = "com.example.mediaapp"
     compileSdk = 34
@@ -48,7 +49,10 @@ android {
         }
     }
     buildToolsVersion = "34.0.0"
+
 }
+
+
 
 dependencies {
     // Coil
@@ -71,7 +75,6 @@ dependencies {
 
     //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
     implementation("androidx.navigation:navigation-runtime-ktx")
     implementation("androidx.wear.compose:compose-material:1.2.1")
     implementation("androidx.wear.compose:compose-material3:1.0.0-alpha15")
@@ -99,4 +102,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //Github for ratingbar
+    implementation("com.github.a914-gowtham:compose-ratingbar:1.3.4")
 }
