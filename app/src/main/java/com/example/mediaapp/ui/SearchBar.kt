@@ -44,7 +44,6 @@ fun SearchBar(
     query: String?,
     onSearch: (String) -> Unit)
 {
-
     var text by remember { mutableStateOf(query) }
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
@@ -77,11 +76,10 @@ fun SearchBar(
                 text = it
                 onSearch(it)
             },
-            keyboardActions = KeyboardActions(onSearch = {
+            keyboardActions = KeyboardActions(onAny = {
                 focusManager.clearFocus()
                 text?.let { onSearch(it) }
             }),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             maxLines = 1,
             singleLine = true,
             placeholder = {
