@@ -32,7 +32,6 @@ import com.example.mediaapp.models.TMDBMovie
 
 object SearchQueryLayout {
     private const val baseURL = "https://image.tmdb.org/t/p/original"
-    private const val failURL = "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
 
     @Composable
     fun SearchQueryList(movies: List<TMDBMovie>, navController: NavController) {
@@ -76,7 +75,7 @@ object SearchQueryLayout {
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = baseURL + (movie.poster_path ?: failURL),
+                model = baseURL + movie.poster_path,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.composeImageModifier()

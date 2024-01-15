@@ -73,7 +73,7 @@ fun ProfilePageLayout(
     val user = currentUser ?: return
     MediaAppTheme {
         Column {
-            TopNavBarA(navController = navController, drawerState = drawerState)
+            TopNavBarA(drawerState = drawerState)
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 75.dp)
@@ -385,7 +385,7 @@ fun ProfileDescription(
 @Composable
 fun EditProfile(onDismissRequest: () -> Unit, viewModel: CurrentUserViewModel = viewModel()) {
     val countryList = viewModel.getCountryNames()
-    val pictures : List<String> = listOf<String>()
+    val pictures : List<String> = listOf()
     Dialog(
         onDismissRequest = { onDismissRequest() },
         properties = DialogProperties(usePlatformDefaultWidth = false)

@@ -42,7 +42,7 @@ class RecommendationEngine {
      */
 
     suspend fun getRecommendMovies() : List<Recommend> {
-        var response = database.getRecommendMovies()
+        val response = database.getRecommendMovies()
         if (response.size < 5) {
             return emptyList()
         }
@@ -53,7 +53,7 @@ class RecommendationEngine {
         database.removeMovieRecommend(movieID)
     }
 
-    fun containMovieId(list: List<WatchlistMovie>, movieID: Long) : Boolean {
+    private fun containMovieId(list: List<WatchlistMovie>, movieID: Long) : Boolean {
         list.forEach {item ->
             println("WatchID: ${item.movieID}")
             println("RecommendID: $movieID")

@@ -119,7 +119,7 @@ fun LoginPageLayout(
                     )
                 }
                 if (viewModel.errorText.value.isNotEmpty()) {
-                    Text(text = if (viewModel.errorText.value.isNotEmpty()) viewModel.errorText.value else "",
+                    Text(text = viewModel.errorText.value.ifEmpty { "" },
                         modifier = Modifier
                             .padding(top = 11.dp, end = 29.dp)
                             .fillMaxWidth(),

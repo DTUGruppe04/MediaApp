@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mediaapp.R
-import com.example.mediaapp.Screen
 import com.example.mediaapp.ui.theme.MediaAppTheme
 import com.example.mediaapp.viewModels.LoginPageViewModel
 
@@ -71,7 +70,7 @@ fun CreateAccountPageLayout(navController: NavController,
                 )
             }
             if (viewModel.errorText.value.isNotEmpty()) {
-                Text(text = if (viewModel.errorText.value.isNotEmpty()) viewModel.errorText.value else "",
+                Text(text = viewModel.errorText.value.ifEmpty { "" },
                     modifier = Modifier
                         .padding(top = 11.dp, end = 29.dp)
                         .fillMaxWidth(),
