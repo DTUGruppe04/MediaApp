@@ -82,6 +82,9 @@ import com.example.mediaapp.ui.StandardBoxInRowActors
 import com.example.mediaapp.ui.StandardBoxInRowCrew
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import kotlin.math.floor
 
 private const val baseURL = "https://image.tmdb.org/t/p/original"
 @OptIn(ExperimentalMaterial3Api::class)
@@ -404,6 +407,14 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
     val isInWatchlist by viewModel.isInWatchlist.collectAsState()
     val dataForRating by viewModel.movieRating.collectAsState()
 
+    //Inner Function
+    fun Double?.toDisplayString(): String {
+        return when {
+            this == null -> "0.0"
+            else -> String.format("%.1f", this)
+        }
+    }
+
     if (isRating) {
         RatingDialog(onDismissRequest = { isRating = false }, viewModel = viewModel, movieId = movieId)
     }
@@ -460,7 +471,7 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
                 ) {
                     Log.d("Avg","${dataForRating?.average}")
                     Text(
-                        text = if (dataForRating?.average?.isNaN() != true) "${dataForRating?.average}/10" else "0.0/10",
+                        text = if (dataForRating?.average?.isNaN() != true) "${dataForRating?.average.toDisplayString()}/10" else "0.0/10",
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center

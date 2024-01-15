@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -86,22 +87,23 @@ fun LoginPageLayout(
                 SubTitleText(R.string.login_please)
                 TextfieldForEmail(viewModel)
                 TextfieldForPassword(viewModel)
-                Box(
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Bottom,
                     modifier = Modifier
                         .padding(top = 11.dp, end = 29.dp)
-                        .wrapContentSize()
-                ) {Text(
-                    stringResource(R.string.login_forgot_password),
-                    modifier = Modifier
-                        .clickable {
-                            navController.navigate(Screen.ForgotPassword.route)
-                        }
-                        .fillMaxWidth(),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textDecoration = TextDecoration.Underline,
-                    textAlign = TextAlign.End
-                )
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        stringResource(R.string.login_forgot_password),
+                        modifier = Modifier
+                            .clickable {
+                                navController.navigate(Screen.ForgotPassword.route)
+                            },
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textDecoration = TextDecoration.Underline,
+                    )
                 }
 
                 Button(onClick = {
