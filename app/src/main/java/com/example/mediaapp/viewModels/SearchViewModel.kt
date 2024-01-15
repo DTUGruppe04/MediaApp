@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class SearchViewModel() : ViewModel() {
+class SearchViewModel : ViewModel() {
 
     private val apiHandler = APIHandler()
     private val searchRepository = SearchRepository(apiHandler)
@@ -67,7 +67,7 @@ class SearchViewModel() : ViewModel() {
     }
 
 
-    fun resetSearch() {
+    private fun resetSearch() {
         _searchQuery.value = ""
         _searchResults.value = emptyList()
         _error.value = null

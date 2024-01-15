@@ -2,6 +2,7 @@ package com.example.mediaapp.backend.database
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.example.mediaapp.backend.RecommendationEngine
 import com.example.mediaapp.models.CurrentUser
 import com.example.mediaapp.models.RatingForDatabase
 import com.example.mediaapp.models.Recommend

@@ -27,7 +27,7 @@ fun WatchlistPage(
     viewModel: WatchlistViewModel = viewModel()) {
 
     val watchlistMovies = viewModel.filteredWatchList.collectAsState()
-    val listOfGenres: List<String> = listOf<String>(
+    val listOfGenres: List<String> = listOf(
         stringResource(R.string.action),
         stringResource(R.string.adventure),
         stringResource(R.string.animation),
@@ -46,11 +46,11 @@ fun WatchlistPage(
         stringResource(R.string.war),
         stringResource(R.string.western)
     )
-    val listOfYearOrders: List<String> = listOf<String>(
+    val listOfYearOrders: List<String> = listOf(
         stringResource(R.string.year_asc),
         stringResource(R.string.year_desc)
     )
-    val listOfNameOrders: List<String> = listOf<String>(
+    val listOfNameOrders: List<String> = listOf(
         stringResource(R.string.name_asc),
         stringResource(R.string.name_desc)
     )
@@ -64,7 +64,7 @@ fun WatchlistPage(
         //Adding this padding for the bottom navigation bar
         modifier = Modifier.padding(bottom = 70.dp)
     ) {
-        TopNavBarA(navController = navController, drawerState = drawerState)
+        TopNavBarA(drawerState = drawerState)
         // UI Tabs and Filters
 
         val tabs = listOf(

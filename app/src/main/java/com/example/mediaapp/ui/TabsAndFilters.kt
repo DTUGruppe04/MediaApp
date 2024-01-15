@@ -59,7 +59,7 @@ class TabsAndFilters(
     fun Render(navController: NavController) {
         MediaAppTheme{
             var selectedTab by remember { mutableStateOf("All") }
-            var selectedFilters = mutableStateMapOf<String, String>()
+            val selectedFilters = mutableStateMapOf<String, String>()
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -71,7 +71,7 @@ class TabsAndFilters(
                         selectedTab = tab
                         onTabSelected(tab)
                     }
-                    Divider(color = MaterialTheme.colorScheme.outline, thickness = 0.5.dp,)
+                    Divider(color = MaterialTheme.colorScheme.outline, thickness = 0.5.dp)
                 }
                 FiltersRow(
                     filters,
@@ -104,7 +104,7 @@ class TabsAndFilters(
             }
         }
     }
-    fun NavController.currentRoute(): String? {
+    private fun NavController.currentRoute(): String? {
         return currentBackStackEntry?.destination?.route
     }
     @Composable

@@ -5,8 +5,6 @@ import com.example.mediaapp.backend.apirequests.APIHandler
 import com.example.mediaapp.models.TMDBMovie
 import com.example.mediaapp.models.TMDBMovieCredits
 import com.example.mediaapp.models.TMDBMovieDetail
-import com.example.mediaapp.models.TMDBMovieResponse
-
 
 class MovieDetailRepo(private val apiHandler: APIHandler) {
     suspend fun getMovieDetails(movieId: String): TMDBMovieDetail? {

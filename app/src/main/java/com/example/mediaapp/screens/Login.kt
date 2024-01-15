@@ -85,17 +85,22 @@ fun LoginPageLayout(
                 SubTitleText(R.string.login_please)
                 TextfieldForEmail(viewModel)
                 TextfieldForPassword(viewModel)
-                Text(stringResource(R.string.login_forgot_password),
+                Box(
                     modifier = Modifier
-                        .padding(start = 250.dp, top = 11.dp, end = 29.dp)
+                        .padding(top = 11.dp, end = 29.dp)
+                ) {Text(
+                    stringResource(R.string.login_forgot_password),
+                    modifier = Modifier
                         .clickable {
                             navController.navigate(Screen.ForgotPassword.route)
                         }
                         .fillMaxWidth(),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface,
-                    textDecoration = TextDecoration.Underline
+                    textDecoration = TextDecoration.Underline,
+                    textAlign = TextAlign.End
                 )
+                }
 
                 Button(onClick = {
                     viewModel.loginFlow(navController)
@@ -114,7 +119,7 @@ fun LoginPageLayout(
                     )
                 }
                 if (viewModel.errorText.value.isNotEmpty()) {
-                    Text(text = if (viewModel.errorText.value.isNotEmpty()) viewModel.errorText.value else "",
+                    Text(text = viewModel.errorText.value.ifEmpty { "" },
                         modifier = Modifier
                             .padding(top = 11.dp, end = 29.dp)
                             .fillMaxWidth(),

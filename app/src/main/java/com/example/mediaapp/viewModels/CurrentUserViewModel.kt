@@ -42,12 +42,12 @@ class CurrentUserViewModel : ViewModel(){
 
     fun updateAccountDetails() {
         val Tempuser = User(
-            if (username.equals("")) _currentUser.value!!.user.username else username,
-            if (name.equals("")) _currentUser.value!!.user.name else name,
-            if (location.equals("")) _currentUser.value!!.user.location else location,
+            if (username == "") _currentUser.value!!.user.username else username,
+            if (name == ("")) _currentUser.value!!.user.name else name,
+            if (location == ("")) _currentUser.value!!.user.location else location,
             _currentUser.value!!.user.followers,
             _currentUser.value!!.user.following,
-            if (desc.equals("")) _currentUser.value!!.user.description else desc,
+            if (desc == ("")) _currentUser.value!!.user.description else desc,
             _currentUser.value!!.user.profilePicture,
             _currentUser.value!!.user.stats,
             _currentUser.value!!.user.favorites,

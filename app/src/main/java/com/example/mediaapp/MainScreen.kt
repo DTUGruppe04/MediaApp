@@ -28,18 +28,15 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.mediaapp.models.CurrentUser
 import com.example.mediaapp.ui.nav.BottomNavBar
 import com.example.mediaapp.ui.nav.NavigationGraph
 import com.example.mediaapp.ui.nav.TopNavBarE
@@ -66,7 +63,7 @@ fun MainScreen(loginNavController: NavController, viewModel: CurrentUserViewMode
                 drawerContentColor = MaterialTheme.colorScheme.surface
 
             ) {
-                TopNavBarE(navController = navController, drawerState = drawerState)
+                TopNavBarE(drawerState = drawerState)
                 Text(
                     stringResource(R.string.menu),
                     color = MaterialTheme.colorScheme.onSurface,

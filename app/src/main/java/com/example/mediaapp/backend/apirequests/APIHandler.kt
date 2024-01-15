@@ -11,7 +11,7 @@ import retrofit2.awaitResponse
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class APIHandler {
-    val api = Retrofit.Builder()
+    private val api = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
@@ -150,7 +150,7 @@ class APIHandler {
         try {
             val response = api.getMovieReviews(id, language, page).awaitResponse()
             if (response.isSuccessful) {
-                var data = response.body()
+                val data = response.body()
                 if (data != null && data.total_results != 0) {
                     return data
                 }
@@ -179,7 +179,7 @@ class APIHandler {
         try {
             val response = api.getMovieCredits(id, language).awaitResponse()
             if (response.isSuccessful) {
-                var data = response.body()
+                val data = response.body()
                 if (data != null) {
                     return data
                 }
@@ -211,7 +211,7 @@ class APIHandler {
         try {
             val response = api.getMovieSuggestions(id, language, page).awaitResponse()
             if (response.isSuccessful) {
-                var data = response.body()
+                val data = response.body()
                 if (data != null && data.total_results != 0) {
                     return data
                 }
@@ -241,7 +241,7 @@ class APIHandler {
         try {
             val response = api.getTopRatedMovies(language, page).awaitResponse()
             if (response.isSuccessful) {
-                var data = response.body()
+                val data = response.body()
                 if (data != null && data.total_results != 0) {
                     return data
                 }
@@ -271,7 +271,7 @@ class APIHandler {
         try {
             val response = api.getUpcomingMovies(language, page, region, type).awaitResponse()
             if (response.isSuccessful) {
-                var data = response.body()
+                val data = response.body()
                 if (data != null && data.total_results != 0) {
                     return data
                 }
@@ -301,7 +301,7 @@ class APIHandler {
         try {
             val response = api.getNowPlayingMovies(language, page, region).awaitResponse()
             if (response.isSuccessful) {
-                var data = response.body()
+                val data = response.body()
                 if (data != null && data.total_results != 0) {
                     return data
                 }
@@ -317,7 +317,7 @@ class APIHandler {
         try {
             val response = api.getMoviesWithGenre(genre).awaitResponse()
             if (response.isSuccessful) {
-                var data = response.body()
+                val data = response.body()
                 if (data != null && data.total_results != 0) {
                     return data
                 }
