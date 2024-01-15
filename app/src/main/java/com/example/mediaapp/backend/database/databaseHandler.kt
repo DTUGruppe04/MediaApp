@@ -62,6 +62,7 @@ class DatabaseHandler private constructor() {
                 .toString())
             .set(watchedMovieMap) }
 
+        watchListCache = null
         watchedListCache = null
     }
 
@@ -97,6 +98,7 @@ class DatabaseHandler private constructor() {
             .document(movieID.toString())
             .delete() }
 
+        watchListCache = null
         watchedListCache = null
     }
 
@@ -108,6 +110,7 @@ class DatabaseHandler private constructor() {
                 .toString())
             .set(watchlistMovieMap) }
 
+        watchedListCache = null
         watchListCache = null
         removeMovieRecommend(watchlistMovieMap["movieID"].toString().toLong())
     }
@@ -147,6 +150,7 @@ class DatabaseHandler private constructor() {
                 .await()
         }
 
+        watchedListCache = null
         watchListCache = null
     }
 
