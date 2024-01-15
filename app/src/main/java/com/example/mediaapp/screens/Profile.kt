@@ -463,7 +463,12 @@ fun EditProfile(onDismissRequest: () -> Unit, viewModel: CurrentUserViewModel = 
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                 )
-                IconButton(onClick = { onDismissRequest() }) {
+                IconButton(onClick = {
+                    onDismissRequest()
+                    viewModel.desc = ""
+                    viewModel.name = ""
+                    viewModel.username = ""
+                    viewModel.location = ""}) {
                     Icon(
                         imageVector = Icons.Filled.Close,
                         contentDescription = "close_button",
@@ -509,7 +514,12 @@ fun EditProfile(onDismissRequest: () -> Unit, viewModel: CurrentUserViewModel = 
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.clickable { onDismissRequest() }
+                    modifier = Modifier.clickable {
+                        onDismissRequest()
+                        viewModel.desc = ""
+                        viewModel.name = ""
+                        viewModel.username = ""
+                        viewModel.location = ""}
                 )
                 Text(
                     text = stringResource(R.string.save),
@@ -537,50 +547,48 @@ fun DropdownLocation(filterOption: TabsAndFilters.FilterOption, viewModel: Curre
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
             .background(backgroundColor)
-
     ) {
         DropdownMenuToggle(
             label = selectedOption,
             expanded = expanded,
-            onToggle = { expanded = !expanded},
+            onToggle = { expanded = !expanded },
             textColor = textColor
         )
-            if (expanded) {
-                Popup(
-                    onDismissRequest = { expanded = false },
-                    alignment = Alignment.TopStart,
-                    offset = IntOffset(10, 100)
+        if (expanded) {
+            Popup(
+                onDismissRequest = { expanded = false },
+                alignment = Alignment.TopStart,
+                offset = IntOffset(10, 100)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .padding(start = 6.dp, top = 3.dp, bottom = 3.dp)
+                        .wrapContentWidth()
                 ) {
-                    Box(
+                    LazyColumn(
                         modifier = Modifier
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
-                            .padding(start = 6.dp, top = 3.dp, bottom = 3.dp)
-                            .wrapContentWidth()
-                    ) {
-                        LazyColumn(
-                            modifier = Modifier
-                                .heightIn(max = dropdownHeight)
-                                .wrapContentWidth()) {
-                            items(filterOption.options.size) { option ->
-                                DropdownMenuItem(
-                                    text = { Text(text = filterOption.options[option]) },
-                                    modifier = Modifier
-                                        .height(itemHeight)
-                                        .wrapContentWidth(),
-                                    onClick = {
-                                        expanded = false
-                                        selectedOption = filterOption.options[option]
-                                        viewModel.location = filterOption.options[option]
-                                    }
-                                )
-                            }
+                            .heightIn(max = dropdownHeight)
+                            .wrapContentWidth()) {
+                        items(filterOption.options.size) { option ->
+                            DropdownMenuItem(
+                                text = { Text(text = filterOption.options[option]) },
+                                modifier = Modifier
+                                    .height(itemHeight)
+                                    .wrapContentWidth(),
+                                onClick = {
+                                    expanded = false
+                                    selectedOption = filterOption.options[option]
+                                    viewModel.location = filterOption.options[option]
+                                }
+                            )
                         }
                     }
-
                 }
             }
         }
     }
+}
 
 @Composable
 fun DropdownMenuToggle(
