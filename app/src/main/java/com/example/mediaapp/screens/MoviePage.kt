@@ -144,6 +144,14 @@ fun MovieDetailPage(
                 MovieDescription(movie, viewModel, movieId)
             }
             item {
+                Text(
+                    text = "Release Date: ${movie.release_date}",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(start = 10.dp, bottom = 5.dp)
+                )
+            }
+            item {
                 RatingAndBookmark(viewModel = viewModel, movieId = movieId)
             }
             item {
@@ -339,7 +347,7 @@ fun MovieDescription(movie: TMDBMovieDetail, viewModel: MovieDetailViewModel, mo
         modifier = Modifier
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.background)
-            .padding(10.dp)
+            .padding(start = 10.dp, top = 10.dp, end = 10.dp)
     ) {
         Row(
             modifier = Modifier
@@ -376,18 +384,6 @@ fun MovieDescription(movie: TMDBMovieDetail, viewModel: MovieDetailViewModel, mo
                     }
                 }
                 ExpandableTextDescription(movie.overview)
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-                    Text(
-                        text = "Release Date: ${movie.release_date}",
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(start = 2.dp, bottom = 5.dp)
-                    )
-                }
                 //RatingAndBookmark(viewModel = viewModel, movieId = movieId)
             }
         }
@@ -458,7 +454,7 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
                     tint = Color.Yellow
                 )
                 Column(
-                    modifier = Modifier.padding(start = 7.dp, end = 15.dp),
+                    modifier = Modifier.padding(start = 7.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -663,7 +659,7 @@ fun DescriptionDialog(onDismissRequest: () -> Unit, text: String) {
 }
 
 @Composable
-fun ExpandableTextDescription(text: String, maxLength: Int = 150) {
+fun ExpandableTextDescription(text: String, maxLength: Int = 250) {
     var isExpanded by remember { mutableStateOf(false) }
 
     val displayText = if (text.length <= maxLength) {
@@ -681,7 +677,7 @@ fun ExpandableTextDescription(text: String, maxLength: Int = 150) {
             text = displayText,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelMedium,
-            maxLines = 4,
+            maxLines = 7,
             softWrap = true,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
