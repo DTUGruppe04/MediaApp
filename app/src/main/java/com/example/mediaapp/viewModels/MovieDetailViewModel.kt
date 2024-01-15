@@ -169,8 +169,16 @@ class MovieDetailViewModel() : ViewModel() {
             try {
                 if (_watchedBool.value.not()) {
                     addToWatchedList(movieId)
+                    _watchedBool.value = true
+                    if (_isInWatchlist.value) {
+                        databaseHandler.updateWatchlistMovie(createWatchlistMap())
+                    }
                 } else {
                     removeFromWatchedList(movieId)
+                    _watchedBool.value = false
+                    if (_isInWatchlist.value) {
+                        databaseHandler.updateWatchlistMovie(createWatchlistMap())
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("DATABASE", "updateWatchedBool(): $e")
@@ -181,7 +189,6 @@ class MovieDetailViewModel() : ViewModel() {
     private fun addToWatchedList(movieId: String) {
         viewModelScope.launch {
             try {
-                _watchedBool.value = true
                 databaseHandler.updateWatchedMovie(createWatchlistMap())
             } catch (e: Exception) {
                 Log.e("DATABASE", "addToWatchedList(): $e")
@@ -192,7 +199,6 @@ class MovieDetailViewModel() : ViewModel() {
     private fun removeFromWatchedList(movieId: String) {
         viewModelScope.launch {
             try {
-                _watchedBool.value = false
                 databaseHandler.removeMovieFromWatched(movieId.toLong())
             } catch (e: Exception) {
                 Log.e("DATABASE", "removeFromWatchedList(): $e")
