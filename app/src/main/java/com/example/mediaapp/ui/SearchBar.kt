@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
@@ -39,9 +40,11 @@ import com.example.mediaapp.R
 fun SearchBar(
     focusRequester: FocusRequester,
     query: String?,
+    hideKeyboard: Boolean = false,
+    onFocusClear: () -> Unit = {},
     onSearch: (String) -> Unit)
-{
 
+{
     var text by remember { mutableStateOf(query) }
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
@@ -74,6 +77,9 @@ fun SearchBar(
                 text = it
                 onSearch(it)
             },
+            keyboardActions = KeyboardActions(onDone = {
+                focusManager.clearFocus()
+            }),
             maxLines = 1,
             singleLine = true,
             placeholder = {
@@ -98,7 +104,7 @@ fun SearchBar(
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
                 }
-
+                .focusRequester(focusRequester)
         )
         if (isFocused) {
             Icon(
@@ -116,6 +122,11 @@ fun SearchBar(
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(end = 24.dp)
             )
+        }
+        if (hideKeyboard) {
+            focusManager.clearFocus()
+            // Call onFocusClear to reset hideKeyboard state to false
+            onFocusClear()
         }
     }
 }
