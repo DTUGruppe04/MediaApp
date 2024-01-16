@@ -1,6 +1,6 @@
 <resources>
     //App name
-    <string name="app_name">MediaApp</string>
+    <string name="app_name">Cinemaesque</string>
     <string name="empty">Lorem ipsum dolor sit amet</string>
     <string name="main_page_text1_1">Barbie (2023)</string>
     <string name="main_page_text1_2">Oppenheimer (2023)</string>
