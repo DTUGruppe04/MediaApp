@@ -2,6 +2,7 @@ package com.example.mediaapp.screens
 
 import SearchViewModel
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerState
@@ -11,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.stringResource
@@ -35,7 +38,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
     val isSearchActive by viewModel.isSearchActive.collectAsState()
     val hasGenreBeenChosen by viewModel.hasGenreBeenChosen.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
-
+    var hideKeyboard by remember { mutableStateOf(false) }
     val listOfGenres: List<String> = listOf(
         stringResource(R.string.action),
         stringResource(R.string.adventure),
@@ -55,7 +58,7 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
         stringResource(R.string.war),
         stringResource(R.string.western)
     )
-    LaunchedEffect(Unit) {
+    LaunchedEffect(focusRequester) {
         focusRequester.requestFocus()
     }
     MediaAppTheme {
@@ -63,11 +66,14 @@ fun SearchPage(viewModel: SearchViewModel = viewModel(), navController: NavContr
             modifier = Modifier
                 .padding(bottom = 75.dp)
                 .background(MaterialTheme.colorScheme.surface)
+                .clickable { hideKeyboard = false }
         ) {
             TopNavBarA(drawerState = drawerState)
             SearchBar(
                 focusRequester = focusRequester,
                 query = searchQuery,
+                hideKeyboard = hideKeyboard,
+                onFocusClear = { hideKeyboard = false }
             ) { query ->
                 viewModel.setSearchQuery(query)
                 viewModel.performSearch(query)

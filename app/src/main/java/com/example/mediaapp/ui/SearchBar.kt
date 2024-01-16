@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
@@ -33,7 +32,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.mediaapp.R
 
@@ -42,7 +40,10 @@ import com.example.mediaapp.R
 fun SearchBar(
     focusRequester: FocusRequester,
     query: String?,
+    hideKeyboard: Boolean = false,
+    onFocusClear: () -> Unit = {},
     onSearch: (String) -> Unit)
+
 {
     var text by remember { mutableStateOf(query) }
     var isFocused by remember { mutableStateOf(false) }
@@ -76,9 +77,8 @@ fun SearchBar(
                 text = it
                 onSearch(it)
             },
-            keyboardActions = KeyboardActions(onAny = {
+            keyboardActions = KeyboardActions(onDone = {
                 focusManager.clearFocus()
-                text?.let { onSearch(it) }
             }),
             maxLines = 1,
             singleLine = true,
@@ -104,6 +104,7 @@ fun SearchBar(
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
                 }
+                .focusRequester(focusRequester)
         )
         if (isFocused) {
             Icon(
@@ -121,6 +122,11 @@ fun SearchBar(
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(end = 24.dp)
             )
+        }
+        if (hideKeyboard) {
+            focusManager.clearFocus()
+            // Call onFocusClear to reset hideKeyboard state to false
+            onFocusClear()
         }
     }
 }
