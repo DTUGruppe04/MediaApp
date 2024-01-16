@@ -199,18 +199,6 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                                         )
                                     }
                                 }
-                            // HERE HERE HERE HERE HERE HERE
-                            // Bookmark Icon
-                            Icon(
-                                imageVector = Icons.Outlined.PlaylistAdd,
-                                contentDescription = "bookmark",
-                                modifier = Modifier
-                                    .size(33.dp)
-                                    .offset(y = -(20).dp, x = -(5).dp)
-                                    .padding(end = 5.dp)
-                                    .clickable { /*TODO*/ }
-                                    .align(Alignment.BottomEnd)
-                            )
                             }
                         }
                     }
@@ -422,6 +410,10 @@ fun MainPageLayout(viewModel: HomeViewModel = viewModel(), navController: NavCon
                         }
                     }
                 }
+            }
+            item {
+                SeparationBox()
+                SeparationBox()
             }
         }
     }

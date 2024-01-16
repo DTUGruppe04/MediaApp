@@ -76,6 +76,7 @@ import com.example.mediaapp.ui.theme.md_theme_dark_background
 import com.example.mediaapp.viewModels.MovieDetailViewModel
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import com.example.mediaapp.ui.StandardBoxInRow
 import com.example.mediaapp.ui.StandardBoxInRowActors
 import com.example.mediaapp.ui.StandardBoxInRowCrew
@@ -141,6 +142,17 @@ fun MovieDetailPage(
             item {
                 //Top part
                 MovieDescription(movie, viewModel, movieId)
+            }
+            item {
+                Text(
+                    text = "Release Date: ${movie.release_date}",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(start = 10.dp, bottom = 5.dp)
+                )
+            }
+            item {
+                RatingAndBookmark(viewModel = viewModel, movieId = movieId)
             }
             item {
                 WatchAndRecommend(viewModel, movieId)
@@ -335,7 +347,7 @@ fun MovieDescription(movie: TMDBMovieDetail, viewModel: MovieDetailViewModel, mo
         modifier = Modifier
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.background)
-            .padding(10.dp)
+            .padding(start = 10.dp, top = 10.dp, end = 10.dp)
     ) {
         Row(
             modifier = Modifier
@@ -364,17 +376,25 @@ fun MovieDescription(movie: TMDBMovieDetail, viewModel: MovieDetailViewModel, mo
                     .padding(start = 10.dp)
                     .fillMaxHeight(),
             ) {
-                GenreTags(genreIds)
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    item {
+                        GenreTags(genreIds)
+                    }
+                }
                 ExpandableTextDescription(movie.overview)
-                RatingAndBookmark(viewModel = viewModel, movieId = movieId)
+                //RatingAndBookmark(viewModel = viewModel, movieId = movieId)
             }
         }
+        /*
         Text(
             text = "Release Date: ${movie.release_date}",
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(start = 2.dp, top = 5.dp)
         )
+         */
     }
 }
 
@@ -395,7 +415,7 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
     ) {
         Row(
             modifier = Modifier
-                .padding(top = 10.dp)
+                .padding(horizontal = 10.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -406,9 +426,9 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
                     .fillMaxWidth()
                     .height(50.dp)
                     .padding(vertical = 6.dp)
-                    .weight(2f),
+                    .weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Start
             ) {
                 Button(
                     modifier = Modifier.height(30.dp),
@@ -424,7 +444,7 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
             }
             // Star and count
             Row(
-                modifier = Modifier.weight(2f),
+                modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -434,7 +454,7 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
                     tint = Color.Yellow
                 )
                 Column(
-                    modifier = Modifier.padding(start = 7.dp, end = 15.dp),
+                    modifier = Modifier.padding(start = 7.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -458,7 +478,7 @@ fun RatingAndBookmark(viewModel: MovieDetailViewModel, movieId: String) {
             Row(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.End
             ) {
                 Icon(
                     imageVector = if (isInWatchlist) Icons.Outlined.PlaylistRemove else Icons.Outlined.PlaylistAdd,
@@ -639,7 +659,7 @@ fun DescriptionDialog(onDismissRequest: () -> Unit, text: String) {
 }
 
 @Composable
-fun ExpandableTextDescription(text: String, maxLength: Int = 150) {
+fun ExpandableTextDescription(text: String, maxLength: Int = 250) {
     var isExpanded by remember { mutableStateOf(false) }
 
     val displayText = if (text.length <= maxLength) {
@@ -657,6 +677,9 @@ fun ExpandableTextDescription(text: String, maxLength: Int = 150) {
             text = displayText,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelMedium,
+            maxLines = 7,
+            softWrap = true,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .padding(top = 10.dp)
                 .clickable { isExpanded = true }

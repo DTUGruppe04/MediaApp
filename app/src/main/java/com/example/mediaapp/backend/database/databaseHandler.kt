@@ -2,6 +2,7 @@ package com.example.mediaapp.backend.database
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.example.mediaapp.backend.RecommendationEngine
 import com.example.mediaapp.models.CurrentUser
 import com.example.mediaapp.models.RatingForDatabase
 import com.example.mediaapp.models.Recommend
@@ -62,6 +63,7 @@ class DatabaseHandler private constructor() {
                 .toString())
             .set(watchedMovieMap) }
 
+        watchListCache = null
         watchedListCache = null
     }
 
@@ -97,6 +99,7 @@ class DatabaseHandler private constructor() {
             .document(movieID.toString())
             .delete() }
 
+        watchListCache = null
         watchedListCache = null
     }
 
@@ -108,6 +111,7 @@ class DatabaseHandler private constructor() {
                 .toString())
             .set(watchlistMovieMap) }
 
+        watchedListCache = null
         watchListCache = null
         removeMovieRecommend(watchlistMovieMap["movieID"].toString().toLong())
     }
@@ -147,6 +151,7 @@ class DatabaseHandler private constructor() {
                 .await()
         }
 
+        watchedListCache = null
         watchListCache = null
     }
 
