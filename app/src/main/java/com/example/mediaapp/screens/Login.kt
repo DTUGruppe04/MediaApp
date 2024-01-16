@@ -237,6 +237,7 @@ fun TextfieldForUsername(viewModel: LoginPageViewModel) {
     TextField(
         modifier = textFieldModifier(),
         value = username,
+        singleLine = true,
         onValueChange = { newValue ->
             username = newValue
             viewModel.username = newValue.text},
@@ -255,6 +256,7 @@ fun TextfieldForEmail(viewModel: LoginPageViewModel) {
     TextField(
         modifier = textFieldModifier(),
         value = email,
+        singleLine = true,
         onValueChange = { newValue ->
             email = newValue
             viewModel.email = newValue.text},
@@ -287,6 +289,7 @@ fun TextfieldForPassword(viewModel: LoginPageViewModel) {
     TextField(
         modifier = textFieldModifier(),
         value = password,
+        singleLine = true,
         onValueChange = { newValue ->
             password = newValue
             viewModel.password = newValue.text
@@ -313,6 +316,7 @@ fun TextfieldForConfirmPassword(viewModel: LoginPageViewModel) {
     TextField(
         modifier = textFieldModifier(),
         value = confirmPassword,
+        singleLine = true,
         onValueChange = { newValue ->
             confirmPassword = newValue
             viewModel.confirmPassword = newValue.text
