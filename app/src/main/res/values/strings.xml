@@ -1,6 +1,6 @@
 <resources>
     //App name
-    <string name="app_name">Cinemaesque</string>
+    <string name="app_name">10Cinemaesque</string>
     <string name="empty">Lorem ipsum dolor sit amet</string>
     <string name="main_page_text1_1">Barbie (2023)</string>
     <string name="main_page_text1_2">Oppenheimer (2023)</string>
@@ -102,7 +102,7 @@
     <string name="search">Search</string>
 
     //Navigation Top Bar
-    <string name="mediaapp">10 Media App</string>
+    <string name="mediaapp">Cinemaesque</string>
     <string name="edit">Edit</string>
     
     //Navigation Side Menu (Drawer)
