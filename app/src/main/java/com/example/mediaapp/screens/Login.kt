@@ -196,7 +196,6 @@ fun BottomSignText(string1: Int, string2: Int, navController: NavController) {
         )
     }
 }
-
 @Composable
 private fun textFieldModifier() = Modifier
     .padding(start = 29.dp, top = 16.dp, end = 29.dp)
