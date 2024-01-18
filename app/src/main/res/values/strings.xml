@@ -193,7 +193,7 @@
     <string name="ph4ntom">PH4NTOM Thomsen</string>
 
     //Login, Register and Forgot Password Pages
-    <string name="login_top_name">Media App</string>
+    <string name="login_top_name">Cinemaesque</string>
     <string name="login">Login</string>
     <string name="login_big">LOGIN</string>
     <string name="login_please">Please sign in to continue</string>
