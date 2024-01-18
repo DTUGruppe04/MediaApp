@@ -42,6 +42,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.mediaapp.R
 import com.example.mediaapp.Screen
 import kotlinx.coroutines.launch
@@ -54,7 +55,7 @@ data class BottomNavItem(
 )
 
 @Composable
-fun BottomNavBar(navController: NavController, modifier : Modifier = Modifier) {
+fun BottomNavBar(navController: NavController) {
     val bottomNavItems = listOf(
         BottomNavItem(
             name = stringResource(R.string.home),
@@ -89,6 +90,10 @@ fun BottomNavBar(navController: NavController, modifier : Modifier = Modifier) {
     val contentColor = MaterialTheme.colorScheme.onSurface
     val containerColor = MaterialTheme.colorScheme.surface
     val indicatorColor = MaterialTheme.colorScheme.secondaryContainer
+
+    val navStackBackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navStackBackEntry?.destination?.route
+    selectedItemIndex = bottomNavItems.indexOfFirst { it.route == currentRoute }.coerceAtLeast(0)
 
     NavigationBar(
         containerColor = containerColor,
@@ -136,7 +141,7 @@ fun BottomNavBar(navController: NavController, modifier : Modifier = Modifier) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBarA(navController: NavController, drawerState: DrawerState, modifier : Modifier = Modifier) {
+fun TopNavBarA(drawerState: DrawerState) {
     val containerColor = MaterialTheme.colorScheme.surface
     val contentColor = MaterialTheme.colorScheme.onSurface
     val iconColor = MaterialTheme.colorScheme.onSurface
@@ -178,11 +183,11 @@ fun TopNavBarA(navController: NavController, drawerState: DrawerState, modifier 
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBarB(navController: NavController, drawerState: DrawerState, modifier : Modifier = Modifier) {
+fun TopNavBarB(navController: NavController, drawerState: DrawerState) {
     val containerColor = MaterialTheme.colorScheme.surface
     val contentColor = MaterialTheme.colorScheme.onSurface
     val iconColor = MaterialTheme.colorScheme.onSurface
-    var scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -223,7 +228,7 @@ fun TopNavBarB(navController: NavController, drawerState: DrawerState, modifier 
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBarC(navController: NavController, drawerState: DrawerState, modifier : Modifier = Modifier) {
+fun TopNavBarC(drawerState: DrawerState, modifier: Modifier = Modifier) {
     val containerColor = MaterialTheme.colorScheme.surface
     val contentColor = MaterialTheme.colorScheme.onSurface
     val iconColor = MaterialTheme.colorScheme.onSurface
@@ -280,11 +285,11 @@ fun TopNavBarC(navController: NavController, drawerState: DrawerState, modifier 
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBarD(navController: NavController, drawerState: DrawerState, modifier : Modifier = Modifier) {
+fun TopNavBarD(navController: NavController, drawerState: DrawerState) {
     val containerColor = MaterialTheme.colorScheme.surface
     val contentColor = MaterialTheme.colorScheme.onSurface
     val iconColor = MaterialTheme.colorScheme.onSurface
-    var scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -334,7 +339,7 @@ fun TopNavBarD(navController: NavController, drawerState: DrawerState, modifier 
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBarE(navController: NavController,  drawerState: DrawerState, modifier : Modifier = Modifier) {
+fun TopNavBarE(drawerState: DrawerState) {
     val containerColor = MaterialTheme.colorScheme.surface
     val contentColor = MaterialTheme.colorScheme.onSurface
     val iconColor = MaterialTheme.colorScheme.onSurface
@@ -356,8 +361,8 @@ fun TopNavBarE(navController: NavController,  drawerState: DrawerState, modifier
                     imageVector = Icons.Filled.Close,
                     contentDescription = "arrow back",
                     modifier = Modifier
-                        .width(48.dp)
-                        .height(48.dp)
+                        .width(30.dp)
+                        .height(30.dp)
                 )
             }
         },
@@ -379,7 +384,7 @@ fun TopNavBarE(navController: NavController,  drawerState: DrawerState, modifier
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBarF(navController: NavController, modifier : Modifier = Modifier) {
+fun TopNavBarF() {
     val containerColor = colorResource(R.color.top_navbar_container_color)
 
     CenterAlignedTopAppBar(

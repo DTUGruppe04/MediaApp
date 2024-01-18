@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -31,7 +32,6 @@ import com.example.mediaapp.models.TMDBMovie
 
 object SearchQueryLayout {
     private const val baseURL = "https://image.tmdb.org/t/p/original"
-    private const val failURL = "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
 
     @Composable
     fun SearchQueryList(movies: List<TMDBMovie>, navController: NavController) {
@@ -54,9 +54,17 @@ object SearchQueryLayout {
             }
         }
     }
-
     @Composable
-    fun SearchQueryListItem(movie: TMDBMovie,movieId: Int, navController: NavController) {
+    fun ShortenedText(text: String): String {
+        var shortText: String = text
+        // Check if the text needs truncation
+        if (text.length > 80) {
+            shortText = text.take(80) + "..."
+        }
+        return shortText
+    }
+    @Composable
+    fun SearchQueryListItem(movie: TMDBMovie, movieId: Int, navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -67,7 +75,7 @@ object SearchQueryLayout {
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = baseURL + (movie.poster_path ?: failURL),
+                model = baseURL + movie.poster_path,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.composeImageModifier()
@@ -79,7 +87,10 @@ object SearchQueryLayout {
                     text = movie.title,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Text(text = movie.overview, style = MaterialTheme.typography.titleSmall)
+                Text(text = ShortenedText(text = movie.overview),
+                    style = MaterialTheme.typography.titleSmall,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(top = 8.dp))
             }
         }
     }

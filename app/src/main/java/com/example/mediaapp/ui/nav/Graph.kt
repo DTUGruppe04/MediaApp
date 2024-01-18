@@ -1,5 +1,12 @@
 package com.example.mediaapp.ui.nav
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -31,7 +38,7 @@ fun NavigationGraph(navController: NavHostController, loginNavController: NavCon
             HomeScreen(navController = navController, drawerState = drawerState)
         }
         composable(route = Screen.Following.route) {
-            FollowingListPage(navController = navController, drawerState = drawerState)
+            FollowingListPage(drawerState = drawerState)
         }
         composable(route = Screen.Watchlist.route) {
             WatchlistPage(navController = navController, drawerState = drawerState)
@@ -51,7 +58,13 @@ fun NavigationGraph(navController: NavHostController, loginNavController: NavCon
         composable(route = Screen.Settings.route) {
             SettingpageLayout(navController = navController, drawerState = drawerState)
         }
-        composable("${Screen.MoviePage.route}/{movieId}") { backStackEntry ->
+        composable(route = "${Screen.MoviePage.route}/{movieId}",
+            enterTransition = {scaleIntoContainer()},
+            exitTransition = { scaleOutOfContainer(direction = ScaleTransitionDirection.INWARDS) },
+            popEnterTransition = {
+                scaleIntoContainer(direction = ScaleTransitionDirection.OUTWARDS) },
+            popExitTransition = { scaleOutOfContainer() })
+        { backStackEntry ->
             val movieId = backStackEntry.arguments?.getString("movieId")
             if (movieId != null) {
                 MovieDetailPage(navController = navController, drawerState = drawerState, movieId = movieId)
@@ -80,4 +93,31 @@ fun NavigationGraphLogin(navController: NavHostController) {
             MainScreen(navController)
         }
     }
+}
+
+fun scaleIntoContainer(
+    direction: ScaleTransitionDirection = ScaleTransitionDirection.INWARDS,
+    initialScale: Float = if (direction == ScaleTransitionDirection.OUTWARDS) 0.9f else 1.1f
+): EnterTransition {
+    return scaleIn(
+        animationSpec = tween(220, delayMillis = 90),
+        initialScale = initialScale
+    ) + fadeIn(animationSpec = tween(220, delayMillis = 90))
+}
+
+enum class ScaleTransitionDirection {
+    INWARDS,
+    OUTWARDS
+}
+
+fun scaleOutOfContainer(
+    direction: ScaleTransitionDirection = ScaleTransitionDirection.OUTWARDS,
+    targetScale: Float = if (direction == ScaleTransitionDirection.INWARDS) 0.9f else 1.1f
+): ExitTransition {
+    return scaleOut(
+        animationSpec = tween(
+            durationMillis = 220,
+            delayMillis = 90
+        ), targetScale = targetScale
+    ) + fadeOut(tween(delayMillis = 90))
 }
