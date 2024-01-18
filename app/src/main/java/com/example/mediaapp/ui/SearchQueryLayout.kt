@@ -64,7 +64,7 @@ object SearchQueryLayout {
         return shortText
     }
     @Composable
-    fun SearchQueryListItem(movie: TMDBMovie,movieId: Int, navController: NavController) {
+    fun SearchQueryListItem(movie: TMDBMovie, movieId: Int, navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

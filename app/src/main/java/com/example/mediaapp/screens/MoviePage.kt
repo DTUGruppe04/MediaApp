@@ -561,6 +561,7 @@ fun RatingDialog(onDismissRequest: () -> Unit, viewModel: MovieDetailViewModel, 
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    //This is a library we have imported from GITHUB
                     RatingBar(
                         modifier = Modifier.padding(10.dp),
                         value = tempRating,
