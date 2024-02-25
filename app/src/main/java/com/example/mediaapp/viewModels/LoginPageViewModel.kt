@@ -15,7 +15,6 @@ import com.google.firebase.auth.auth
  */
 class LoginPageViewModel : ViewModel() {
 
-    // Instance of DatabaseHandler for database operations
     private val databaseHandler = DatabaseHandler.getInstance()
 
     // Variables to hold user input
