@@ -58,7 +58,7 @@ fun ForgotPasswordPageLayout(navController: NavController,
         )
         MainTitleText(R.string.login_forgot_password)
         SubTitleText(R.string.login_forgot_password_please)
-        TextfieldForEmail(viewModel)
+       TextFieldForInput(viewModel, InputType.Email)
         Button(onClick = {
             navController.navigate(Screen.Login.route)
         },

@@ -47,10 +47,10 @@ fun CreateAccountPageLayout(navController: NavController,
             }
             MainTitleText(R.string.login_create_account)
             SubTitleText(R.string.login_create_account_please)
-            TextfieldForUsername(viewModel)
-            TextfieldForEmail(viewModel)
-            TextfieldForPassword(viewModel)
-            TextfieldForConfirmPassword(viewModel)
+            TextFieldForInput(viewModel, InputType.Username)
+            TextFieldForInput(viewModel, InputType.Email)
+            TextFieldForInput(viewModel, InputType.Password)
+            TextFieldForInput(viewModel, InputType.ConfirmPassword)
             Button(
                 onClick = {
                     viewModel.registerFlow(navController)

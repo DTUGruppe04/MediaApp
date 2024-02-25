@@ -85,8 +85,8 @@ fun LoginPageLayout(
                 }
                 MainTitleText(R.string.login)
                 SubTitleText(R.string.login_please)
-                TextfieldForEmail(viewModel)
-                TextfieldForPassword(viewModel)
+                TextFieldForInput(viewModel, InputType.Email)
+                TextFieldForInput(viewModel, InputType.Password)
                 Column(
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.Bottom,
@@ -235,40 +235,45 @@ private fun textFieldColors() = TextFieldDefaults.textFieldColors(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextfieldForUsername(viewModel: LoginPageViewModel) {
-    var username by remember { mutableStateOf(TextFieldValue()) }
+fun TextFieldForInput(viewModel: LoginPageViewModel, inputType: InputType) {
+    var input by remember { mutableStateOf(TextFieldValue()) }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     TextField(
         modifier = textFieldModifier(),
-        value = username,
+        value = input,
         singleLine = true,
         onValueChange = { newValue ->
-            username = newValue
-            viewModel.username = newValue.text},
-        label = {labelStyle("Username")},
-        placeholder = {placeholderStyle("Enter your username")},
+            input = newValue
+            when (inputType) {
+                InputType.Username -> viewModel.username = newValue.text
+                InputType.Email -> viewModel.email = newValue.text
+                InputType.Password -> viewModel.password = newValue.text
+                InputType.ConfirmPassword -> viewModel.confirmPassword = newValue.text
+            }
+        },
+        label = { labelStyle(inputType.label) },
+        placeholder = { placeholderStyle(inputType.placeholder) },
         colors = textFieldColors(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+        keyboardOptions = KeyboardOptions(keyboardType = inputType.keyboardType),
+        visualTransformation = if (inputType == InputType.Password || inputType == InputType.ConfirmPassword) {
+            if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
+        } else VisualTransformation.None,
+        trailingIcon = if (inputType == InputType.Password || inputType == InputType.ConfirmPassword) {
+            {
+                PasswordVisibilityToggle(passwordVisible) {
+                    passwordVisible = !passwordVisible
+                }
+            }
+        } else null
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TextfieldForEmail(viewModel: LoginPageViewModel) {
-    var email by remember { mutableStateOf(TextFieldValue()) }
-
-    TextField(
-        modifier = textFieldModifier(),
-        value = email,
-        singleLine = true,
-        onValueChange = { newValue ->
-            email = newValue
-            viewModel.email = newValue.text},
-        label = {labelStyle("Email")},
-        placeholder = {placeholderStyle("Enter your email")},
-        colors = textFieldColors(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-    )
+enum class InputType(val label: String, val placeholder: String, val keyboardType: KeyboardType) {
+    Username("Username", "Enter your username", KeyboardType.Text),
+    Email("Email", "Enter your email", KeyboardType.Email),
+    Password("Password", "Enter your password", KeyboardType.Password),
+    ConfirmPassword("Confirm Password", "Confirm your password", KeyboardType.Password)
 }
 
 @Composable
@@ -284,59 +289,6 @@ fun PasswordVisibilityToggle(passwordVisible: Boolean, onToggle: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TextfieldForPassword(viewModel: LoginPageViewModel) {
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
-    var password by remember { mutableStateOf(TextFieldValue()) }
-
-    TextField(
-        modifier = textFieldModifier(),
-        value = password,
-        singleLine = true,
-        onValueChange = { newValue ->
-            password = newValue
-            viewModel.password = newValue.text
-        },
-        label = { labelStyle("Password") },
-        placeholder = { placeholderStyle("Enter your password") },
-        colors = textFieldColors(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-        trailingIcon = {
-            PasswordVisibilityToggle(passwordVisible) {
-                passwordVisible = !passwordVisible
-            }
-        }
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TextfieldForConfirmPassword(viewModel: LoginPageViewModel) {
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
-    var confirmPassword by remember { mutableStateOf(TextFieldValue()) }
-
-    TextField(
-        modifier = textFieldModifier(),
-        value = confirmPassword,
-        singleLine = true,
-        onValueChange = { newValue ->
-            confirmPassword = newValue
-            viewModel.confirmPassword = newValue.text
-        },
-        label = { labelStyle("Confirm Password") },
-        placeholder = { placeholderStyle("Confirm your password") },
-        colors = textFieldColors(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-        trailingIcon = {
-            PasswordVisibilityToggle(passwordVisible) {
-                passwordVisible = !passwordVisible
-            }
-        }
-    )
-}
 
 /*
 @Preview(showBackground = true)
