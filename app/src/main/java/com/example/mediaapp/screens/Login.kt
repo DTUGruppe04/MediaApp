@@ -58,13 +58,9 @@ import com.example.mediaapp.viewModels.LoginPageViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
-
 @Composable
-fun LoginPageLayout(
-    navController: NavController,
-    viewModel: LoginPageViewModel = viewModel(),
-    ) {
-    if(Firebase.auth.currentUser != null) {
+fun LoginPageLayout(navController: NavController, viewModel: LoginPageViewModel = viewModel()) {
+    if (Firebase.auth.currentUser != null) {
         navController.navigate(Screen.MainScreen.route)
     } else {
         MediaAppTheme {
@@ -73,42 +69,16 @@ fun LoginPageLayout(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface)
             ) {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                    contentAlignment = Alignment.Center) {
-                    Text(stringResource(R.string.login_top_name),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center
-                    )
-                }
+                HeaderText(stringResource(R.string.login_top_name))
                 MainTitleText(R.string.login)
                 SubTitleText(R.string.login_please)
                 TextFieldForInput(viewModel, InputType.Email)
                 TextFieldForInput(viewModel, InputType.Password)
-                Column(
-                    horizontalAlignment = Alignment.End,
-                    verticalArrangement = Arrangement.Bottom,
-                    modifier = Modifier
-                        .padding(top = 11.dp, end = 29.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        stringResource(R.string.login_forgot_password),
-                        modifier = Modifier
-                            .clickable {
-                                navController.navigate(Screen.ForgotPassword.route)
-                            },
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textDecoration = TextDecoration.Underline,
-                    )
-                }
-
-                Button(onClick = {
-                    viewModel.loginFlow(navController)
-                },
+                ForgotPasswordText(navController)
+                Button(
+                    onClick = {
+                        viewModel.loginFlow(navController)
+                    },
                     modifier = Modifier
                         .width(152.dp)
                         .height(76.dp)
@@ -118,28 +88,71 @@ fun LoginPageLayout(
                         containerColor = MaterialTheme.colorScheme.primaryContainer
                     )
                 ) {
-                    Text(stringResource(R.string.login_big),
+                    Text(
+                        stringResource(R.string.login_big),
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
-                if (viewModel.errorText.value.isNotEmpty()) {
-                    Text(text = viewModel.errorText.value.ifEmpty { "" },
-                        modifier = Modifier
-                            .padding(top = 11.dp, end = 29.dp)
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.End,
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
+                ErrorText(viewModel)
                 BottomSignText(R.string.login_missing_account, R.string.login_missing_account_sign, navController)
             }
         }
-
     }
-
 }
 
+@Composable
+fun HeaderText(text: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+fun ForgotPasswordText(navController: NavController) {
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Bottom,
+        modifier = Modifier
+            .padding(top = 11.dp, end = 29.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            stringResource(R.string.login_forgot_password),
+            modifier = Modifier
+                .clickable {
+                    navController.navigate(Screen.ForgotPassword.route)
+                },
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurface,
+            textDecoration = TextDecoration.Underline,
+        )
+    }
+}
+
+@Composable
+fun ErrorText(viewModel: LoginPageViewModel) {
+    if (viewModel.errorText.value.isNotEmpty()) {
+        Text(
+            text = viewModel.errorText.value.ifEmpty { "" },
+            modifier = Modifier
+                .padding(top = 11.dp, end = 29.dp)
+                .fillMaxWidth(),
+            textAlign = TextAlign.End,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.error
+        )
+    }
+}
 @Composable
 fun MainTitleText(string: Int) {
     Text(stringResource(string),
@@ -201,12 +214,6 @@ fun BottomSignText(string1: Int, string2: Int, navController: NavController) {
     }
 }
 
-@Composable
-private fun textFieldModifier() = Modifier
-    .padding(start = 29.dp, top = 16.dp, end = 29.dp)
-    .fillMaxWidth()
-    .height(56.dp)
-    .clip(RoundedCornerShape(10.dp))
 
 @Composable
 private fun labelStyle(text: String) = Text(
@@ -226,21 +233,16 @@ private fun placeholderStyle(text: String) = Text(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun textFieldColors() = TextFieldDefaults.textFieldColors(
-    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-    textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-    unfocusedIndicatorColor = Color.Transparent
-)
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
 fun TextFieldForInput(viewModel: LoginPageViewModel, inputType: InputType) {
     var input by remember { mutableStateOf(TextFieldValue()) }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     TextField(
-        modifier = textFieldModifier(),
+        modifier = Modifier
+            .padding(start = 29.dp, top = 16.dp, end = 29.dp)
+            .fillMaxWidth()
+            .height(56.dp)
+            .clip(RoundedCornerShape(10.dp)),
         value = input,
         singleLine = true,
         onValueChange = { newValue ->
@@ -254,7 +256,11 @@ fun TextFieldForInput(viewModel: LoginPageViewModel, inputType: InputType) {
         },
         label = { labelStyle(inputType.label) },
         placeholder = { placeholderStyle(inputType.placeholder) },
-        colors = textFieldColors(),
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+            unfocusedIndicatorColor = Color.Transparent),
         keyboardOptions = KeyboardOptions(keyboardType = inputType.keyboardType),
         visualTransformation = if (inputType == InputType.Password || inputType == InputType.ConfirmPassword) {
             if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
@@ -288,17 +294,3 @@ fun PasswordVisibilityToggle(passwordVisible: Boolean, onToggle: () -> Unit) {
         Icon(imageVector = image, description)
     }
 }
-
-
-/*
-@Preview(showBackground = true)
-@Composable
-fun LoginPagePreview() {
-    MediaAppTheme {
-        //LoginPageLayout()
-        //CreateAccountPageLayout()
-        ForgotPasswordPageLayout()
-    }
-}
-
- */

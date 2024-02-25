@@ -34,17 +34,7 @@ fun CreateAccountPageLayout(navController: NavController,
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
         ) {
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-                contentAlignment = Alignment.Center) {
-                Text(
-                    stringResource(R.string.login_top_name),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center
-                )
-            }
+            HeaderText(stringResource(R.string.login_top_name))
             MainTitleText(R.string.login_create_account)
             SubTitleText(R.string.login_create_account_please)
             TextFieldForInput(viewModel, InputType.Username)
@@ -69,16 +59,7 @@ fun CreateAccountPageLayout(navController: NavController,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
-            if (viewModel.errorText.value.isNotEmpty()) {
-                Text(text = viewModel.errorText.value.ifEmpty { "" },
-                    modifier = Modifier
-                        .padding(top = 11.dp, end = 29.dp)
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.error
-                )
-            }
+            ErrorText(viewModel)
             BottomSignText(R.string.login_already_account, R.string.login_already_account_sign, navController)
         }
     }
