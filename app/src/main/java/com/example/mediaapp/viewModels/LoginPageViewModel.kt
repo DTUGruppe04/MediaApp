@@ -30,19 +30,13 @@ class LoginPageViewModel : ViewModel() {
      * Validates user input and registers the user if the input is valid.
      */
     fun registerFlow(navController: NavController) {
-        when {
-            // Check if any field is empty
-            listOf(email, password, username, confirmPassword).any { it.isEmpty() } -> errorText.value = "Please fill in all fields"
-            // Check if password and confirm password match
-            password != confirmPassword -> errorText.value = "Password does not match"
-            // Check if email is valid
-            !email.contains("@") || !email.contains(".") -> errorText.value = "Please enter a valid email address"
-            // Check if password is at least 8 characters long
-            password.length < 8 -> errorText.value = "Password must be at least 8 characters"
-            // Check if username is valid
-            validateUsername(username).isNotEmpty() -> errorText.value = validateUsername(username)
-            // If all checks pass, register the user
-            else -> registerUser(navController)
+        try {
+            validateInput(true)
+        } catch (e: IllegalArgumentException) {
+            errorText.value = e.message ?: ERROR
+        }
+        if (errorText.value.isEmpty()) {
+            registerUser(navController)
         }
     }
 
@@ -62,11 +56,10 @@ class LoginPageViewModel : ViewModel() {
                 errorText.value = "User created successfully"
                 navController.navigate(Screen.Login.route)
             } else {
-                // Handle registration errors
                 errorText.value = when {
                     task.exception.toString().contains("email address is badly formatted") -> "Please enter a valid email address"
                     task.exception.toString().contains("The email address is already in use by another account") -> "This email address is already in use by another account"
-                    else -> "Registration failed"
+                    else -> "Failed, try again"
                 }
             }
         }
@@ -77,13 +70,13 @@ class LoginPageViewModel : ViewModel() {
      * Validates user input and logs in the user if the input is valid.
      */
     fun loginFlow(navController: NavController) {
-        when {
-            // Check if any field is empty
-            listOf(email, password).any { it.isEmpty() } -> errorText.value = "Please fill in all fields"
-            // Check if email is valid
-            !email.contains("@") || !email.contains(".") -> errorText.value = "Please enter a valid email address"
-            // If all checks pass, log in the user
-            else -> loginUser(navController)
+        try {
+            validateInput(false)
+        } catch (e: IllegalArgumentException) {
+            errorText.value = e.message ?: ERROR
+        }
+        if (errorText.value.isEmpty()) {
+            loginUser(navController)
         }
     }
 
@@ -97,21 +90,43 @@ class LoginPageViewModel : ViewModel() {
                 errorText.value = ""
                 navController.navigate(Screen.MainScreen.route)
             } else {
-                // Handle login errors
                 errorText.value = when {
                     task.exception.toString().contains("email address is badly formatted") -> "Please enter a valid email address"
                     task.exception.toString().contains("supplied auth credential is incorrect") -> "The email or password is incorrect"
-                    task.exception.toString().contains("Access to this account has been temporarily disabled due to many failed login attempts") -> "Too many failed login attempts. Please try again later"
-                    else -> "Login failed"
+                    task.exception.toString().contains("Access to this account has been temporarily disabled due to many failed login attempts") -> "Too many failed login attempts for this account. Please try again later"
+                    else -> "Failed, try again"
                 }
             }
         }
     }
 
-    /**
-     * Creates a map of user data to be stored in the database.
-     * @return A map of user data.
-     */
+    companion object {
+        const val ERROR_EMPTY_FIELDS = "Please fill in all fields"
+        const val ERROR_INVALID_EMAIL = "Please enter a valid email address"
+        const val ERROR_SHORT_PASSWORD = "Password must be at least 8 characters"
+        const val ERROR_PASSWORD_MISMATCH = "Password does not match"
+        const val ERROR_SHORT_USERNAME = "Username must be at least 4 characters"
+        const val ERROR_LONG_USERNAME = "Username must be less than 20 characters"
+        const val ERROR_USERNAME_SPACES = "Username cannot contain spaces"
+        const val ERROR_USERNAME_SPECIAL_CHARACTERS = "Username cannot contain special characters"
+        const val ERROR = "Failed, try again"
+    }
+
+    private fun validateInput(registration: Boolean) {
+        when {
+            listOf(email, password).any { it.isEmpty() } -> throw IllegalArgumentException(ERROR_EMPTY_FIELDS)
+            !email.contains("@") || !email.contains(".") -> throw IllegalArgumentException(ERROR_INVALID_EMAIL)
+            password.length < 8 -> throw IllegalArgumentException(ERROR_SHORT_PASSWORD)
+            registration && listOf(username, confirmPassword).any { it.isEmpty() } -> throw IllegalArgumentException(ERROR_EMPTY_FIELDS)
+            registration && password != confirmPassword -> throw IllegalArgumentException(ERROR_PASSWORD_MISMATCH)
+            registration && username.length < 4 -> throw IllegalArgumentException(ERROR_SHORT_USERNAME)
+            registration && username.length > 20 -> throw IllegalArgumentException(ERROR_LONG_USERNAME)
+            registration && username.contains(" ") -> throw IllegalArgumentException(ERROR_USERNAME_SPACES)
+            registration && username.any { it in "@.#\$[]/\\%^&*()+=?!<>,;:\"{}|~`'" } -> throw IllegalArgumentException(ERROR_USERNAME_SPECIAL_CHARACTERS)
+            else -> errorText.value = ""
+        }
+    }
+
     private fun createUserMap() = hashMapOf(
         "username" to username,
         "name" to "",
@@ -129,18 +144,4 @@ class LoginPageViewModel : ViewModel() {
         ),
         "watchlist" to listOf<String>()
     )
-
-    /**
-     * Validates the username.
-     * Checks if the username is at least 4 characters long, less than 20 characters long, does not contain spaces, and does not contain special characters.
-     * @param username The username to validate.
-     * @return An error message if the username is invalid, or an empty string if the username is valid.
-     */
-    private fun validateUsername(username: String) = when {
-        username.length < 4 -> "Username must be at least 4 characters"
-        username.length > 20 -> "Username must be less than 20 characters"
-        username.contains(" ") -> "Username cannot contain spaces"
-        username.any { it in "@.#\$[]/\\%^&*()+=?!<>,;:\"{}|~`'" } -> "Username cannot contain special characters"
-        else -> ""
-    }
 }
