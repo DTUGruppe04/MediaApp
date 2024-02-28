@@ -49,7 +49,7 @@ fun ForgotPasswordPageLayout(navController: NavController,
         SubTitleText(R.string.login_forgot_password_please)
         TextFieldForInput(viewModel, InputType.Email)
         Button(onClick = {
-            navController.navigate(Screen.Login.route)
+            viewModel.sendPasswordResetEmail(navController)
         },
             modifier = Modifier
                 .wrapContentSize()

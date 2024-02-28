@@ -31,11 +31,11 @@ class LoginPageViewModel : ViewModel() {
     fun registerFlow(navController: NavController) {
         try {
             validateInput(true)
+            if (errorText.value.isEmpty()) {
+                registerUser(navController)
+            }
         } catch (e: IllegalArgumentException) {
             errorText.value = e.message ?: ERROR
-        }
-        if (errorText.value.isEmpty()) {
-            registerUser(navController)
         }
     }
 
@@ -56,9 +56,9 @@ class LoginPageViewModel : ViewModel() {
                 navController.navigate(Screen.Login.route)
             } else {
                 errorText.value = when {
-                    task.exception.toString().contains("email address is badly formatted") -> "Please enter a valid email address"
+                    task.exception.toString().contains("email address is badly formatted") -> ERROR_INVALID_EMAIL
                     task.exception.toString().contains("The email address is already in use by another account") -> "This email address is already in use by another account"
-                    else -> "Failed, try again"
+                    else -> ERROR
                 }
             }
         }
@@ -71,11 +71,11 @@ class LoginPageViewModel : ViewModel() {
     fun loginFlow(navController: NavController) {
         try {
             validateInput(false)
+            if (errorText.value.isEmpty()) {
+                loginUser(navController)
+            }
         } catch (e: IllegalArgumentException) {
             errorText.value = e.message ?: ERROR
-        }
-        if (errorText.value.isEmpty()) {
-            loginUser(navController)
         }
     }
 
@@ -90,10 +90,10 @@ class LoginPageViewModel : ViewModel() {
                 navController.navigate(Screen.MainScreen.route)
             } else {
                 errorText.value = when {
-                    task.exception.toString().contains("email address is badly formatted") -> "Please enter a valid email address"
+                    task.exception.toString().contains("email address is badly formatted") -> ERROR_INVALID_EMAIL
                     task.exception.toString().contains("supplied auth credential is incorrect") -> "The email or password is incorrect"
                     task.exception.toString().contains("Access to this account has been temporarily disabled due to many failed login attempts") -> "Too many failed login attempts for this account. Please try again later"
-                    else -> "Failed, try again"
+                    else -> ERROR
                 }
             }
         }
@@ -104,28 +104,42 @@ class LoginPageViewModel : ViewModel() {
         const val ERROR_INVALID_EMAIL = "Please enter a valid email address"
         const val ERROR_SHORT_PASSWORD = "Password must be at least 8 characters"
         const val ERROR_PASSWORD_MISMATCH = "Password does not match"
-        const val ERROR_SHORT_USERNAME = "Username must be at least 4 characters"
-        const val ERROR_LONG_USERNAME = "Username must be less than 20 characters"
-        const val ERROR_USERNAME_SPACES = "Username cannot contain spaces"
-        const val ERROR_USERNAME_SPECIAL_CHARACTERS = "Username cannot contain special characters"
+        const val ERROR_WRONG_LENGTH_USERNAME = "Username must be between 4 and 20 characters"
+        const val ERROR_USERNAME_SPECIAL_CHARACTERS_SPACES = "Username cannot contain spaces or special characters"
         const val ERROR = "Failed, try again"
     }
 
     private fun validateInput(registration: Boolean) {
-        when {
-            listOf(email, password).any { it.isEmpty() } -> throw IllegalArgumentException(ERROR_EMPTY_FIELDS)
-            !email.contains("@") || !email.contains(".") -> throw IllegalArgumentException(ERROR_INVALID_EMAIL)
-            password.length < 8 -> throw IllegalArgumentException(ERROR_SHORT_PASSWORD)
-            registration && listOf(username, confirmPassword).any { it.isEmpty() } -> throw IllegalArgumentException(ERROR_EMPTY_FIELDS)
-            registration && password != confirmPassword -> throw IllegalArgumentException(ERROR_PASSWORD_MISMATCH)
-            registration && username.length < 4 -> throw IllegalArgumentException(ERROR_SHORT_USERNAME)
-            registration && username.length > 20 -> throw IllegalArgumentException(ERROR_LONG_USERNAME)
-            registration && username.contains(" ") -> throw IllegalArgumentException(ERROR_USERNAME_SPACES)
-            registration && username.any { it in "@.#\$[]/\\%^&*()+=?!<>,;:\"{}|~`'" } -> throw IllegalArgumentException(ERROR_USERNAME_SPECIAL_CHARACTERS)
-            else -> errorText.value = ""
+        if (email.isEmpty() || password.isEmpty()) throw IllegalArgumentException(ERROR_EMPTY_FIELDS)
+        if (!email.contains("@") || !email.contains(".")) throw IllegalArgumentException(ERROR_INVALID_EMAIL)
+        if (password.length < 8) throw IllegalArgumentException(ERROR_SHORT_PASSWORD)
+        if (registration) {
+            if (username.isEmpty() || confirmPassword.isEmpty()) throw IllegalArgumentException(ERROR_EMPTY_FIELDS)
+            if (password != confirmPassword) throw IllegalArgumentException(ERROR_PASSWORD_MISMATCH)
+            if (username.length !in 4..20) throw IllegalArgumentException(ERROR_WRONG_LENGTH_USERNAME)
+            if (username.contains(" ") || username.any { it in "@.#\$[]/\\%^&*()+=?!<>,;:\"{}|~`'" }) throw IllegalArgumentException(ERROR_USERNAME_SPECIAL_CHARACTERS_SPACES)
         }
+        errorText.value = ""
     }
 
+    fun sendPasswordResetEmail(navController: NavController) {
+        if (email.isEmpty()) {
+            errorText.value = ERROR_EMPTY_FIELDS
+        } else {
+            Firebase.auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    errorText.value = "Password reset email sent"
+                    navController.navigate(Screen.Login.route)
+                } else {
+                    errorText.value = when {
+                        task.exception.toString().contains("email address is badly formatted") -> ERROR_INVALID_EMAIL
+                        task.exception.toString().contains("There is no user record corresponding to this identifier") -> "There is no user record corresponding to this email address"
+                        else -> ERROR
+                    }
+                }
+            }
+        }
+    }
     private fun createUserMap() = hashMapOf(
         "username" to username,
         "name" to "",
