@@ -39,12 +39,6 @@ fun ForgotPasswordPageLayout(navController: NavController,
             )
     ) {
         HeaderText(stringResource(R.string.login_top_name))
-        Text(
-            "Feature coming soon! can't reset password yet.",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
-        )
         MainTitleText(R.string.login_forgot_password)
         SubTitleText(R.string.login_forgot_password_please)
         TextFieldForInput(viewModel, InputType.Email)
